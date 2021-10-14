@@ -1,0 +1,61 @@
+{
+  "name": "cap-cave",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^5",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+    "@sap/ux-specification": "^1.90.10",
+    "@sapui5/ts-types": "^1.92.2",
+    "cds-swagger-ui-express": "^0.3.0",
+    "eslint": "^7.32.0",
+    "sqlite3": "^5.0.2"
+  },
+  "scripts": {
+    "start": "cds run",
+    "watch-list-vins": "cds watch --open list-vins/webapp/index.html#fe-lrop-v4"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "model": "*"
+      }
+    }
+  },
+  "sapux": [
+    "app/list-vins",
+    "app/list-vins"
+  ]
+}
