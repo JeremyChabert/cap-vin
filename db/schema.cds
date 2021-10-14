@@ -9,27 +9,32 @@ using {
 namespace my.cave;
 
 aspect Boisson : managed {
-  key name   : String;
-  key annee  : String(4);
-  key type   : String;
+  key name  : String;
+  key annee : String(4);
+  key type  : String;
   @Measures : {Unit : '%vol'}
-  degre  : Decimal(4, 1);
+  degre     : Decimal(4, 1);
   @Measures : {Unit : unit, }
-  volume : Integer;
+  volume    : Integer;
   @assert.range
-  unit   : String enum {
+  unit      : String enum {
     L;
     cL;
   }
 };
 
+entity Cepage {
+  key name        : String(30);
+      description : String(200);
+}
+
 entity Vin : Boisson {
-  key color      : Association to VinColor;
-  @Measures : {ISOCurrency : devise_code, }
-  prix       : Decimal(6, 2);
-  devise     : Currency;
-  IGP        : Boolean default false;
-  AOC        : Boolean default false;
+  key color  : Association to VinColor;
+      @Measures : {ISOCurrency : devise_code, }
+      prix   : Decimal(6, 2);
+      devise : Currency;
+      IGP    : Boolean default false;
+      AOC    : Boolean default false;
 };
 
 @cds.autoexpose  @readonly
