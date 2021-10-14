@@ -6,6 +6,8 @@ service API {
   select from Vin distinct {
     key name
   };
+
+  entity Cepage as projection on cave.Cepage;
   
 }
 
