@@ -2,16 +2,39 @@ using API as service from '../../srv/services';
 
 
 annotate service.Vin with {
-  name     @Common           : {
-    ValueList                : {
-      CollectionPath : 'VinName',
+  name     @(
+    Common.ValueListWithFixedValues : false,
+    Common.ValueList                : {
+      CollectionPath : 'Vin',
+      Parameters     : [
+        {
+          $Type             : 'Common.ValueListParameterInOut',
+          LocalDataProperty : 'name',
+          ValueListProperty : 'name'
+        },
+        {
+          $Type             : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty : 'annee'
+        },
+        {
+          $Type             : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty : 'type'
+        }
+      ]
+    }
+  );
+
+  type     @(
+    Common.ValueListWithFixedValues : false,
+    Common.ValueList                : {
+      CollectionPath : 'Vin',
       Parameters     : [{
         $Type             : 'Common.ValueListParameterInOut',
-        LocalDataProperty : 'name',
-        ValueListProperty : 'name'
+        LocalDataProperty : 'type',
+        ValueListProperty : 'type'
       }]
     }
-  };
+  );
 
   color    @Common           : {
     ValueListWithFixedValues : true,

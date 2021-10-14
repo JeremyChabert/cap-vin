@@ -15,7 +15,7 @@ annotate service.Vin with @(UI : {
     {Value : name},
     {Value : annee},
     {Value : type},
-    {Value : color_code},
+    {Value : color.name},
     {Value : IGP},
     {Value : AOC},
     {Value : prix},
@@ -125,16 +125,13 @@ annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
 }]) {
-  ID     @(
-    Common : {
-      Text            : name,
-      TextArrangement : #TextOnly
-    },
-
-    UI.Hidden,
-    UI.HiddenFilter
-  );
+  ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
   devise @UI.Hidden;
   prix   @UI.HiddenFilter
 };
+
+annotate service.Vin with @(
+  UI.TextArrangement : #TextOnly,
+  cds.odata.valuelist
+);
