@@ -11,7 +11,20 @@ service API {
   entity Cepage     as projection on cave.Cepage;
   entity Assemblage as projection on cave.Assemblage;
 
-  annotate API.Vin with {
-    ID @Core.Computed  @UI.Hidden  @UI.HiddenFilter
-  }
+  annotate Cepage with @(
+    UI.TextArrangement : #TextOnly,
+    cds.odata.valuelist
+  );
+
+  annotate Assemblage with @(
+    UI.TextArrangement : #TextOnly,
+    cds.odata.valuelist
+  ) {
+    ID @UI.Hidden  @UI.HiddenFilter;
+  };
+
+  annotate Vin with {
+    ID @UI.Hidden  @UI.HiddenFilter;
+  };
+
 }
