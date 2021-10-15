@@ -27,4 +27,17 @@ service API {
     ID @UI.Hidden  @UI.HiddenFilter;
   };
 
+  @readonly
+  define view VinPerCepage as
+    select from Assemblage {
+      key cepage.name as name : String,
+      key count(
+            vin.ID
+          )           as count : Integer,
+
+    }
+    group by
+      cepage.name
+    order by
+      name
 }
