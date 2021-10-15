@@ -13,51 +13,70 @@ aspect Boisson : cuid, managed {
   annee  : String(4);
   type   : String;
   @Measures : {Unit : '%vol'}
-  degre     : Decimal(4, 1);
+  degre  : Decimal(4, 1);
   @Measures : {Unit : unit, }
-  volume    : Integer;
-  @assert.range
-  unit      : String enum {
+  volume : Integer default 75;
+  unit   : String @assert.range enum {
     L;
     cL;
-  }
+  } default 'cL'
 };
 
 entity Cepage {
   key name        : String(30);
       description : String(200);
+      to_vins     : Association to many Assemblage
+                      on to_vins.cepage = $self;
+}
+
+entity Assemblage    @(assert.unique : {Assemblage : [
+  cepage,
+  vin
+]}) : cuid {
+  cepage   : Association to Cepage;
+  vin      : Association to Vin;
+  @Measures :                        {Unit : '%'}
+  pourcent : Integer @assert.range : [
+    0,
+    100
+  ] default 0;
 }
 
 entity Vin : Boisson {
-  color  : Association to VinColor;
+  color               : Association to VinColor;
   @Measures : {ISOCurrency : devise_code, }
-  prix   : Decimal(6, 2);
-  devise : Currency;
-  IGP    : Boolean default false;
-  AOC    : Boolean default false;
+  prix                : Decimal(6, 2);
+  devise              : Currency;
+  IGP                 : Boolean default false;
+  AOC                 : Boolean default false;
+  to_cepages          : Composition of many Assemblage
+                          on to_cepages.vin = $self;
+  to_caracteristiques : Composition of many {
+                          name  : String;
+                          value : String;
+                        }
 };
 
-@cds.autoexpose  @readonly
+@cds.autoexpose  @readonly  @cds.odata.valuelist
 entity VinColor : CodeList {
-      @assert.range
-  key code : String enum {
-        Rou = 'Rouge';
-        B   = 'Blanc';
-        Ros = 'Rosé';
-        V   = 'Vert';
+  key code : String @assert.range enum {
+        Rouge;
+        ![Rosé];
+        Vert;
+        Blanc;
       }
 };
 
 @cds.autoexpose  @readonly
 entity BiereColor : CodeList {
-      @assert.range
-  key code : String enum {
-        R   = 'Rousse';
-        Bla = 'Blanche';
-        Blo = 'Blonde';
-        A   = 'Ambrée';
-        S   = 'Stout';
-        Bru = 'Brune';
+
+  key code : String @assert.range enum {
+        Rousse;
+        Blanche;
+        Blonde;
+        ![Ambrée];
+        Stout;
+        Brune;
       }
 };
 
