@@ -124,7 +124,14 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Cepage"
+                            "entitySet": "Cepage",
+                            "controlConfiguration": {
+                                "VinPerCepage/@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "creationMode": {}
+                                    }
+                                }
+                            }
                         }
                     }
                 }
