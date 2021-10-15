@@ -1,8 +1,5 @@
 using API as service from '../../srv/services';
 
-
-annotate service.Cepage @fiori.draft.enabled  @odata.draft.enabled;
-
 annotate service.Cepage with @UI : {
   HeaderInfo              : {
     Title          : {
