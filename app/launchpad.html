@@ -9,6 +9,14 @@
     <script>
       window['sap-ushell-config'] = {
         defaultRenderer: 'fiori2',
+        bootstrapPlugins: {
+          RuntimeAuthoringPlugin: {
+            component: 'sap.ushell.plugins.rta',
+            config: {
+              validateAppVersion: false,
+            },
+          },
+        },
         applications: {
           'my-cepages': {
             title: 'List of cepages',
@@ -26,6 +34,13 @@
             url: './list-vins/webapp',
             navigationMode: 'embedded',
           },
+          'my-overview': {
+            title: 'Overview',
+            description: 'Overview Page',
+            additionalInformation: 'SAPUI5.Component=my.cave.overview',
+            applicationType: 'URL',
+            url: './ovp-cepage/webapp',
+          },
         },
       };
     </script>
@@ -33,7 +48,7 @@
     <script src="https://ui5.sap.com/test-resources/sap/ushell/bootstrap/sandbox.js"></script>
     <script
       src="https://ui5.sap.com/resources/sap-ui-core.js"
-      data-sap-ui-libs="sap.m, sap.ushell, sap.fe.templates"
+      data-sap-ui-libs="sap.m, sap.ushell, sap.fe.templates, sap.ui.core, sap.f, sap.ui.comp, sap.ui.table, sap.suite.ui.generic.template, sap.ui.generic.app, sap.ovp"
       data-sap-ui-compatVersion="edge"
       data-sap-ui-theme="sap_fiori_3_dark"
       data-sap-ui-frameOptions="allow"

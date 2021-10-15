@@ -139,7 +139,6 @@ annotate service.Vin with @(UI.Identification : [{
 // Label  : '{i18n>createAssemblage}'
 // }
 ]) {
-  ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
   devise @UI.Hidden;
   prix   @UI.HiddenFilter
@@ -158,15 +157,18 @@ annotate service.Assemblage with @UI : {
   LineItem                : [
     {
       $Type : 'UI.DataField',
-      Value : cepage_name
+      Value : cepage_name,
+      Label : '{i18n>cepage}'
     },
     {
       $Type : 'UI.DataField',
-      Value : cepage.description
+      Value : cepage.description,
+      Label : '{i18n>cepage_description}'
     },
     {
       $Type : 'UI.DataField',
-      Value : pourcent
+      Value : pourcent,
+      Label : '{i18n>teneur}'
     }
   ],
   FieldGroup #Description : {Data : [
@@ -190,13 +192,3 @@ annotate service.Assemblage with @UI : {
     }]
   }],
 };
-
-annotate service.Cepage with @(
-  UI.TextArrangement : #TextOnly,
-  cds.odata.valuelist
-);
-
-annotate service.Assemblage with @(
-  UI.TextArrangement : #TextOnly,
-  cds.odata.valuelist
-);
