@@ -79,7 +79,7 @@ annotate service.Vin with @(UI : {
       Value : volume
     }
   ]},
-  FieldGroup #Admin       : {Data : [
+  FieldGroup #DateData    : {Data : [
     {
       $Type : 'UI.DataField',
       Value : createdBy
@@ -97,34 +97,48 @@ annotate service.Vin with @(UI : {
       Value : modifiedAt
     }
   ]},
-  Facets                  : [{
-    $Type  : 'UI.CollectionFacet',
-    ID     : 'VinDetails',
-    Label  : '{i18n>details}',
-    Facets : [
-      {
-        $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>label}',
-        Target : '@UI.FieldGroup#Labels'
-      },
-      {
-        $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>prix}',
-        Target : '@UI.FieldGroup#Price'
-      },
-      {
-        $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>temporalData}',
-        Target : '@UI.FieldGroup#Admin'
-      }
-    ]
-  }],
+  Facets                  : [
+    {
+      $Type  : 'UI.CollectionFacet',
+      ID     : 'VinDetails',
+      Label  : '{i18n>details}',
+      Facets : [
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>label}',
+          Target : '@UI.FieldGroup#Labels'
+        },
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>prix}',
+          Target : '@UI.FieldGroup#Price'
+        },
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>temporalData}',
+          Target : '@UI.FieldGroup#DateData'
+        }
+      ],
+
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>assemblage}',
+      Target : 'to_cepages/@UI.LineItem'
+    }
+  ],
 });
 
 annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
-}]) {
+},
+// {
+// $Type  : 'UI.DataFieldForAction',
+// Action : 'API.createAssemblage',
+// Label  : '{i18n>createAssemblage}'
+// }
+]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
   devise @UI.Hidden;
@@ -132,6 +146,57 @@ annotate service.Vin with @(UI.Identification : [{
 };
 
 annotate service.Vin with @(
+  UI.TextArrangement : #TextOnly,
+  cds.odata.valuelist
+);
+
+annotate service.VinColor with {
+  code @Common.Text : name  @Common.TextArrangement : #TextOnly
+}
+
+annotate service.Assemblage with @UI : {
+  LineItem                : [
+    {
+      $Type : 'UI.DataField',
+      Value : cepage_name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : cepage.description
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : pourcent
+    }
+  ],
+  FieldGroup #Description : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : cepage.name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : cepage.description
+    }
+  ]},
+  Facets                  : [{
+    $Type  : 'UI.CollectionFacet',
+    ID     : 'AssemblageDetails',
+    Label  : '{i18n>details}',
+    Facets : [{
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>label}',
+      Target : '@UI.FieldGroup#Description'
+    }]
+  }],
+};
+
+annotate service.Cepage with @(
+  UI.TextArrangement : #TextOnly,
+  cds.odata.valuelist
+);
+
+annotate service.Assemblage with @(
   UI.TextArrangement : #TextOnly,
   cds.odata.valuelist
 );
