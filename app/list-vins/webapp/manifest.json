@@ -50,7 +50,8 @@
             "minUI5Version": "1.95.0",
             "libs": {
                 "sap.ui.core": {},
-                "sap.fe.templates": {}
+                "sap.fe.templates": {},
+                "sap.f": {}
             }
         },
         "models": {
@@ -78,12 +79,17 @@
                 {
                     "pattern": ":?query:",
                     "name": "VinList",
-                    "target": "VinList"
+                    "target": [
+                        "VinList"
+                    ]
                 },
                 {
                     "pattern": "Vin({key}):?query:",
                     "name": "VinObjectPage",
-                    "target": "VinObjectPage"
+                    "target": [
+                        "VinList",
+                        "VinObjectPage"
+                    ]
                 }
             ],
             "targets": {
@@ -103,7 +109,9 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "controlAggregation": "beginColumnPages",
+                    "contextPattern": ""
                 },
                 "VinObjectPage": {
                     "type": "Component",
@@ -112,15 +120,46 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": true,
-                            "entitySet": "Vin"
+                            "entitySet": "Vin",
+                            "controlConfiguration": {
+                                "to_cepages/@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "creationMode": {
+                                            "name": "Inline"
+                                        }
+                                    }
+                                },
+                                "to_caracteristiques/@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "creationMode": {
+                                            "name": "Inline"
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    }
+                    },
+                    "controlAggregation": "midColumnPages",
+                    "contextPattern": "/Vin({key})"
                 }
+            },
+            "config": {
+                "flexibleColumnLayout": {
+                    "defaultTwoColumnLayoutType": "TwoColumnsMidExpanded",
+                    "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+                },
+                "routerClass": "sap.f.routing.Router"
             }
         },
         "contentDensities": {
             "compact": true,
             "cozy": true
+        },
+        "rootView": {
+            "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+            "type": "XML",
+            "async": true,
+            "id": "appRootView"
         }
     },
     "sap.platform.abap": {
