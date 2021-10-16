@@ -30,7 +30,7 @@ service API {
   @readonly
   define view VinPerCepage as
     select from Assemblage {
-      key cepage.name as name : String,
+      key cepage.name as name  : String,
       key count(
             vin.ID
           )           as count : Integer,
@@ -39,5 +39,27 @@ service API {
     group by
       cepage.name
     order by
-      name
+      name;
+
+  @Aggregation : {ApplySupported : {
+    $Type                : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions : true
+  }, }
+  define view OverviewVinColor as
+    select from Vin {
+          @Analytics : {
+            Dimension : true
+          }
+      key color.name as color : String,
+          @Analytics : {
+            Measure : true
+          }
+          count(
+            color.name
+          )          as count : Integer,
+    }
+    group by
+      color.name
+    order by
+      color;
 }

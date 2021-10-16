@@ -24,7 +24,6 @@
       }
     },
     "offline": false
-
   },
   "sap.ui": {
     "technology": "UI5",
@@ -41,7 +40,7 @@
       "tablet": true,
       "phone": true
     },
-    "supportedThemes": ["sap_hcb", "sap_belize","sap_fiori_3_dark"]
+    "supportedThemes": ["sap_hcb", "sap_belize", "sap_fiori_3_dark"]
   },
   "sap.ui5": {
     "resources": {
@@ -96,13 +95,36 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.list",
         "settings": {
-          "title": "test",
+          "title": "Représentativité des cépages dans ma cave",
           "sortBy": "name",
           "sortOrder": "descending",
           "listFlavor": "bar",
           "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
           "category": "test",
           "entitySet": "VinPerCepage"
+        }
+      },
+      "card01": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.list",
+        "settings": {
+          "title": "Type de vin dans ma cave",
+          "sortBy": "color",
+          "sortOrder": "descending",
+          "listFlavor": "bar",
+          "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
+          "category": "test",
+          "entitySet": "OverviewVinColor"
+        }
+      },
+      "card02": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsdonut",
+        "settings": {
+          "title": "Type de vin dans ma cave",
+          "entitySet": "OverviewVinColor",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
         }
       }
     }
