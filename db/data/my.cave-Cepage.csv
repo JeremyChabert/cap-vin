@@ -1,9 +1,34 @@
-name;description
-Merlot;Le merlot est un cépage rouge, aux petites baies noires, apparu à la fin du 18ème siècle. cépage est produit dans la plupart des terroirs bordelais, où il représente 58% de surface plantée. Son terroir de prédilection est situé à Pomerol et à Saint-Emilion sur des sols frais, argilo-calcaires.
-Cabernet franc; Le cabernet franc est un cépage noir de cuve. Il appartient à la famille des Carmenets, dont il est le membre le plus proche des variétés sauvages.
-Syrah;Syrah
-Grenache;Grenache
-Carignan;Carignan
-Malbec;Malbec
-Cabernet sauvignon;Cabernet sauvignon
-Viogner;Viogner
+name;description;couleur
+Kyohõ;;Noir
+Cabernet sauvignon;Cabernet sauvignon;Noir
+Sultanine;;Blanc
+Merlot;Le merlot est un cépage rouge, aux petites baies Noires, apparu à la fin du 18ème siècle. cépage est produit dans la plupart des terroirs bordelais, où il représente 58% de surface plantée. Son terroir de prédilection est situé à Pomerol et à Saint-Emilion sur des sols frais argilo-calcaires.;Noir
+Trempanillo;Trempanillo;Noir
+Airén;Airén;Blanc
+Chardonnay;Chardonnay;Blanc
+Syrah;Syrah;Noir
+Grenache Noir;Grenache Noir; Noir
+Sauvignon;;Blanc
+Pinot Noir;Pinot Noir;Noir
+Ugni;Ugni;Blanc
+Carignan;Carignan;Noir
+Dattier de Beyrouth;;Blanc
+Sangiovese;;Noir
+Bobal;;Noir
+Riesling;;Blanc
+Chenin;;Blanc
+Muscat d'Alexandrie;;Blanc
+Cinsault;;Noir
+Muscat Blanc à petits grains;;Blanc
+Cabernet franc; Le cabernet franc est un cépage Noir de cuve. Il appartient à la famille des Carmenets, dont il est le membre le plus proche des variétés sauvages;Noir
+Malbec;Malbec;Noir
+Pinot Blanc;;Blanc
+Pinot gris;;Blanc
+Pinot meunier;;Noir
+Grenache Blanc;;Blanc
+Sylvaner;;Blanc
+Gewurztraminer;;Blanc
+Viogner;Viogner;Blanc;
+Gamay;;Noir
+Trousseau;;Noir
+Savagnin;;Blanc

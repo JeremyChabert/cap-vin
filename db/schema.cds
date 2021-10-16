@@ -23,10 +23,23 @@ aspect Boisson : cuid, managed {
 };
 
 entity Cepage {
-  key name        : String(30);
-      description : String(200);
-      to_vins     : Association to many Assemblage
-                      on to_vins.cepage = $self;
+  key name           : String(30);
+      description    : String(200);
+      couleur        : String @assert.range enum {
+        Noir;
+        Blanc;
+      };
+      to_vins        : Association to many Assemblage
+                         on to_vins.cepage = $self;
+      to_superficies : Composition of many Superficie
+                         on to_superficies.to_cepage = $self;
+};
+
+entity Superficie @(assert.unique : {Superficie : [annee]}) : cuid {
+  to_cepage  : Association to one Cepage;
+  annee      : String(4);
+  @Measures : {Unit : 'ha'}
+  superficie : Integer default 0;
 }
 
 entity Assemblage    @(assert.unique : {Assemblage : [
