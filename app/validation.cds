@@ -18,8 +18,17 @@ annotate service.Assemblage with {
   cepage_description @readonly;
 };
 
-// Input Assemblage
+// Input Cepage
 annotate service.Cepage with {
   name        @mandatory;
   description @readonly;
+};
+
+
+// Input Assemblage
+annotate service.Superficie with {
+  to_cepage @UI.Hidden;
+  cepage_name @readonly @UI.Hidden;
+  annee       @mandatory;
+  superficie  @mandatory;
 };
