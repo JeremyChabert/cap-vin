@@ -2,6 +2,7 @@ using {my.cave as cave} from '../db/schema';
 
 service API {
   entity Vin        as projection on cave.Vin;
+  entity Superficie as projection on cave.Superficie;
 
   view VinName as
     select from Vin distinct {
