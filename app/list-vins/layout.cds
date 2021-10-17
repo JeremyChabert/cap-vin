@@ -124,7 +124,7 @@ annotate service.Vin with @(UI : {
     {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>assemblage}',
-      Target : 'to_cepages/@UI.LineItem#to_cepages'
+      Target : 'to_cepages/@UI.LineItem'
     }
   ],
 });
@@ -154,7 +154,7 @@ annotate service.VinColor with {
 }
 
 annotate service.Assemblage with @UI : {
-  LineItem #to_cepages    : [
+  LineItem                : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name,
@@ -169,28 +169,6 @@ annotate service.Assemblage with @UI : {
       $Type : 'UI.DataField',
       Value : pourcent,
       Label : '{i18n>teneur}'
-    }
-  ],
-  LineItem #to_vins       : [
-    {
-      $Type : 'UI.DataField',
-      Value : vin.name,
-      Label : '{i18n>name}'
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : vin.annee,
-      Label : '{i18n>millesime}'
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : vin.degre,
-      Label : '{i18n>teneur}'
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : vin.type,
-      Label : '{i18n>type}'
     }
   ],
   FieldGroup #Description : {Data : [

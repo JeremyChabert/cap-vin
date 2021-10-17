@@ -16,8 +16,6 @@ service API {
     cds.odata.valuelist
   );
 
-  entity Superficie as projection on cave.Superficie;
-
   annotate Assemblage with @(
     UI.TextArrangement : #TextOnly,
     cds.odata.valuelist
@@ -63,38 +61,5 @@ service API {
     group by
       color.name
     order by
-      color;
-
-  @Aggregation : {ApplySupported : {
-    $Type                : 'Aggregation.ApplySupportedType',
-    PropertyRestrictions : true
-  }, }
-  define view VinAnalytics as
-    select from Vin {
-      key ID,
-          @Analytics : {
-            Dimension : true
-          }
-          color.name as color     : String,
-          @Analytics : {
-            Dimension : true
-          }
-          type       as categorie : String,
-          @Analytics : {
-            Dimension : true
-          }
-          annee      as millesime,
-          @Analytics : {
-            Measure : true
-          }
-          count(
-            color.name
-          )          as count     : Integer
-    }
-    group by
-      color.name,
-      annee
-    order by
-      millesime,
       color;
 }

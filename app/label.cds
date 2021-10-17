@@ -27,13 +27,5 @@ annotate service.Cepage with @(title : '{i18n>cepage}',
 ) {
   name           @title : '{i18n>cepage}';
   description    @title : '{i18n>cepage_description}';
-  couleur        @title : '{i18n>couleur}';
   to_vins_vin_ID @title : '{i18n>vin}';
-};
-
-annotate service.Superficie with @(title : '{i18n>superficie}',
-
-) {
-  annee      @title : '{i18n>annee}';
-  superficie @title : '{i18n>superficie}';
 };

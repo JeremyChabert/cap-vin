@@ -4,6 +4,5 @@ annotate service.Vin with @odata.draft.enabled;
 annotate service.Vin with @Common.SemanticKey : [ID];
 annotate service.Cepage with @odata.draft.enabled;
 annotate service.Cepage with @Common.SemanticKey : [name];
-annotate service.Superficie with @Common.SemanticKey : [annee];
 // annotate service.Assemblage with @odata.draft.enabled;
 // annotate service.Assemblage with @Common.SemanticKey : [ID];
