@@ -3,19 +3,13 @@ using {my.cave as cave} from '../db/schema';
 service API {
   entity Vin        as projection on cave.Vin;
   entity Superficie as projection on cave.Superficie;
-
-  view VinName as
-    select from Vin distinct {
-      key name
-    };
-
   entity Cepage     as projection on cave.Cepage;
   entity Assemblage as projection on cave.Assemblage;
 
-  annotate Cepage with @(
-    UI.TextArrangement : #TextOnly,
-    cds.odata.valuelist
-  );
+  define view VinName as
+    select from Vin distinct {
+      key name
+    };
 
   annotate Assemblage with @(
     UI.TextArrangement : #TextOnly,
@@ -62,5 +56,38 @@ service API {
     group by
       color.name
     order by
+      color;
+
+  @Aggregation : {ApplySupported : {
+    $Type                : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions : true
+  }, }
+  define view VinAnalytics as
+    select from Vin {
+      key ID,
+          @Analytics : {
+            Dimension : true
+          }
+          color.name as color     : String,
+          @Analytics : {
+            Dimension : true
+          }
+          type       as categorie : String,
+          @Analytics : {
+            Dimension : true
+          }
+          annee      as millesime,
+          @Analytics : {
+            Measure : true
+          }
+          count(
+            color.name
+          )          as count     : Integer
+    }
+    group by
+      color.name,
+      annee
+    order by
+      millesime,
       color;
 }
