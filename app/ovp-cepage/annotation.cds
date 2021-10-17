@@ -109,3 +109,43 @@ annotate service.VinAnalytics with @UI : {
     }]
   },
 };
+
+annotate service.SuperficieEvolution with @UI : {
+  PresentationVariant : {
+    ID             : 'SuperficiePresVar',
+    $Type          : 'UI.PresentationVariantType',
+    Visualizations : ['@UI.Chart'],
+
+  },
+  Chart               : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Line,
+    Title               : 'Evolution',
+    Description         : '',
+    AxisScaling         : {$Type : 'UI.ChartAxisScalingType',
+
+    },
+    Measures            : [superficie],
+    MeasureAttributes   : [{
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : 'superficie',
+      Role    : #Axis1,
+    }, ],
+    Dimensions          : [
+      annee,
+      name
+    ],
+    DimensionAttributes : [
+      {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'annee',
+        Role      : #Category,
+      },
+      {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'name',
+        Role      : #Series,
+      }
+    ],
+  },
+};

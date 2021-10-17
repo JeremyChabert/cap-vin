@@ -90,4 +90,39 @@ service API {
     order by
       millesime,
       color;
+
+  @readonly  @odata.draft.enabled : false
+  define view CepageColor as
+    select from Cepage distinct {
+      key couleur : String
+    };
+
+
+  @Aggregation : {ApplySupported : {
+    $Type                  : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions   : true,
+    GroupableProperties    : [
+      name,
+      annee,
+      superficie
+    ],
+    AggregatableProperties : [{
+      $Type    : 'Aggregation.AggregatablePropertyType',
+      Property : superficie,
+    }, ],
+  }, }
+  define view SuperficieEvolution as
+    select from Superficie {
+      key to_cepage.name as name,
+          @Analytics : {
+            Dimension : true
+          }
+      key annee          as annee : String,
+          @Analytics : {
+            Measure : true
+          }
+          superficie
+    }
+    order by
+      annee
 }
