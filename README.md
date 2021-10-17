@@ -1,5 +1,7 @@
 # Getting Started
 
+⚠️ UNDER CONSTRUCTION ⚠️
+
 Welcome to your new project.
 
 It contains these folders and files, following our recommended project layout:
