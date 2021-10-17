@@ -1,8 +1,35 @@
 using API as service from '../../srv/services';
-using from '../list-vins/layout';
 
 
 annotate service.Cepage with @UI : {
+  SelectionVariant #Noir  : {
+    $Type         : 'UI.SelectionVariantType',
+    SelectOptions : [{
+      $Type        : 'UI.SelectOptionType',
+      PropertyName : couleur,
+      Ranges       : [{
+        $Type  : 'UI.SelectionRangeType',
+        Sign   : #I,
+        Option : #EQ,
+        Low    : 'Noir',
+      }]
+    }],
+    Text          : 'Noir'
+  },
+  SelectionVariant #Blanc : {
+    $Type         : 'UI.SelectionVariantType',
+    SelectOptions : [{
+      $Type        : 'UI.SelectOptionType',
+      PropertyName : couleur,
+      Ranges       : [{
+        $Type  : 'UI.SelectionRangeType',
+        Sign   : #I,
+        Option : #EQ,
+        Low    : 'Blanc',
+      }]
+    }],
+    Text          : 'Blanc'
+  },
   HeaderInfo              : {
     Title          : {
       $Type : 'UI.DataField',
@@ -13,6 +40,7 @@ annotate service.Cepage with @UI : {
     Description    : {Value : description},
     ImageUrl       : 'sap-icon://lab',
   },
+  SelectionFields         : [name, ],
   LineItem                : [
     {
       $Type : 'UI.DataField',
@@ -52,8 +80,65 @@ annotate service.Cepage with @UI : {
     },
     {
       $Type  : 'UI.ReferenceFacet',
-      Label  : '{i18n>label}',
-      Target : 'to_vins/vin/@UI.LineItem'
+      Label  : '{i18n>evolutionSuperficie}',
+      ID     : 'SuperficieReferenceFacet',
+      Target : 'to_superficies/@UI.PresentationVariant'
+    },
+  ]
+};
+
+annotate service.Cepage with {
+  description @UI.HiddenFilter;
+  couleur     @UI.HiddenFilter;
+};
+
+annotate service.Superficie with @UI : {
+  PresentationVariant   : {
+    ID             : 'SuperficiePresVar',
+    $Type          : 'UI.PresentationVariantType',
+    Visualizations : ['@UI.LineItem',
+                                      // '@UI.Chart'
+                     ],
+
+  },
+  Chart                 : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Line,
+    Title               : 'Evolution',
+    Description         : '',
+    AxisScaling         : {$Type : 'UI.ChartAxisScalingType',
+
+    },
+    Measures            : [superficie],
+    MeasureAttributes   : [{
+      $Type     : 'UI.ChartMeasureAttributeType',
+      Measure   : 'superficie',
+      DataPoint : '@UI.DataPoint#superficie',
+      Role      : #Axis1,
+    }, ],
+    Dimensions          : [annee],
+    DimensionAttributes : [{
+      $Type     : 'UI.ChartDimensionAttributeType',
+      Dimension : 'annee',
+      Role      : #Category,
+    }, ],
+  },
+  DataPoint #superficie : {
+    $Type : 'UI.DataPointType',
+    Value : 'superficie',
+  },
+  DataPoint #annee      : {
+    $Type : 'UI.DataPointType',
+    Value : 'annee',
+  },
+  LineItem              : [
+    {
+      $Type : 'UI.DataField',
+      Value : annee
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : superficie
     }
   ],
 };
