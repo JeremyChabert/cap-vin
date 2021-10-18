@@ -25,7 +25,7 @@ aspect Boisson : cuid, managed {
 entity Cepage {
   key name           : String(30);
       description    : String(400);
-      couleur        : String @assert.range  @assert.notNull enum {
+      couleur        : String @assert.range enum {
         Noir;
         Blanc;
       };
@@ -35,12 +35,8 @@ entity Cepage {
                          on to_superficies.to_cepage = $self;
 };
 
-entity Superficie @(assert.unique : {Superficie : [
-  to_cepage,
-  annee
-]}) : cuid {
+entity Superficie @(assert.unique : {Superficie : [annee]}) : cuid {
   to_cepage  : Association to one Cepage;
-  @mandatory
   annee      : String(4);
   @Measures : {Unit : 'ha'}
   superficie : Integer default 0;
