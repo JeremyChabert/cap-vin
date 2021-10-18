@@ -129,7 +129,7 @@ annotate service.Vin with @(UI : {
     {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>assemblage}',
-      Target : 'to_cepages/@UI.LineItem#to_cepage'
+      Target : 'to_cepages/@UI.PresentationVariant#Vins'
     }
   ],
 });
@@ -138,7 +138,6 @@ annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
 }, ]) {
-]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
   devise @UI.Hidden;
@@ -159,14 +158,27 @@ annotate service.VinColor with {
 *-------------------*/
 
 annotate service.Assemblage with @UI : {
-  PresentationVariant #to_vins_cepages : {
-    ID              : 'Cepage_Vin_PresVar',
+  PresentationVariant #Cepages    : {
+    ID              : 'idCepagesPresVar',
     $Type           : 'UI.PresentationVariantType',
-    Visualizations  : ['@UI.LineItem#to_vins'],
-    SelectionFields : [vin.annee],
+    Visualizations  : ['@UI.LineItem#Cepages'],
+    SelectionFields : [
+      vin.annee,
+      vin.name
+    ]
+  },
+  PresentationVariant #Vins : {
+    ID              : 'idVinsPresVar',
+    $Type           : 'UI.PresentationVariantType',
+    Visualizations  : ['@UI.LineItem#Vins'],
+    SelectionFields : [cepage_name],
+    SortOrder       : [{
+      $Type    : 'Common.SortOrderType',
+      Property : cepage_name,
+    }, ],
 
   },
-  LineItem #to_vins                    : [
+  LineItem #Cepages               : [
     {
       Value                   : vin.name,
       ![@Common.FieldControl] : #ReadOnly,
@@ -202,7 +214,7 @@ annotate service.Assemblage with @UI : {
       ![@Common.FieldControl] : #ReadOnly,
     }
   ],
-  LineItem #to_cepage                  : [
+  LineItem #Vins            : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name,
@@ -241,7 +253,7 @@ annotate service.Assemblage with @UI : {
       ![@UI.Hidden],
     }
   ],
-  FieldGroup #Description              : {Data : [
+  FieldGroup #Description         : {Data : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name
@@ -251,7 +263,7 @@ annotate service.Assemblage with @UI : {
       Value : cepage.description
     }
   ]},
-  Facets                               : [{
+  Facets                          : [{
     $Type  : 'UI.CollectionFacet',
     ID     : 'AssemblageDetails',
     Label  : '{i18n>details}',
@@ -343,13 +355,13 @@ annotate service.Cepage with @UI : {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>evolutionSuperficie}',
       ID     : 'SuperficieReferenceFacet',
-      Target : 'to_superficies/@UI.LineItem#to_superficie'
+      Target : 'to_superficies/@UI.PresentationVariant#to_superficies'
     },
     {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>Vins}',
       ID     : 'CepageVins',
-      Target : 'to_vins/@UI.PresentationVariant#to_vins_cepages'
+      Target : 'to_vins/@UI.PresentationVariant#Cepages'
     }
   ]
 };
@@ -359,15 +371,21 @@ annotate service.Cepage with @UI : {
 *-------------------*/
 
 annotate service.Superficie with @UI : {
-  PresentationVariant     : {
-    ID             : 'SuperficiePresVar',
-    $Type          : 'UI.PresentationVariantType',
-    Visualizations : ['@UI.LineItem#to_superficie',
-                                                    // '@UI.Chart'
-                     ],
-
+  HeaderInfo                          : {
+    TypeName       : '{i18n>superficie}',
+    TypeNamePlural : '{i18n>superficies}',
+    ImageUrl       : 'sap-icon://lab',
   },
-  Chart                   : {
+  PresentationVariant #to_superficies : {
+    $Type          : 'UI.PresentationVariantType',
+    SortOrder      : [{
+      $Type      : 'Common.SortOrderType',
+      Descending : true,
+      Property   : annee,
+    }, ],
+    Visualizations : ['@UI.LineItem#to_superficies']
+  },
+  Chart #evolution                    : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #Line,
     Title               : 'Evolution',
@@ -377,10 +395,9 @@ annotate service.Superficie with @UI : {
     },
     Measures            : [superficie],
     MeasureAttributes   : [{
-      $Type     : 'UI.ChartMeasureAttributeType',
-      Measure   : 'superficie',
-      DataPoint : '@UI.DataPoint#superficie',
-      Role      : #Axis1,
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : 'superficie',
+      Role    : #Axis1,
     }, ],
     Dimensions          : [annee],
     DimensionAttributes : [{
@@ -389,15 +406,15 @@ annotate service.Superficie with @UI : {
       Role      : #Category,
     }, ],
   },
-  DataPoint #superficie   : {
+  DataPoint #superficie               : {
     $Type : 'UI.DataPointType',
     Value : 'superficie',
   },
-  DataPoint #annee        : {
+  DataPoint #annee                    : {
     $Type : 'UI.DataPointType',
     Value : 'annee',
   },
-  LineItem #to_superficie : [
+  LineItem #to_superficies            : [
     {
       $Type : 'UI.DataField',
       Value : annee
