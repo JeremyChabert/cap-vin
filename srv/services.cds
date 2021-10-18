@@ -1,15 +1,17 @@
 using {my.cave as cave} from '../db/schema';
 
 service API {
-  entity Vin        as projection on cave.Vin;
-  entity Superficie as projection on cave.Superficie;
-  entity Cepage     as projection on cave.Cepage;
-  entity Assemblage as projection on cave.Assemblage;
+  @cds.persistence.exists
+  entity Vin                                           as projection on cave.Vin;
 
-  define view VinName as
-    select from Vin distinct {
-      key name
-    };
+  entity Superficie                                    as projection on cave.Superficie;
+  entity Cepage                                        as projection on cave.Cepage;
+
+  entity Assemblage                                    as projection on cave.Assemblage {
+    * , vin : redirected to Vin, cepage : redirected to Cepage
+  };
+
+  entity ColorCepage @(cds.redirection.target : false) as projection on cave.ColorCepage;
 
   @readonly
   define view VinPerCepage as
@@ -80,11 +82,6 @@ service API {
       millesime,
       color;
 
-  define view CepageColor as
-    select from Cepage distinct {
-      key couleur : String
-    };
-
   @Aggregation : {ApplySupported : {
     $Type                  : 'Aggregation.ApplySupportedType',
     PropertyRestrictions   : true,
@@ -111,77 +108,74 @@ service API {
           superficie
     }
     order by
-      annee
-}
+      annee;
 
-annotate API.Vin with @(
-  odata.draft.enabled,
-  Common : {SemanticKey : [ID], },
-);
+  annotate cave.Vin with @(
+    odata.draft.enabled,
+    Common : {SemanticKey : [ID]}
+  );
 
-annotate API.CepageColor with @(
-  readonly,
-  cds.autoexpose,
-  odata.draft.enabled : null
-);
-
-annotate API.Assemblage with {
-  cepage @Common : {ValueList : {
-    $Type          : 'Common.ValueListType',
-    CollectionPath : 'Cepage',
-    Parameters     : [
-      {
-        $Type             : 'Common.ValueListParameterInOut',
-        LocalDataProperty : cepage_name,
-        ValueListProperty : 'name',
-      },
-      {
-        $Type             : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty : 'description',
-      },
-      {
-        $Type             : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty : 'couleur',
-      },
-    ],
-  }, }
-}
-
-annotate API.Cepage with @(
-  odata.draft.enabled,
-  Common : {SemanticKey : [name], },
-);
-
-@cds.odata.valuelist
-annotate API.Cepage with {
-  description @UI.HiddenFilter;
-  name        @Common :                   {
-    ValueListWithFixedValues : false,
-    ValueList                : {
+  annotate cave.Assemblage with {
+    cepage @Common : {ValueList : {
+      $Type          : 'Common.ValueListType',
       CollectionPath : 'Cepage',
       Parameters     : [
         {
           $Type             : 'Common.ValueListParameterInOut',
-          LocalDataProperty : 'name',
+          LocalDataProperty : cepage_name,
           ValueListProperty : 'name',
         },
         {
           $Type             : 'Common.ValueListParameterDisplayOnly',
-          ValueListProperty : 'couleur'
-        }
-      ]
-    }
+          ValueListProperty : 'description',
+        },
+        {
+          $Type             : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty : 'couleur',
+        },
+      ],
+    }, }
   };
 
-  couleur     @UI.HiddenFilter  @Common : {
-    ValueListWithFixedValues : false,
-    ValueList                : {
-      CollectionPath : 'CepageColor',
-      Parameters     : [{
-        $Type             : 'Common.ValueListParameterInOut',
-        LocalDataProperty : 'couleur',
-        ValueListProperty : 'couleur'
-      }]
-    }
+  annotate cave.Cepage with @(
+    odata.draft.enabled,
+    Common : {SemanticKey : [name], },
+  );
+
+  annotate cave.Cepage with {
+    description @UI.HiddenFilter;
+    name        @Common : {
+      ValueListWithFixedValues : false,
+      ValueList                : {
+        CollectionPath : 'Cepage',
+        Parameters     : [
+          {
+            $Type             : 'Common.ValueListParameterInOut',
+            LocalDataProperty : 'name',
+            ValueListProperty : 'name',
+          },
+          {
+            $Type             : 'Common.ValueListParameterDisplayOnly',
+            ValueListProperty : 'couleur'
+          }
+        ]
+      }
+    };
+
+    couleur     @(
+      UI.HiddenFilter,
+      Common : {
+        ValueListWithFixedValues : true,
+        ValueList                : {
+          CollectionPath          : 'ColorCepage',
+          DistinctValuesSupported : true,
+          Parameters              : [{
+            $Type             : 'Common.ValueListParameterInOut',
+            LocalDataProperty : 'couleur',
+            ValueListProperty : 'ID'
+          }]
+        }
+      }
+    );
   };
-};
+}
