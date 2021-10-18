@@ -9,19 +9,15 @@ annotate service.Vin with {
   color @mandatory;
 };
 
-
 // Input Assemblage
 annotate service.Assemblage with {
-  ID                 @Core.Computed;
-  cepage_name        @mandatory;
-  vin_ID             @mandatory;
-  cepage_description @readonly;
+  ID          @Core.Computed;
+  cepage_name @mandatory;
 };
 
-// Input Assemblage
+// Input Cepage
 annotate service.Cepage with {
-  name        @mandatory;
-  description @readonly;
+  name @mandatory;
 };
 
 
