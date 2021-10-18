@@ -35,7 +35,10 @@ entity Cepage {
                          on to_superficies.to_cepage = $self;
 };
 
-entity Superficie @(assert.unique : {Superficie : [annee]}) : cuid {
+entity Superficie @(assert.unique : {Superficie : [
+  to_cepage,
+  annee
+]}) : cuid {
   to_cepage  : Association to one Cepage;
   annee      : String(4);
   @Measures : {Unit : 'ha'}
