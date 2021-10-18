@@ -136,6 +136,16 @@
           "entitySet": "VinAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
         }
+      },
+      "card04": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartline",
+        "settings": {
+          "title": "Evolution des superficies de cépages",
+          "entitySet": "SuperficieEvolution",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+        }
       }
     }
   }
