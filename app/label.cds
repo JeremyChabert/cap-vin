@@ -1,6 +1,8 @@
 using API as service from '../srv/services';
 
-annotate service.Vin with @(title : '{i18n>vin}',
+annotate service.Vin with @(
+  title       : '{i18n>vin}',
+  description : '{i18n>vin}',
 
 ) {
   name   @title : '{i18n>name}';
@@ -14,18 +16,30 @@ annotate service.Vin with @(title : '{i18n>vin}',
   igp    @title : '{i18n>igp}';
 };
 
-annotate service.Assemblage with @(title : '{i18n>assemblage}',
-
+annotate service.Assemblage with @(
+  title       : '{i18n>assemblage}',
+  description : '{i18n>assemblage}',
 ) {
   name        @title : '{i18n>cepage}';
   description @title : '{i18n>cepage_description}';
   pourcent    @title : '{i18n>teneur}';
 };
 
-annotate service.Cepage with @(title : '{i18n>cepage}',
+annotate service.Cepage with @(
+  title       : '{i18n>cepage}',
+  description : '{i18n>cepage}',
 
 ) {
   name           @title : '{i18n>cepage}';
   description    @title : '{i18n>cepage_description}';
   to_vins_vin_ID @title : '{i18n>vin}';
+  couleur        @title : '{i18n>couleur}';
 };
+
+annotate service.Superficie with @(
+  title       : '{i18n>superficies}',
+  description : '{i18n>superficies}',
+) {
+  annee      @title : '{i18n>annee}';
+  superficie @title : '{i18n>superficie}';
+}
