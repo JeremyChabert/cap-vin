@@ -1,10 +1,9 @@
-using API as service from '../../srv/services';
-
+using API as service from '../srv/services';
 
 annotate service.Vin with {
-  name     @(
-    Common.ValueListWithFixedValues : false,
-    Common.ValueList                : {
+  name     @Common           : {
+    ValueListWithFixedValues : false,
+    ValueList                : {
       CollectionPath : 'Vin',
       Parameters     : [
         {
@@ -22,19 +21,20 @@ annotate service.Vin with {
         }
       ]
     }
-  );
+  };
 
-  type     @(
-    Common.ValueListWithFixedValues : false,
-    Common.ValueList                : {
-      CollectionPath : 'Vin',
-      Parameters     : [{
+  type     @Common           : {
+    ValueListWithFixedValues : false,
+    ValueList                : {
+      DistinctValuesSupported : true,
+      CollectionPath          : 'Vin',
+      Parameters              : [{
         $Type             : 'Common.ValueListParameterInOut',
         LocalDataProperty : 'type',
         ValueListProperty : 'type'
       }]
     }
-  );
+  };
 
   color    @Common           : {
     ValueListWithFixedValues : true,
@@ -72,4 +72,7 @@ annotate service.Vin with {
     ],
     SearchSupported : true
   };
-}
+};
+
+
+
