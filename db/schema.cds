@@ -19,7 +19,7 @@ aspect Boisson : cuid, managed {
   unit   : String @assert.range enum {
     L;
     cL;
-  } default 'cL'
+  } default 'cL';
 };
 
 entity Cepage {
@@ -40,7 +40,7 @@ entity Superficie @(assert.unique : {Superficie : [annee]}) : cuid {
   annee      : String(4);
   @Measures : {Unit : 'ha'}
   superficie : Integer default 0;
-}
+};
 
 entity Assemblage    @(assert.unique : {Assemblage : [
   cepage,
@@ -53,7 +53,7 @@ entity Assemblage    @(assert.unique : {Assemblage : [
     0,
     100
   ] default 0;
-}
+};
 
 entity Vin : Boisson {
   color               : Association to VinColor;
@@ -71,7 +71,7 @@ entity Vin : Boisson {
   to_caracteristiques : Composition of many {
                           name  : String;
                           value : String;
-                        }
+                        };
 };
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
@@ -81,10 +81,10 @@ entity VinColor : CodeList {
         ![Rosé];
         Vert;
         Blanc;
-      }
+      };
 };
 
-@cds.autoexpose  @readonly
+@cds.autoexpose  @readonly : true
 entity BiereColor : CodeList {
 
   key code : String @assert.range enum {
@@ -94,7 +94,7 @@ entity BiereColor : CodeList {
         ![Ambrée];
         Stout;
         Brune;
-      }
+      };
 };
 
 entity Biere : Boisson {
@@ -102,4 +102,9 @@ entity Biere : Boisson {
   @Measures : {ISOCurrency : devise_code, }
   prix   : Decimal;
   devise : Currency;
-}
+};
+
+define view ColorCepage as
+  select from Cepage distinct {
+    key couleur as ID : String
+  };
