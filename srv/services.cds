@@ -11,17 +11,6 @@ service API {
       key name
     };
 
-  annotate Assemblage with @(
-    UI.TextArrangement : #TextOnly,
-    cds.odata.valuelist
-  ) {
-    ID @UI.Hidden  @UI.HiddenFilter;
-  };
-
-  annotate Vin with {
-    ID @UI.Hidden  @UI.HiddenFilter;
-  };
-
   @readonly
   define view VinPerCepage as
     select from Assemblage {
@@ -91,12 +80,10 @@ service API {
       millesime,
       color;
 
-  @readonly  @odata.draft.enabled : false
   define view CepageColor as
     select from Cepage distinct {
       key couleur : String
     };
-
 
   @Aggregation : {ApplySupported : {
     $Type                  : 'Aggregation.ApplySupportedType',
@@ -126,3 +113,75 @@ service API {
     order by
       annee
 }
+
+annotate API.Vin with @(
+  odata.draft.enabled,
+  Common : {SemanticKey : [ID], },
+);
+
+annotate API.CepageColor with @(
+  readonly,
+  cds.autoexpose,
+  odata.draft.enabled : null
+);
+
+annotate API.Assemblage with {
+  cepage @Common : {ValueList : {
+    $Type          : 'Common.ValueListType',
+    CollectionPath : 'Cepage',
+    Parameters     : [
+      {
+        $Type             : 'Common.ValueListParameterInOut',
+        LocalDataProperty : cepage_name,
+        ValueListProperty : 'name',
+      },
+      {
+        $Type             : 'Common.ValueListParameterDisplayOnly',
+        ValueListProperty : 'description',
+      },
+      {
+        $Type             : 'Common.ValueListParameterDisplayOnly',
+        ValueListProperty : 'couleur',
+      },
+    ],
+  }, }
+}
+
+annotate API.Cepage with @(
+  odata.draft.enabled,
+  Common : {SemanticKey : [name], },
+);
+
+@cds.odata.valuelist
+annotate API.Cepage with {
+  description @UI.HiddenFilter;
+  name        @Common :                   {
+    ValueListWithFixedValues : false,
+    ValueList                : {
+      CollectionPath : 'Cepage',
+      Parameters     : [
+        {
+          $Type             : 'Common.ValueListParameterInOut',
+          LocalDataProperty : 'name',
+          ValueListProperty : 'name',
+        },
+        {
+          $Type             : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty : 'couleur'
+        }
+      ]
+    }
+  };
+
+  couleur     @UI.HiddenFilter  @Common : {
+    ValueListWithFixedValues : false,
+    ValueList                : {
+      CollectionPath : 'CepageColor',
+      Parameters     : [{
+        $Type             : 'Common.ValueListParameterInOut',
+        LocalDataProperty : 'couleur',
+        ValueListProperty : 'couleur'
+      }]
+    }
+  };
+};
