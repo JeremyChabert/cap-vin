@@ -137,11 +137,6 @@ annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
 },
-// {
-// $Type  : 'UI.DataFieldForAction',
-// Action : 'API.createAssemblage',
-// Label  : '{i18n>createAssemblage}'
-// }
 ]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
@@ -295,7 +290,6 @@ annotate service.Cepage with @UI : {
       Label  : '{i18n>details}',
       Facets : [{
         $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>description}',
         Target : '@UI.FieldGroup#Description'
       },
 
@@ -363,9 +357,4 @@ annotate service.Superficie with @UI : {
       Value : superficie
     }
   ],
-};
-
-annotate service.Superficie with {
-  annee      @title : '{i18n>annee}';
-  superficie @title : '{i18n>superficie}';
 };
