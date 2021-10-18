@@ -130,8 +130,35 @@
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
+              "sections": {},
               "editableHeaderContent": false,
-              "entitySet": "Cepage"
+              "entitySet": "Cepage",
+              "controlConfiguration": {
+                "to_vins/@com.sap.vocabularies.UI.v1.LineItem#Cepages": {
+                  "tableSettings": {
+                    "quickVariantSelection": {
+                      "showCounts": true
+                    },
+                    "personalization": {
+                      "column": false
+                    }
+                  }
+                },
+                "to_superficies/@com.sap.vocabularies.UI.v1.LineItem#to_superficies": {
+                  "tableSettings": {
+                    "quickVariantSelection": {
+                      "showCounts": true
+                    },
+                    "creationMode": {
+                      "name": "Inline",
+                      "createAtEnd": false
+                    },
+                    "personalization": {
+                      "column": false
+                    }
+                  }
+                }
+              }
             }
           }
         }
