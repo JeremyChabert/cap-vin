@@ -14,6 +14,7 @@ annotate service.Vin with @(
   prix   @title : '{i18n>prix}';
   aoc    @title : '{i18n>aoc}';
   igp    @title : '{i18n>igp}';
+  garde  @title : '{i18n>garde}';
 };
 
 annotate service.Assemblage with @(

@@ -65,6 +65,7 @@ entity Vin : Boisson {
   devise              : Currency;
   igp                 : Boolean default false;
   aoc                 : Boolean default false;
+  @Measures :                                   {Unit : '{i18n>anneeGarde}'}
   garde               : Integer @assert.range : [
     1,
     20
@@ -110,4 +111,9 @@ entity Biere : Boisson {
 define view ColorCepage as
   select from Cepage distinct {
     key couleur as ID : String
+  };
+
+define view TypeBoisson as
+  select from Vin distinct {
+    key type as ID : String
   };

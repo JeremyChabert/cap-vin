@@ -60,6 +60,10 @@ annotate service.Vin with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : degre
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : garde
     }
   ]},
   FieldGroup #Labels      : {Data : [
