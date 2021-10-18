@@ -131,7 +131,17 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "entitySet": "Cepage"
+              "entitySet": "Cepage",
+              "controlConfiguration": {
+                "to_vins/@com.sap.vocabularies.UI.v1.LineItem#to_vins": {
+                  "tableSettings": {
+                    "quickVariantSelection": { "showCounts": true },
+                    "creationMode": {
+                      "name": "None"
+                    }
+                  }
+                }
+              }
             }
           }
         }

@@ -5,6 +5,7 @@ using API as service from '../srv/services';
 *-------------------*/
 
 annotate service.Vin with @(UI : {
+
   HeaderInfo              : {
     Title          : {
       $Type : 'UI.DataField',
@@ -136,7 +137,7 @@ annotate service.Vin with @(UI : {
 annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
-},
+}, ]) {
 ]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
@@ -158,7 +159,50 @@ annotate service.VinColor with {
 *-------------------*/
 
 annotate service.Assemblage with @UI : {
-  LineItem #to_cepage     : [
+  PresentationVariant #to_vins_cepages : {
+    ID              : 'Cepage_Vin_PresVar',
+    $Type           : 'UI.PresentationVariantType',
+    Visualizations  : ['@UI.LineItem#to_vins'],
+    SelectionFields : [vin.annee],
+
+  },
+  LineItem #to_vins                    : [
+    {
+      Value                   : vin.name,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.annee,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.type,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.igp,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.aoc,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.prix,
+      ![@UI.Hidden],
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.degre,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.volume,
+      ![@UI.Hidden],
+      ![@Common.FieldControl] : #ReadOnly,
+    }
+  ],
+  LineItem #to_cepage                  : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name,
@@ -197,7 +241,7 @@ annotate service.Assemblage with @UI : {
       ![@UI.Hidden],
     }
   ],
-  FieldGroup #Description : {Data : [
+  FieldGroup #Description              : {Data : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name
@@ -207,7 +251,7 @@ annotate service.Assemblage with @UI : {
       Value : cepage.description
     }
   ]},
-  Facets                  : [{
+  Facets                               : [{
     $Type  : 'UI.CollectionFacet',
     ID     : 'AssemblageDetails',
     Label  : '{i18n>details}',
@@ -299,8 +343,14 @@ annotate service.Cepage with @UI : {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>evolutionSuperficie}',
       ID     : 'SuperficieReferenceFacet',
-      Target : 'to_superficies/@UI.PresentationVariant'
+      Target : 'to_superficies/@UI.LineItem#to_superficie'
     },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>Vins}',
+      ID     : 'CepageVins',
+      Target : 'to_vins/@UI.PresentationVariant#to_vins_cepages'
+    }
   ]
 };
 
