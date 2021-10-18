@@ -16,8 +16,8 @@ annotate service.Vin with @(UI : {
     {Value : annee},
     {Value : type},
     {Value : color.name},
-    {Value : IGP},
-    {Value : AOC},
+    {Value : igp},
+    {Value : aoc},
     {Value : prix},
     {Value : degre},
     {Value : volume}
@@ -61,11 +61,11 @@ annotate service.Vin with @(UI : {
 
     {
       $Type : 'UI.DataField',
-      Value : IGP
+      Value : igp
     },
     {
       $Type : 'UI.DataField',
-      Value : AOC
+      Value : aoc
     }
   ]},
   FieldGroup #Price       : {Data : [
@@ -152,6 +152,7 @@ annotate service.Vin with @(
 annotate service.VinColor with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
 }
+
 
 annotate service.Assemblage with @UI : {
   LineItem                : [

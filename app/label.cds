@@ -10,8 +10,8 @@ annotate service.Vin with @(title : '{i18n>vin}',
   color  @title : '{i18n>categorie}';
   annee  @title : '{i18n>millesime}';
   prix   @title : '{i18n>prix}';
-  AOC    @title : '{i18n>AOC}';
-  IGP    @title : '{i18n>IGP}';
+  aoc    @title : '{i18n>aoc}';
+  igp    @title : '{i18n>igp}';
 };
 
 annotate service.Assemblage with @(title : '{i18n>assemblage}',

@@ -61,11 +61,15 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 
 entity Vin : Boisson {
   color               : Association to VinColor;
-  @Measures : {ISOCurrency : devise_code, }
+  @Measures :                                   {ISOCurrency : devise_code, }
   prix                : Decimal(6, 2);
   devise              : Currency;
-  IGP                 : Boolean default false;
-  AOC                 : Boolean default false;
+  igp                 : Boolean default false;
+  aoc                 : Boolean default false;
+  garde               : Integer @assert.range : [
+    1,
+    20
+  ] default 1;
   to_cepages          : Composition of many Assemblage
                           on to_cepages.vin = $self;
   to_caracteristiques : Composition of many {
