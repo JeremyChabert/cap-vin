@@ -121,3 +121,9 @@ define view TypeBoisson as
   select from Vin distinct {
     key type as ID : String
   };
+
+@cds.autoexpose  @readonly : true
+entity RetentionStatus : CodeList {
+  key code        : String(1);
+      criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
+};

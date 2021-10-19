@@ -16,17 +16,7 @@ annotate service.Vin with @(
   igp         @title : '{i18n>igp}';
   garde       @title : '{i18n>garde}';
   criticality @title : '{i18n>criticality}';
-  status_code @title : '{i18n>retentionstatus}';
-  status_name @title : '{i18n>retentionstatus}';
-};
-
-annotate service.RetentionStatus with @(
-  title       : '{i18n>retentionstatus}',
-  description : '{i18n>retentionstatus}',
-
-) {
-  name        @title : '{i18n>retentionstatus}';
-  code @UI.Hidden;
+  status      @title : '{i18n>retentionstatus}'
 };
 
 annotate service.Assemblage with @(
