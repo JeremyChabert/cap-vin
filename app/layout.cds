@@ -232,8 +232,8 @@ annotate service.Assemblage with @UI : {
     },
     {
       $Type                   : 'UI.DataField',
-      Value                   : cepage.couleur,
-      Label                   : '{i18n>couleur}',
+      Value                   : cepage.color,
+      Label                   : '{i18n>color}',
       ![@Common.FieldControl] : #ReadOnly,
     },
     {
@@ -288,7 +288,7 @@ annotate service.Cepage with @UI : {
     $Type         : 'UI.SelectionVariantType',
     SelectOptions : [{
       $Type        : 'UI.SelectOptionType',
-      PropertyName : couleur,
+      PropertyName : color,
       Ranges       : [{
         $Type  : 'UI.SelectionRangeType',
         Sign   : #I,
@@ -302,7 +302,7 @@ annotate service.Cepage with @UI : {
     $Type         : 'UI.SelectionVariantType',
     SelectOptions : [{
       $Type        : 'UI.SelectOptionType',
-      PropertyName : couleur,
+      PropertyName : color,
       Ranges       : [{
         $Type  : 'UI.SelectionRangeType',
         Sign   : #I,
@@ -319,7 +319,7 @@ annotate service.Cepage with @UI : {
     },
     TypeName       : '{i18n>cepage}',
     TypeNamePlural : '{i18n>cepages}',
-    Description    : {Value : couleur},
+    Description    : {Value : color},
     ImageUrl       : 'sap-icon://lab',
   },
   SelectionFields         : [name, ],
@@ -340,7 +340,7 @@ annotate service.Cepage with @UI : {
     },
     {
       $Type : 'UI.DataField',
-      Value : couleur
+      Value : color
     }
   ]},
   Facets                  : [

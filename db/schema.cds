@@ -25,7 +25,7 @@ aspect Boisson : cuid, managed {
 entity Cepage {
   key name           : String(30);
       description    : String(400);
-      couleur        : String @assert.range enum {
+      color          : String(10) @assert.range enum {
         Noir;
         Blanc;
       };
@@ -59,7 +59,7 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  color               : Association to VinColor;
+  color                                                : Association to VinColor;
   @Measures :                                   {ISOCurrency : devise_code, }
   prix                : Decimal(6, 2);
   devise              : Currency;
@@ -110,7 +110,7 @@ entity Biere : Boisson {
 
 define view ColorCepage as
   select from Cepage distinct {
-    key couleur as ID : String
+    key color as ID : String
   };
 
 define view TypeBoisson as

@@ -214,7 +214,7 @@ service API {
         },
         {
           $Type             : 'Common.ValueListParameterDisplayOnly',
-          ValueListProperty : 'couleur',
+          ValueListProperty : 'color',
         },
       ],
     }, }
@@ -239,13 +239,13 @@ service API {
           },
           {
             $Type             : 'Common.ValueListParameterDisplayOnly',
-            ValueListProperty : 'couleur'
+            ValueListProperty : 'color'
           }
         ]
       }
     };
 
-    couleur     @(
+    color       @(
       UI.HiddenFilter,
       Common : {
         ValueListWithFixedValues : true,
@@ -254,7 +254,7 @@ service API {
           DistinctValuesSupported : true,
           Parameters              : [{
             $Type             : 'Common.ValueListParameterInOut',
-            LocalDataProperty : 'couleur',
+            LocalDataProperty : 'color',
             ValueListProperty : 'ID'
           }]
         }
