@@ -89,13 +89,14 @@
     "globalFilterEntityType": "",
     "containerLayout": "resizable",
     "enableLiveFilter": false,
+    "refreshIntervalInMinutes": 5,
     "considerAnalyticalParameters": false,
     "cards": {
       "card00": {
         "model": "mainService",
         "template": "sap.ovp.cards.v4.list",
         "settings": {
-          "title": "Représentativité des cépages dans ma cave",
+          "title": "{{cepageList}}",
           "sortBy": "name",
           "sortOrder": "descending",
           "listFlavor": "bar",
@@ -114,7 +115,7 @@
           "listFlavor": "bar",
           "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
           "category": "test",
-          "entitySet": "OverviewVinColor"
+          "entitySet": "VinAnalytics"
         }
       },
       "card02": {
@@ -122,29 +123,44 @@
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartsdonut",
         "settings": {
-          "title": "Type de vin dans ma cave",
-          "entitySet": "OverviewVinColor",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+          "title": "{{donutListVins}}",
+          "entitySet": "VinAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerColor",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerColor"
         }
       },
       "card03": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartline",
+        "settings": {
+          "title": "{{superficieEvol}}",
+          "entitySet": "SuperficieEvolution",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#Surface_TimeSerie",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#Surface_TimeSerie",
+          "idenfiticationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification#Surface_TimeSerie"
+        }
+      },
+      "card04": {
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
         "settings": {
           "title": "Type de vin dans ma cave",
           "entitySet": "VinAnalytics",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYear",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerYear"
         }
       },
-      "card04": {
+      "card05": {
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
-        "chartType": "cardchartline",
+        "chartType": "cardchartscolumnstacked",
         "settings": {
-          "title": "Evolution des superficies de cépages",
-          "entitySet": "SuperficieEvolution",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+          "title": "Type de vin dans ma cave",
+          "entitySet": "VinAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerCriticality",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerCriticality"
         }
       }
     }

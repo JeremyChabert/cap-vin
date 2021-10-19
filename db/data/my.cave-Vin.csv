@@ -1,0 +1,10 @@
+name;annee;color_code;igp;aoc;prix;devise_code;garde;degre;type
+Sainte Colombe;2018;Rouge;false;true;6.2;EUR;5;15.2;Vin
+Sainte Colombe;2019;Rouge;false;true;6.2;EUR;5;15.2;Vin
+Sainte Colombe;2020;Rouge;false;true;6.2;EUR;;15.2;Vin
+Sainte Colombe;1967;Rouge;false;true;6.2;EUR;5;15.2;Vin
+Tsarine;2018;Rosé;false;true;14;EUR;5;13;Champagne
+Tsarine;2019;Rosé;false;true;14;EUR;5;13;Champagne
+Tsarine;2018;Blanc;false;true;15;EUR;5;13;Champagne
+Tsarine;2019;Blanc;false;true;15;EUR;5;13;Champagne
+Côteau d'Ardèche;2020;Blanc;true;false;5;EUR;3;12;Vin

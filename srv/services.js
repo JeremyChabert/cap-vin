@@ -1,29 +1,26 @@
+const { SELECT } = require('@sap/cds/lib/ql');
+
 module.exports = (srv) => {
-  const { Vin, Assemblage, Cepage } = cds.entities('my.cave');
+  const { Vin, Assemblage, Cepage, VinAnalytics } = cds.entities('my.cave');
 
   const calculateGardeCriticality = (item) => {
     const { annee, garde } = item;
     const currentYear = new Date().getFullYear();
 
-    let criticality = 0,
-      status = '';
+    let status_code = '';
     if (annee && garde) {
       const ratio = (currentYear - annee) / garde;
       if (ratio < 0.5) {
-        criticality = 3;
-        status = 'Conservable';
+        status_code = 'B';
       } else if (ratio > 0.5 && ratio < 0.9) {
-        criticality = 2;
-        status = 'Bon à boire';
+        status_code = 'C';
       } else if (ratio >= 1) {
-        criticality = 1;
-        status = 'A boire rapidement';
+        status_code = 'D';
       } else {
-        criticality = 0;
-        status = '';
+        status_code = 'E';
       }
     }
-    return { criticality, status };
+    return status_code;
   };
 
   srv.before('SAVE', 'Vin', async (req) => {
@@ -32,12 +29,29 @@ module.exports = (srv) => {
     }, 0);
     if (tot > 100) req.reject('417', 'The composition of cepage is above 100% (actual:{0})', 'tot');
   });
+
+  srv.on('SAVE', 'Vin', async (req) => {
+    console.log(req.data);
+  });
+
+  srv.on('UPDATE', 'Vin', async (req) => {
+    console.log(req.data);
+  });
   //
   //
-  srv.after('READ', 'Vin', (each) => {
-    console.log('handler criticality triggered');
-    const { criticality, status } = calculateGardeCriticality(each);
-    each.criticality = criticality;
-    each.status = status;
+  srv.on('READ', 'Vin', async (req, next) => {
+    const vins = await SELECT.from(Vin).columns(['ID', 'status_code', 'annee', 'garde']);
+    for (let vin of vins) {
+      const status_code = calculateGardeCriticality(vin);
+      await UPDATE(Vin, vin).with(`status_code = '${status_code}'`);
+      vin.status_code = status_code;
+    }
+
+    return next();
+  });
+  //
+  //
+  srv.after('READ', 'VinAnalytics', (lines) => {
+    console.table(lines);
   });
 };

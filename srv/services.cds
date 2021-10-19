@@ -89,7 +89,7 @@ service API {
           @Analytics           : {
             Dimension : true
           }
-          virtual status,
+          status.name as status : String,
           @Analytics           : {
             Dimension : true
           }

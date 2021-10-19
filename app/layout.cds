@@ -80,9 +80,9 @@ annotate service.Vin with @(UI : {
     {Value : volume},
     {
       $Type             : 'UI.DataField',
-      Criticality       : criticality,
+      Criticality       : status.criticality,
       Label             : '{i18n>retentionstatus}',
-      Value             : status,
+      Value             : status.name,
       ![@UI.Importance] : #High
     },
     {
@@ -164,7 +164,7 @@ annotate service.Vin with @(UI : {
     {
       $Type             : 'UI.DataField',
       Criticality       : criticality,
-      Value             : status,
+      Value             : status_code,
       ![@UI.Importance] : #High
     }
   ]},
@@ -260,6 +260,9 @@ annotate service.VinColor with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
 }
 
+annotate service.RetentionStatus with {
+  code @Common.Text : name  @Common.TextArrangement : #TextOnly
+}
 /*-------------------
 * Assemblage
 *-------------------*/
