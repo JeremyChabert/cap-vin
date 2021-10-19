@@ -9,14 +9,14 @@ using {
 namespace my.cave;
 
 aspect Boisson : cuid, managed {
-  name   : String;
-  annee  : String(4);
-  type   : String;
-  @Measures : {Unit : '%vol'}
+  name   : String(50);
+  annee  : String(4)@assert.format : '[0-9]';
+  type   : String(15);
+  @Measures :                        {Unit : '%vol'}
   degre  : Decimal(4, 1);
-  @Measures : {Unit : unit, }
+  @Measures :                        {Unit : unit, }
   volume : Integer default 75;
-  unit   : String @assert.range enum {
+  unit   : String(3)@assert.range enum {
     L;
     cL;
   } default 'cL';
@@ -25,7 +25,7 @@ aspect Boisson : cuid, managed {
 entity Cepage {
   key name           : String(30);
       description    : String(400);
-      color          : String(10) @assert.range enum {
+      color          : String(10)@assert.range enum {
         Noir;
         Blanc;
       };
@@ -35,13 +35,13 @@ entity Cepage {
                          on to_superficies.to_cepage = $self;
 };
 
-entity Superficie @(assert.unique : {Superficie : [
+entity Superficie       @(assert.unique : {Superficie : [
   to_cepage,
   annee
 ]}) : cuid {
   to_cepage  : Association to one Cepage;
-  annee      : String(4);
-  @Measures : {Unit : 'ha'}
+  annee      : String(4)@assert.format : '[0-9]';
+  @Measures :                            {Unit : 'ha'}
   superficie : Integer default 0;
 };
 
@@ -60,22 +60,25 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 
 entity Vin : Boisson {
   color                                                : Association to VinColor;
-  @Measures :                                   {ISOCurrency : devise_code, }
-  prix                : Decimal(6, 2);
-  devise              : Currency;
-  igp                 : Boolean default false;
-  aoc                 : Boolean default false;
-  @Measures :                                   {Unit : '{i18n>anneeGarde}'}
-  garde               : Integer @assert.range : [
-    1,
-    20
-  ] default 1;
-  to_cepages          : Composition of many Assemblage
-                          on to_cepages.vin = $self;
-  to_caracteristiques : Composition of many {
-                          name  : String;
-                          value : String;
-                        };
+  @Measures :       {ISOCurrency : devise_code, }
+  prix                                                 : Decimal(6, 2);
+  devise                                               : Currency;
+  igp                                                  : Boolean default false;
+  aoc                                                  : Boolean default false;
+  @Measures :       {Unit : '{i18n>anneeGarde}'} garde : Integer
+    @assert.range : [
+      1,
+      20
+    ] default 1;
+  to_cepages                                           : Composition of many Assemblage
+                                                           on to_cepages.vin = $self;
+  to_caracteristiques                                  : Composition of many {
+                                                           name  : String;
+                                                           value : String;
+                                                         };
+  //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
+  virtual criticality                                  : Integer default 0;
+  virtual status                                       : String(10);
 };
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
