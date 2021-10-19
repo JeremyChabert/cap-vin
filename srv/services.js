@@ -1,7 +1,5 @@
-const { SELECT } = require('@sap/cds/lib/ql');
-
 module.exports = (srv) => {
-  const { Vin, Assemblage, Cepage, VinAnalytics } = cds.entities('my.cave');
+  const { Vin, Assemblage, Cepage, VinAnalytics, Cave } = cds.entities('my.cave');
 
   const calculateGardeCriticality = (item) => {
     const { annee, garde } = item;
@@ -53,5 +51,12 @@ module.exports = (srv) => {
   //
   srv.after('READ', 'VinAnalytics', (lines) => {
     console.table(lines);
+  });
+
+  srv.on('addToMyCave', async (req) => {
+    console.log('hello');
+    const vin_ID = req.params[0];
+    const { quantity } = req.data;
+    await INSERT({ quantity, vin_ID }).into(Cave);
   });
 };

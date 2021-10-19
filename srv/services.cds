@@ -1,9 +1,14 @@
 using {my.cave as cave} from '../db/schema';
 
 service API {
-  entity Vin        as projection on cave.Vin;
+
+  entity Vin        as projection on cave.Vin actions {
+    action addToMyCave(quantity : Integer not null @Common.Label : '{i18n>quantity}');
+  };
+
   entity Superficie as projection on cave.Superficie;
   entity Cepage     as projection on cave.Cepage;
+  entity Cave       as projection on cave.Cave;
 
   entity Assemblage as projection on cave.Assemblage {
     * , vin : redirected to Vin, cepage : redirected to Cepage
@@ -65,17 +70,17 @@ service API {
             Dimension : true
           }
           @Aggregation.default : #COUNT_DISTINCT
-          color.name as color     : String,
+          color.name  as color     : String,
           @Analytics           : {
             Dimension : true
           }
           @Aggregation.default : #COUNT_DISTINCT
-          type       as categorie : String,
+          type        as categorie : String,
           @Analytics           : {
             Dimension : true
           }
           @Aggregation.default : #COUNT_DISTINCT
-          annee      as millesime,
+          annee       as millesime,
           @Analytics           : {
             Measure : true
           }
@@ -85,11 +90,11 @@ service API {
             Measure : true
           }
           @Aggregation.default : #SUM
-          1          as counter   : Integer,
+          1           as counter   : Integer,
           @Analytics           : {
             Dimension : true
           }
-          status.name as status : String,
+          status.name as status    : String,
           @Analytics           : {
             Dimension : true
           }
@@ -130,7 +135,9 @@ service API {
     order by
       annee;
 
-  annotate cave.Vin with @(
+  annotate cave.Vin with @(Common : {SemanticKey : [ID]});
+
+  annotate cave.Cave with @(
     odata.draft.enabled,
     Common : {SemanticKey : [ID]}
   );
