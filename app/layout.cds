@@ -5,8 +5,46 @@ using API as service from '../srv/services';
 *-------------------*/
 
 annotate service.Vin with @(UI : {
-
-  HeaderInfo               : {
+  SelectionPresentationVariant #SPVPath : {
+    $Type               : 'UI.SelectionPresentationVariantType',
+    SelectionVariant    : {
+      $Type : 'UI.SelectionVariantType',
+      ID    : 'SV',
+    },
+    PresentationVariant : {
+      $Type           : 'UI.PresentationVariantType',
+      RequestAtLeast  : [
+        name,
+        annee,
+        color.name,
+        igp,
+        aoc,
+        degre,
+        volume,
+        garde,
+        criticality,
+        type,
+      ],
+      SelectionFields : [
+        name,
+        annee,
+        color_code,
+        type
+      ],
+      Visualizations  : ['@UI.LineItem', ],
+      SortOrder       : [
+        {
+          $Type    : 'Common.SortOrderType',
+          Property : name,
+        },
+        {
+          $Type    : 'Common.SortOrderType',
+          Property : annee,
+        },
+      ],
+    },
+  },
+  HeaderInfo                            : {
     Title          : {
       $Type : 'UI.DataField',
       Value : name,
@@ -16,7 +54,12 @@ annotate service.Vin with @(UI : {
     Description    : {Value : annee},
     ImageUrl       : 'sap-icon://lab',
   },
-  LineItem                 : [
+  FilterFacets                          : [{
+    Label  : '{i18n>label}',
+    $Type  : 'UI.ReferenceFacet',
+    Target : '@UI.FieldGroup#Labels',
+  }, ],
+  LineItem                              : [
     {
       Value             : name,
       ![@UI.Importance] : #High
@@ -26,7 +69,10 @@ annotate service.Vin with @(UI : {
       ![@UI.Importance] : #High
     },
     {Value : type},
-    {Value : color.name},
+    {
+      Value : color.name,
+      Label : '{i18n>color}',
+    },
     {Value : igp},
     {Value : aoc},
     {Value : prix},
@@ -35,17 +81,48 @@ annotate service.Vin with @(UI : {
     {
       $Type             : 'UI.DataField',
       Criticality       : criticality,
+      Label             : '{i18n>retentionstatus}',
       Value             : status,
       ![@UI.Importance] : #High
+    },
+    {
+      Value : modifiedAt,
+      ![@UI.Hidden]
+    },
+    {
+      Value : createdAt,
+      ![@UI.Hidden]
+    },
+    {
+      Value : modifiedBy,
+      ![@UI.Hidden]
+    },
+    {
+      Value : createdBy,
+      ![@UI.Hidden]
+    },
+    {
+      Value : criticality,
+      ![@UI.Hidden]
+
+    },
+    {
+      Value : garde,
+      ![@UI.Hidden]
+    },
+    {
+      Value : color_code,
+      ![@UI.Hidden]
     }
   ],
-  SelectionFields          : [
+  SelectionFields                       : [
     name,
     annee,
     color_code,
-    type
+    igp,
+    aoc,
   ],
-  HeaderFacets             : [
+  HeaderFacets                          : [
     {
       $Type  : 'UI.ReferenceFacet',
       Target : '@UI.FieldGroup#Details',
@@ -55,7 +132,7 @@ annotate service.Vin with @(UI : {
       Target : '@UI.FieldGroup#Conservation',
     },
   ],
-  FieldGroup #Description  : {Data : [
+  FieldGroup #Description               : {Data : [
     {
       $Type : 'UI.DataField',
       Value : name
@@ -65,7 +142,7 @@ annotate service.Vin with @(UI : {
       Value : annee
     }
   ]},
-  FieldGroup #Details      : {Data : [
+  FieldGroup #Details                   : {Data : [
     {
       $Type : 'UI.DataField',
       Value : type
@@ -79,7 +156,7 @@ annotate service.Vin with @(UI : {
       Value : degre
     }
   ]},
-  FieldGroup #Conservation : {Data : [
+  FieldGroup #Conservation              : {Data : [
     {
       $Type : 'UI.DataField',
       Value : garde
@@ -91,7 +168,7 @@ annotate service.Vin with @(UI : {
       ![@UI.Importance] : #High
     }
   ]},
-  FieldGroup #Labels       : {Data : [
+  FieldGroup #Labels                    : {Data : [
 
     {
       $Type : 'UI.DataField',
@@ -102,7 +179,7 @@ annotate service.Vin with @(UI : {
       Value : aoc
     }
   ]},
-  FieldGroup #Price        : {Data : [
+  FieldGroup #Price                     : {Data : [
 
     {
       $Type : 'UI.DataField',
@@ -113,7 +190,7 @@ annotate service.Vin with @(UI : {
       Value : volume
     }
   ]},
-  FieldGroup #DateData     : {Data : [
+  FieldGroup #DateData                  : {Data : [
     {
       $Type : 'UI.DataField',
       Value : createdBy
@@ -131,7 +208,7 @@ annotate service.Vin with @(UI : {
       Value : modifiedAt
     }
   ]},
-  Facets                   : [
+  Facets                                : [
     {
       $Type  : 'UI.CollectionFacet',
       ID     : 'VinDetails',
@@ -167,10 +244,11 @@ annotate service.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
 }, ]) {
-  ID     @UI.Hidden  @UI.HiddenFilter;
-  unit   @UI.Hidden;
-  devise @UI.Hidden;
-  prix   @UI.HiddenFilter
+  ID          @UI.Hidden  @UI.HiddenFilter;
+  unit        @UI.Hidden;
+  devise      @UI.Hidden;
+  prix        @UI.HiddenFilter;
+  criticality @UI.HiddenFilter;
 };
 
 annotate service.Vin with @(
