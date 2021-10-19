@@ -74,7 +74,7 @@ annotate service.VinAnalytics with @UI : {
   Chart #VinPerColor                     : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #Donut,
-    Title               : '{i18n>donutChartTypeVin}',
+    Title               : '{i18n>donutChartColorVin}',
     Dimensions          : ['color'],
     DimensionAttributes : [{
       $Type     : 'UI.ChartDimensionAttributeType',
@@ -91,7 +91,7 @@ annotate service.VinAnalytics with @UI : {
   Chart #VinPerYear                      : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #ColumnStacked,
-    Title               : '{i18n>donutChartTypeVin}',
+    Title               : '{i18n>stackedColumnChartTypeYear}',
     Dimensions          : [
       color,
       millesime
@@ -119,7 +119,7 @@ annotate service.VinAnalytics with @UI : {
   Chart #VinPerCriticality               : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #Donut,
-    Title               : '{i18n>donutChartTypeVin}',
+    Title               : '{i18n>donutChartStatusWine}',
     Dimensions          : [status],
     DimensionAttributes : [{
       $Type     : 'UI.ChartDimensionAttributeType',

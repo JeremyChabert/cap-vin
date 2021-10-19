@@ -109,7 +109,7 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.list",
         "settings": {
-          "title": "Type de vin dans ma cave",
+          "title": "{{myWineList}}",
           "sortBy": "color",
           "sortOrder": "descending",
           "listFlavor": "bar",
@@ -146,7 +146,7 @@
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
         "settings": {
-          "title": "Type de vin dans ma cave",
+          "title": "{{stackedColumnChart}}",
           "entitySet": "VinAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYear",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerYear"
@@ -157,7 +157,7 @@
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
         "settings": {
-          "title": "Type de vin dans ma cave",
+          "title": "{{donutStatusWineChart}}",
           "entitySet": "VinAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerCriticality",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerCriticality"
