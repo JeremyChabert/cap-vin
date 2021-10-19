@@ -78,7 +78,8 @@ entity Vin : Boisson {
                                                          };
   //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
   virtual criticality                                  : Integer default 0;
-  virtual status                                       : String(10);
+  @Core.Computed
+  status                                               : Association to RetentionStatus;
 };
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
