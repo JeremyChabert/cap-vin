@@ -6,7 +6,7 @@ using API as service from '../srv/services';
 
 annotate service.Vin with @(UI : {
 
-  HeaderInfo              : {
+  HeaderInfo               : {
     Title          : {
       $Type : 'UI.DataField',
       Value : name,
@@ -16,29 +16,46 @@ annotate service.Vin with @(UI : {
     Description    : {Value : annee},
     ImageUrl       : 'sap-icon://lab',
   },
-  LineItem                : [
-    {Value : name},
-    {Value : annee},
+  LineItem                 : [
+    {
+      Value             : name,
+      ![@UI.Importance] : #High
+    },
+    {
+      Value             : annee,
+      ![@UI.Importance] : #High
+    },
     {Value : type},
     {Value : color.name},
     {Value : igp},
     {Value : aoc},
     {Value : prix},
     {Value : degre},
-    {Value : volume}
+    {Value : volume},
+    {
+      $Type             : 'UI.DataField',
+      Criticality       : criticality,
+      Value             : status,
+      ![@UI.Importance] : #High
+    }
   ],
-  SelectionFields         : [
+  SelectionFields          : [
     name,
     annee,
     color_code,
     type
   ],
-  HeaderFacets            : [{
-    $Type             : 'UI.ReferenceFacet',
-    Target            : '@UI.FieldGroup#Details',
-    ![@UI.Importance] : #Medium,
-  }],
-  FieldGroup #Description : {Data : [
+  HeaderFacets             : [
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Details',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Conservation',
+    },
+  ],
+  FieldGroup #Description  : {Data : [
     {
       $Type : 'UI.DataField',
       Value : name
@@ -48,7 +65,7 @@ annotate service.Vin with @(UI : {
       Value : annee
     }
   ]},
-  FieldGroup #Details     : {Data : [
+  FieldGroup #Details      : {Data : [
     {
       $Type : 'UI.DataField',
       Value : type
@@ -60,13 +77,21 @@ annotate service.Vin with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : degre
-    },
+    }
+  ]},
+  FieldGroup #Conservation : {Data : [
     {
       $Type : 'UI.DataField',
       Value : garde
+    },
+    {
+      $Type             : 'UI.DataField',
+      Criticality       : criticality,
+      Value             : status,
+      ![@UI.Importance] : #High
     }
   ]},
-  FieldGroup #Labels      : {Data : [
+  FieldGroup #Labels       : {Data : [
 
     {
       $Type : 'UI.DataField',
@@ -77,7 +102,7 @@ annotate service.Vin with @(UI : {
       Value : aoc
     }
   ]},
-  FieldGroup #Price       : {Data : [
+  FieldGroup #Price        : {Data : [
 
     {
       $Type : 'UI.DataField',
@@ -88,7 +113,7 @@ annotate service.Vin with @(UI : {
       Value : volume
     }
   ]},
-  FieldGroup #DateData    : {Data : [
+  FieldGroup #DateData     : {Data : [
     {
       $Type : 'UI.DataField',
       Value : createdBy
@@ -106,7 +131,7 @@ annotate service.Vin with @(UI : {
       Value : modifiedAt
     }
   ]},
-  Facets                  : [
+  Facets                   : [
     {
       $Type  : 'UI.CollectionFacet',
       ID     : 'VinDetails',
@@ -162,7 +187,7 @@ annotate service.VinColor with {
 *-------------------*/
 
 annotate service.Assemblage with @UI : {
-  PresentationVariant #Cepages    : {
+  PresentationVariant #Cepages : {
     ID              : 'idCepagesPresVar',
     $Type           : 'UI.PresentationVariantType',
     Visualizations  : ['@UI.LineItem#Cepages'],
@@ -171,7 +196,7 @@ annotate service.Assemblage with @UI : {
       vin.name
     ]
   },
-  PresentationVariant #Vins : {
+  PresentationVariant #Vins    : {
     ID              : 'idVinsPresVar',
     $Type           : 'UI.PresentationVariantType',
     Visualizations  : ['@UI.LineItem#Vins'],
@@ -182,7 +207,7 @@ annotate service.Assemblage with @UI : {
     }, ],
 
   },
-  LineItem #Cepages               : [
+  LineItem #Cepages            : [
     {
       Value                   : vin.name,
       ![@Common.FieldControl] : #ReadOnly,
@@ -218,7 +243,7 @@ annotate service.Assemblage with @UI : {
       ![@Common.FieldControl] : #ReadOnly,
     }
   ],
-  LineItem #Vins            : [
+  LineItem #Vins               : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name,
@@ -257,7 +282,7 @@ annotate service.Assemblage with @UI : {
       ![@UI.Hidden],
     }
   ],
-  FieldGroup #Description         : {Data : [
+  FieldGroup #Description      : {Data : [
     {
       $Type : 'UI.DataField',
       Value : cepage_name
@@ -267,7 +292,7 @@ annotate service.Assemblage with @UI : {
       Value : cepage.description
     }
   ]},
-  Facets                          : [{
+  Facets                       : [{
     $Type  : 'UI.CollectionFacet',
     ID     : 'AssemblageDetails',
     Label  : '{i18n>details}',
