@@ -127,3 +127,9 @@ entity RetentionStatus : CodeList {
   key code        : String(1);
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
+
+entity Cave : cuid {
+  vin      : Association to one Vin;
+  @Measures : {Unit : '{i18n>bottles}'}
+  quantity : Integer;
+}
