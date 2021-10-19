@@ -20,12 +20,16 @@ annotate service.Cepage with {
   name @mandatory;
 };
 
-
-// Input Assemblage
+// Input Superficie
 annotate service.Superficie with {
   ID          @Core.Computed;
   to_cepage   @UI.Hidden;
   cepage_name @readonly  @UI.Hidden;
   annee       @mandatory;
   superficie  @mandatory;
+};
+
+// Input Cave
+annotate service.Cave with {
+  ID    @Core.Computed;
 };
