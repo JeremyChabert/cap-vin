@@ -86,6 +86,11 @@ annotate service.Vin with @(UI : {
       ![@UI.Importance] : #High
     },
     {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'API.addToMyCave',
+      Label  : '{i18n>addToMyCave}'
+    },
+    {
       Value : modifiedAt,
       ![@UI.Hidden]
     },
@@ -240,10 +245,19 @@ annotate service.Vin with @(UI : {
   ],
 });
 
-annotate service.Vin with @(UI.Identification : [{
-  $Type : 'UI.DataField',
-  Value : name
-}, ]) {
+annotate service.Vin with @(UI.Identification : [
+  {
+    $Type : 'UI.DataField',
+    Value : name
+  },
+  {
+    $Type              : 'UI.DataFieldForAction',
+    Label              : '{i18n>addToMyCave}',
+    Action             : 'API.addToMyCave',
+    InvocationGrouping : #Isolated,
+    ![@UI.Importance]  : #High
+  }
+]) {
   ID          @UI.Hidden  @UI.HiddenFilter;
   unit        @UI.Hidden;
   devise      @UI.Hidden;
@@ -535,3 +549,65 @@ annotate service.Superficie with @UI : {
     }
   ],
 };
+
+annotate service.Cave with @(UI : {
+  LineItem          : [
+    {
+      $Type : 'UI.DataField',
+      Value : ID,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : quantity,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.name,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.annee,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.color_code,
+    },
+    {
+      $Type                     : 'UI.DataField',
+      Value                     : vin.status.name,
+      Criticality               : vin.status.criticality,
+      CriticalityRepresentation : #OnlyIcon,
+    },
+
+
+  ],
+  HeaderInfo        : {
+    $Type          : 'UI.HeaderInfoType',
+    TypeName       : '{i18n>vin}',
+    TypeNamePlural : '{i18n>vins}',
+  },
+  Identification    : [{
+    $Type : 'UI.DataField',
+    Value : ID,
+  }, ],
+  QuickCreateFacets : [{
+    $Type  : 'UI.ReferenceFacet',
+    Target : '@UI.FieldGroup',
+  }, ],
+  Facets            : [{
+    $Type  : 'UI.ReferenceFacet',
+    Target : '@UI.FieldGroup',
+    Label  : '',
+    ID     : '',
+  },
+
+  ],
+  FieldGroup        : {
+    $Type : 'UI.FieldGroupType',
+    Data  : [{
+      $Type : 'UI.DataField',
+      Value : vin.name,
+    }, ],
+
+  },
+});
