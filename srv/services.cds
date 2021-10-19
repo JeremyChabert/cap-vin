@@ -1,9 +1,7 @@
 using {my.cave as cave} from '../db/schema';
 
 service API {
-  @cds.persistence.exists
   entity Vin        as projection on cave.Vin;
-
   entity Superficie as projection on cave.Superficie;
   entity Cepage     as projection on cave.Cepage;
 
@@ -38,59 +36,71 @@ service API {
       name;
 
   @Aggregation : {ApplySupported : {
-    $Type                : 'Aggregation.ApplySupportedType',
-    PropertyRestrictions : true
-  }, }
-  define view OverviewVinColor as
-    select from Vin {
-          @Analytics : {
-            Dimension : true
-          }
-      key color.name as color : String,
-          @Analytics : {
-            Measure : true
-          }
-          count(
-            color.name
-          )          as count : Integer,
-    }
-    group by
-      color.name
-    order by
-      color;
-
-  @Aggregation : {ApplySupported : {
-    $Type                : 'Aggregation.ApplySupportedType',
-    PropertyRestrictions : true
+    $Type                  : 'Aggregation.ApplySupportedType',
+    AggregatableProperties : [
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : prix,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : counter
+      },
+    ],
+    GroupableProperties    : [
+      millesime,
+      color,
+      categorie,
+      status,
+      criticality
+    ],
+    PropertyRestrictions   : false,
   }, }
   define view VinAnalytics as
     select from Vin {
       key ID,
-          @Analytics : {
+          name,
+          devise,
+          @Analytics           : {
             Dimension : true
           }
+          @Aggregation.default : #COUNT_DISTINCT
           color.name as color     : String,
-          @Analytics : {
+          @Analytics           : {
             Dimension : true
           }
+          @Aggregation.default : #COUNT_DISTINCT
           type       as categorie : String,
-          @Analytics : {
+          @Analytics           : {
             Dimension : true
           }
+          @Aggregation.default : #COUNT_DISTINCT
           annee      as millesime,
-          @Analytics : {
+          @Analytics           : {
             Measure : true
           }
-          count(
-            color.name
-          )          as count     : Integer
+          @Aggregation.default : #SUM
+          prix,
+          @Analytics           : {
+            Measure : true
+          }
+          @Aggregation.default : #SUM
+          1          as counter   : Integer,
+          @Analytics           : {
+            Dimension : true
+          }
+          virtual status,
+          @Analytics           : {
+            Dimension : true
+          }
+          virtual criticality
     }
-    group by
-      color.name,
-      annee
     order by
       millesime,
       color;
+
+  annotate VinAnalytics with @readonly;
+
 
   @Aggregation : {ApplySupported : {
     $Type                  : 'Aggregation.ApplySupportedType',
