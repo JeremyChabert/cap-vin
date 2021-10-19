@@ -18,23 +18,60 @@ annotate service.VinPerCepage with @UI : {
   }
 };
 
-annotate service.OverviewVinColor with @UI : {
-  LineItem         : [
+annotate service.VinAnalytics with @UI : {
+  LineItem                               : [
+    {
+      $Type : 'UI.DataField',
+      Value : name
+    },
+
     {
       $Type : 'UI.DataField',
       Value : color
     },
     {
       $Type  : 'UI.DataFieldForAnnotation',
-      Target : '@UI.DataPoint#Count'
+      Target : '@UI.DataPoint#Millesime'
     }
   ],
-  DataPoint #Count : {
-    $Type : 'UI.DataPointType',
-    Title : 'Count',
-    Value : count
+  DataPoint #Count                       : {
+    $Type       : 'UI.DataPointType',
+    Title       : 'Count',
+    Value       : counter,
+    ValueFormat : {$Type : 'UI.NumberFormat', },
   },
-  Chart            : {
+  DataPoint #Millesime                   : {
+    $Type : 'UI.DataPointType',
+    Title : 'Millesime',
+    Value : millesime
+  },
+  Identification #VinPerCriticality      : [{
+    $Type : 'UI.DataField',
+    Value : status,
+  },
+
+  ],
+  Identification #VinPerYear             : [{
+    $Type : 'UI.DataField',
+    Value : millesime,
+  }, ],
+  PresentationVariant #VinPerCriticality : {
+    $Type          : 'UI.PresentationVariantType',
+    GroupBy        : [status],
+    Visualizations : ['@UI.Chart#VinPerCriticality', ],
+  },
+  PresentationVariant #VinPerColor       : {
+    $Type          : 'UI.PresentationVariantType',
+    GroupBy        : [color],
+    Visualizations : ['@UI.Chart#VinPerCriticality', ],
+  },
+  PresentationVariant #VinPerYear        : {
+    $Type          : 'UI.PresentationVariantType',
+    GroupBy        : [millesime],
+    Visualizations : ['@UI.Chart#VinPerYear', ],
+
+  },
+  Chart #VinPerColor                     : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #Donut,
     Title               : '{i18n>donutChartTypeVin}',
@@ -44,80 +81,71 @@ annotate service.OverviewVinColor with @UI : {
       Dimension : 'color',
       Role      : #Category
     }],
-    Measures            : ['count'],
+    Measures            : ['counter'],
     MeasureAttributes   : [{
       $Type   : 'UI.ChartMeasureAttributeType',
-      Measure : 'count',
+      Measure : 'counter',
       Role    : #Axis1
     }]
   },
-};
-
-
-annotate service.VinAnalytics with @UI : {
-  LineItem             : [
-    {
-      $Type : 'UI.DataField',
-      Value : color
-    },
-
-    {
-      $Type  : 'UI.DataFieldForAnnotation',
-      Target : '@UI.DataPoint#Count'
-    },
-    {
-      $Type  : 'UI.DataFieldForAnnotation',
-      Target : '@UI.DataPoint#Millesime'
-    }
-  ],
-  DataPoint #Count     : {
-    $Type : 'UI.DataPointType',
-    Title : 'Count',
-    Value : count
-  },
-  DataPoint #Millesime : {
-    $Type : 'UI.DataPointType',
-    Title : 'Millesime',
-    Value : millesime
-  },
-  Chart                : {
+  Chart #VinPerYear                      : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #ColumnStacked,
     Title               : '{i18n>donutChartTypeVin}',
     Dimensions          : [
-      'color',
-      'millesime'
+      color,
+      millesime
     ],
     DimensionAttributes : [
       {
         $Type     : 'UI.ChartDimensionAttributeType',
-        Dimension : 'color',
+        Dimension : color,
         Role      : #Series
 
       },
       {
         $Type     : 'UI.ChartDimensionAttributeType',
-        Dimension : 'millesime',
+        Dimension : millesime,
         Role      : #Category
       }
     ],
-    Measures            : ['count'],
+    Measures            : [counter],
     MeasureAttributes   : [{
       $Type   : 'UI.ChartMeasureAttributeType',
-      Measure : 'count',
+      Measure : counter,
+      Role    : #Axis1
+    }]
+  },
+  Chart #VinPerCriticality               : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Donut,
+    Title               : '{i18n>donutChartTypeVin}',
+    Dimensions          : [status],
+    DimensionAttributes : [{
+      $Type     : 'UI.ChartDimensionAttributeType',
+      Dimension : status,
+      Role      : #Category
+    }],
+    Measures            : [counter],
+    MeasureAttributes   : [{
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : counter,
       Role    : #Axis1
     }]
   },
 };
 
 annotate service.SuperficieEvolution with @UI : {
-  PresentationVariant : {
+  PresentationVariant #Surface_TimeSerie : {
     ID             : 'SuperficiePresVar',
     $Type          : 'UI.PresentationVariantType',
-    Visualizations : ['@UI.Chart'],
-
+    Visualizations : ['@UI.Chart#Surface_TimeSerie'],
   },
-  Chart               : {
+  Identification #Surface_TimeSerie      : [{
+    $Type : 'UI.DataField',
+    Value : name,
+  }, ],
+  Chart #Surface_TimeSerie               : {
     $Type               : 'UI.ChartDefinitionType',
     ChartType           : #Line,
     Title               : 'Evolution',
