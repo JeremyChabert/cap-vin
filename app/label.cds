@@ -5,16 +5,18 @@ annotate service.Vin with @(
   description : '{i18n>vin}',
 
 ) {
-  name   @title : '{i18n>name}';
-  type   @title : '{i18n>type}';
-  volume @title : '{i18n>volume}';
-  degre  @title : '{i18n>degre}';
-  color  @title : '{i18n>categorie}';
-  annee  @title : '{i18n>millesime}';
-  prix   @title : '{i18n>prix}';
-  aoc    @title : '{i18n>aoc}';
-  igp    @title : '{i18n>igp}';
-  garde  @title : '{i18n>garde}';
+  name        @title : '{i18n>name}';
+  type        @title : '{i18n>type}';
+  volume      @title : '{i18n>volume}';
+  degre       @title : '{i18n>degre}';
+  color       @title : '{i18n>categorie}';
+  annee       @title : '{i18n>millesime}';
+  prix        @title : '{i18n>prix}';
+  aoc         @title : '{i18n>aoc}';
+  igp         @title : '{i18n>igp}';
+  garde       @title : '{i18n>garde}';
+  criticality @title : '{i18n>criticality}';
+  status      @title : '{i18n>retentionstatus}'
 };
 
 annotate service.Assemblage with @(
@@ -34,7 +36,7 @@ annotate service.Cepage with @(
   name           @title : '{i18n>cepage}';
   description    @title : '{i18n>cepage_description}';
   to_vins_vin_ID @title : '{i18n>vin}';
-  color        @title : '{i18n>color}';
+  color          @title : '{i18n>color}';
 };
 
 annotate service.Superficie with @(
