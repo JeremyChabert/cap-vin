@@ -22,7 +22,7 @@ annotate service.Vin with @(UI : {
         degre,
         volume,
         garde,
-        criticality,
+        status.criticality,
         type,
       ],
       SelectionFields : [
@@ -107,7 +107,7 @@ annotate service.Vin with @(UI : {
       ![@UI.Hidden]
     },
     {
-      Value : criticality,
+      Value : status.criticality,
       ![@UI.Hidden]
 
     },
@@ -168,7 +168,7 @@ annotate service.Vin with @(UI : {
     },
     {
       $Type             : 'UI.DataField',
-      Criticality       : criticality,
+      Criticality       : status.criticality,
       Value             : status_code,
       ![@UI.Importance] : #High
     }
@@ -262,7 +262,6 @@ annotate service.Vin with @(UI.Identification : [
   unit        @UI.Hidden;
   devise      @UI.Hidden;
   prix        @UI.HiddenFilter;
-  criticality @UI.HiddenFilter;
 };
 
 annotate service.Vin with @(
