@@ -139,7 +139,6 @@ service API {
   annotate cave.Vin with @(Common : {SemanticKey : [ID]});
 
   annotate cave.Cave with @(
-    odata.draft.enabled,
     Common : {SemanticKey : [ID]}
   );
 
