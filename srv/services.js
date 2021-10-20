@@ -31,7 +31,8 @@ module.exports = (srv) => {
     }
     return status_code;
   };
-
+// 
+// 
   srv.before('SAVE', 'Vin', async (req) => {
     winston.debug(['BEFORE', 'SAVE', 'Vin']);
     const tot = req.data.to_cepages.reduce((acc, { pourcent }) => {
@@ -39,27 +40,30 @@ module.exports = (srv) => {
     }, 0);
     if (tot > 100) req.reject('417', 'The composition of cepage is above 100% (actual:{0})', 'tot');
   });
-
-  srv.on('SAVE', 'Vin', async (req) => {
+// 
+// 
+  srv.on('SAVE', 'Vin', (req, next) => {
     winston.debug(['ON', 'SAVE', 'Vin']);
+    return next();
   });
-
-  srv.on('UPDATE', 'Vin', async (req) => {
+// 
+// 
+  srv.on('UPDATE', 'Vin', (req, next) => {
     winston.debug(['ON', 'UPDATE', 'Vin']);
-    console.log(req.data);
+    return next();
   });
   //
   //
   srv.on('READ', 'Vin', async (req, next) => {
     winston.debug(['ON', 'READ', 'Vin']);
-    updateStatus();
+    await updateStatus();
     return next();
   });
   //
   //
-  srv.on('READ', 'VinAnalytics', (req, next) => {
+  srv.on('READ', 'VinAnalytics', async (req, next) => {
     winston.debug(['ON', 'READ', 'VinAnlytics']);
-    updateStatus();
+    await updateStatus();
     return next();
   });
   //
