@@ -132,4 +132,9 @@ entity Cave : cuid {
   vin      : Association to one Vin;
   @Measures : {Unit : '{i18n>bottles}'}
   quantity : Integer;
+};
+
+entity Region : cuid {
+  country : Country;
+  region  : String;
 }
