@@ -65,6 +65,7 @@ entity Vin : Boisson {
   devise                                               : Currency;
   igp                                                  : Boolean default false;
   aoc                                                  : Boolean default false;
+  region                                               : Association to Region;
   @Measures :       {Unit : '{i18n>anneeGarde}'} garde : Integer
     @assert.range : [
       1,
@@ -132,4 +133,11 @@ entity Cave : cuid {
   vin      : Association to one Vin;
   @Measures : {Unit : '{i18n>bottles}'}
   quantity : Integer;
+};
+
+@cds.autoexpose  @readonly  @cds.odata.valuelist
+entity Region {
+  key country   : Country;
+  key region    : String;
+  key subregion : String;
 }

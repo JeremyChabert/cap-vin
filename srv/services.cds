@@ -9,6 +9,7 @@ service API {
   entity Superficie as projection on cave.Superficie;
   entity Cepage     as projection on cave.Cepage;
   entity Cave       as projection on cave.Cave;
+  entity Region     as projection on cave.Region;
 
   entity Assemblage as projection on cave.Assemblage {
     * , vin : redirected to Vin, cepage : redirected to Cepage
@@ -237,7 +238,6 @@ service API {
   };
 
   annotate cave.Cepage with @(
-    odata.draft.enabled,
     Common : {SemanticKey : [name], },
   );
 
