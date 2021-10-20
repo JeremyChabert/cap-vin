@@ -1,7 +1,7 @@
 using {my.cave as cave} from '../db/schema';
 
 service API {
-
+  @odata.draft.enabled
   entity Vin        as projection on cave.Vin actions {
     action addToMyCave(quantity : Integer not null @Common.Label : '{i18n>quantity}');
   };
@@ -138,7 +138,6 @@ service API {
   annotate cave.Vin with @(Common : {SemanticKey : [ID]});
 
   annotate cave.Cave with @(
-    odata.draft.enabled,
     Common : {SemanticKey : [ID]}
   );
 
