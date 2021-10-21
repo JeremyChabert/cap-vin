@@ -16,12 +16,19 @@ annotate service.Vin with @(
   igp         @title : '{i18n>igp}';
   garde       @title : '{i18n>garde}';
   criticality @title : '{i18n>criticality}';
-  status @(
+  status      @(
     title  : '{i18n>retentionstatus}',
     Common : {
       Text            : status.name,
       TextArrangement : #TextFirst,
 
+    }
+  );
+  region      @(
+    title  : '{i18n>region}',
+    Common : {
+      Text            : region.region,
+      TextArrangement : #TextLast,
     }
   );
 };
@@ -31,7 +38,7 @@ annotate service.RetentionStatus with @(
   description : '{i18n>retentionstatus}',
 
 ) {
-  name        @title : '{i18n>retentionstatus}';
+  name @title : '{i18n>retentionstatus}';
   code @UI.Hidden;
 };
 
@@ -61,4 +68,26 @@ annotate service.Superficie with @(
 ) {
   annee      @title : '{i18n>annee}';
   superficie @title : '{i18n>superficie}';
-}
+};
+
+
+annotate service.Region with @(
+  title       : '{i18n>region}',
+  description : '{i18n>region}',
+) {
+  subregion   @(
+    title  : '{i18n>subregion}',
+    Common : {
+      Text            : region,
+      TextArrangement : #TextLast,
+    }
+  );
+  region      @title : '{i18n>region}';
+  country_code @(
+    title  : '{i18n>country_name}',
+    Common : {
+      Text            : country.name,
+      TextArrangement : #TextFirst,
+    }
+  );
+};

@@ -131,10 +131,10 @@ service API {
     order by
       annee;
 
-  annotate cave.Vin with @(Common : {SemanticKey : [ID]});
-  annotate cave.Cave with @(Common : {SemanticKey : [ID]});
+  annotate Vin with @(Common : {SemanticKey : [ID]});
+  annotate Cave with @(Common : {SemanticKey : [ID]});
 
-  annotate cave.Vin with {
+  annotate Vin with {
     name     @Common           : {
       ValueListWithFixedValues : false,
       ValueList                : {
@@ -205,9 +205,31 @@ service API {
       ],
       SearchSupported : true
     };
+    region   @Common           : {
+      ValueListWithFixedValues : false,
+      ValueList                : {
+        CollectionPath : 'Region',
+        Parameters     : [
+          {
+            $Type             : 'Common.ValueListParameterInOut',
+            LocalDataProperty : 'region_subregion',
+            ValueListProperty : 'subregion',
+          },
+          {
+            $Type             : 'Common.ValueListParameterDisplayOnly',
+            ValueListProperty : 'region'
+          },
+          {
+            $Type             : 'Common.ValueListParameterOut',
+            ValueListProperty : 'country_code',
+            LocalDataProperty : 'region/country_code',
+          }
+        ]
+      }
+    };
   };
 
-  annotate cave.Assemblage with {
+  annotate Assemblage with {
     cepage @Common : {ValueList : {
       $Type          : 'Common.ValueListType',
       CollectionPath : 'Cepage',
@@ -229,9 +251,9 @@ service API {
     }, }
   };
 
-  annotate cave.Cepage with @(Common : {SemanticKey : [name], }, );
+  annotate Cepage with @(Common : {SemanticKey : [name], }, );
 
-  annotate cave.Cepage with {
+  annotate Cepage with {
     description @UI.HiddenFilter;
     name        @Common : {
       ValueListWithFixedValues : false,

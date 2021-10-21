@@ -73,6 +73,18 @@ annotate service.Vin with @(UI : {
       Value : color.name,
       Label : '{i18n>color}',
     },
+    {
+      Value : region_subregion,
+      Label : '{i18n>subregion}',
+    },
+    {
+      Value : region.region,
+      Label : '{i18n>region}'
+    },
+    {
+      Value : region.country.name,
+      Label : '{i18n>country_name}'
+    },
     {Value : igp},
     {Value : aoc},
     {Value : prix},
@@ -131,6 +143,10 @@ annotate service.Vin with @(UI : {
     {
       $Type  : 'UI.ReferenceFacet',
       Target : '@UI.FieldGroup#Details',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Geography',
     },
     {
       $Type  : 'UI.ReferenceFacet',
@@ -213,6 +229,30 @@ annotate service.Vin with @(UI : {
       Value : modifiedAt
     }
   ]},
+
+  FieldGroup #Geography                 : {
+    $Type : 'UI.FieldGroupType',
+    Data  : [
+      {
+        $Type : 'UI.DataField',
+        Value : region_subregion,
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : region.region,
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : region.country_code,
+        ![@Common.FieldControl]:#ReadOnly
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : region.country.name,
+        ![@Common.FieldControl]:#ReadOnly
+      },
+    ],
+  },
   Facets                                : [
     {
       $Type  : 'UI.CollectionFacet',
@@ -258,10 +298,10 @@ annotate service.Vin with @(UI.Identification : [
     ![@UI.Importance]  : #High
   }
 ]) {
-  ID          @UI.Hidden  @UI.HiddenFilter;
-  unit        @UI.Hidden;
-  devise      @UI.Hidden;
-  prix        @UI.HiddenFilter;
+  ID     @UI.Hidden  @UI.HiddenFilter;
+  unit   @UI.Hidden;
+  devise @UI.Hidden;
+  prix   @UI.HiddenFilter;
 };
 
 annotate service.Vin with @(
