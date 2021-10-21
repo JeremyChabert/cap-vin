@@ -16,8 +16,14 @@ annotate service.Vin with @(
   igp         @title : '{i18n>igp}';
   garde       @title : '{i18n>garde}';
   criticality @title : '{i18n>criticality}';
-  status_code @title : '{i18n>retentionstatus}';
-  status_name @title : '{i18n>retentionstatus}';
+  status @(
+    title  : '{i18n>retentionstatus}',
+    Common : {
+      Text            : status.name,
+      TextArrangement : #TextFirst,
+
+    }
+  );
 };
 
 annotate service.RetentionStatus with @(
