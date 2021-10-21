@@ -31,8 +31,8 @@ module.exports = (srv) => {
     }
     return status_code;
   };
-// 
-// 
+  //
+  //
   srv.before('SAVE', 'Vin', async (req) => {
     winston.debug(['BEFORE', 'SAVE', 'Vin']);
     const tot = req.data.to_cepages.reduce((acc, { pourcent }) => {
@@ -40,14 +40,14 @@ module.exports = (srv) => {
     }, 0);
     if (tot > 100) req.reject('417', 'The composition of cepage is above 100% (actual:{0})', 'tot');
   });
-// 
-// 
+  //
+  //
   srv.on('SAVE', 'Vin', (req, next) => {
     winston.debug(['ON', 'SAVE', 'Vin']);
     return next();
   });
-// 
-// 
+  //
+  //
   srv.on('UPDATE', 'Vin', (req, next) => {
     winston.debug(['ON', 'UPDATE', 'Vin']);
     return next();
@@ -75,8 +75,8 @@ module.exports = (srv) => {
   //
   srv.on('addToMyCave', async (req) => {
     winston.debug(['ON', 'addToMyCave']);
-    const vin_ID = req.params[0];
+    const { ID: vin_ID } = req.params[0];
     const { quantity } = req.data;
-    await INSERT({ quantity, vin_ID }).into(Cave);
+    await INSERT({ quantity, vin_ID: vin_ID }).into(Cave);
   });
 };
