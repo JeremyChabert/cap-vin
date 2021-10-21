@@ -220,8 +220,9 @@ service API {
             ValueListProperty : 'region'
           },
           {
-            $Type             : 'Common.ValueListParameterDisplayOnly',
-            ValueListProperty : 'country_code'
+            $Type             : 'Common.ValueListParameterOut',
+            ValueListProperty : 'country_code',
+            LocalDataProperty : 'region/country_code',
           }
         ]
       }

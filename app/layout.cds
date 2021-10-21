@@ -244,6 +244,7 @@ annotate service.Vin with @(UI : {
       {
         $Type : 'UI.DataField',
         Value : region.country_code,
+        ![@Common.FieldControl]:#ReadOnly
       },
       {
         $Type : 'UI.DataField',
