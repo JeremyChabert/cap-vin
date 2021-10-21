@@ -122,6 +122,9 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartsdonut",
+        "chartSettings": {
+          "showDataLabel":true
+        },
         "settings": {
           "title": "{{donutListVins}}",
           "entitySet": "VinAnalytics",
@@ -133,6 +136,9 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartline",
+        "chartSettings": {
+          "showDataLabel":true
+        },
         "settings": {
           "title": "{{superficieEvol}}",
           "entitySet": "SuperficieEvolution",
@@ -145,6 +151,9 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
+        "chartSettings": {
+          "showDataLabel":true
+        },
         "settings": {
           "title": "{{stackedColumnChart}}",
           "entitySet": "VinAnalytics",
@@ -156,6 +165,9 @@
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
+        "chartSettings": {
+          "showDataLabel":true
+        },
         "settings": {
           "title": "{{donutStatusWineChart}}",
           "entitySet": "VinAnalytics",
