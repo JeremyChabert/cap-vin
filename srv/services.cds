@@ -57,8 +57,7 @@ service API {
       millesime,
       color,
       categorie,
-      status,
-      criticality
+      status
     ],
     PropertyRestrictions   : false,
   }, }
@@ -96,10 +95,6 @@ service API {
             Dimension : true
           }
           status.name as status    : String,
-          @Analytics           : {
-            Dimension : true
-          }
-          virtual criticality
     }
     order by
       millesime,
@@ -137,10 +132,7 @@ service API {
       annee;
 
   annotate cave.Vin with @(Common : {SemanticKey : [ID]});
-
-  annotate cave.Cave with @(
-    Common : {SemanticKey : [ID]}
-  );
+  annotate cave.Cave with @(Common : {SemanticKey : [ID]});
 
   annotate cave.Vin with {
     name     @Common           : {
@@ -237,9 +229,7 @@ service API {
     }, }
   };
 
-  annotate cave.Cepage with @(
-    Common : {SemanticKey : [name], },
-  );
+  annotate cave.Cepage with @(Common : {SemanticKey : [name], }, );
 
   annotate cave.Cepage with {
     description @UI.HiddenFilter;
