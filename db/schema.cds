@@ -77,8 +77,6 @@ entity Vin : Boisson {
                                                            name  : String;
                                                            value : String;
                                                          };
-  //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
-  virtual criticality                                  : Integer default 0;
   @Core.Computed
   status                                               : Association to RetentionStatus;
 };
@@ -135,9 +133,8 @@ entity Cave : cuid {
   quantity : Integer;
 };
 
-@cds.autoexpose  @readonly  @cds.odata.valuelist
 entity Region {
-  key country   : Country;
-  key region    : String;
   key subregion : String;
+      region    : String;
+      country   : Country;
 }
