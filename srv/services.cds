@@ -7,6 +7,8 @@ service API {
   };
 
   entity Superficie as projection on cave.Superficie;
+
+  @odata.draft.enabled
   entity Cepage     as projection on cave.Cepage;
   entity Cave       as projection on cave.Cave;
   entity Region     as projection on cave.Region;
