@@ -62,20 +62,25 @@ annotate service.Vin with @(UI : {
   LineItem                              : [
     {
       Value             : name,
-      ![@UI.Importance] : #High
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true,
     },
     {
       Value             : annee,
-      ![@UI.Importance] : #High
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true
     },
     {Value : type},
     {
-      Value : color.name,
-      Label : '{i18n>color}',
+      Value             : color.name,
+      Label             : '{i18n>color}',
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true
     },
     {
       Value : region_subregion,
       Label : '{i18n>subregion}',
+      ![@UI.Hidden]
     },
     {
       Value : region.region,
@@ -119,9 +124,12 @@ annotate service.Vin with @(UI : {
       ![@UI.Hidden]
     },
     {
+      Value : status_code,
+      ![@UI.Hidden]
+    },
+    {
       Value : status.criticality,
       ![@UI.Hidden]
-
     },
     {
       Value : garde,
@@ -185,7 +193,7 @@ annotate service.Vin with @(UI : {
     {
       $Type             : 'UI.DataField',
       Criticality       : status.criticality,
-      Value             : status_code,
+      Value             : status.name,
       ![@UI.Importance] : #High
     }
   ]},
@@ -242,14 +250,14 @@ annotate service.Vin with @(UI : {
         Value : region.region,
       },
       {
-        $Type : 'UI.DataField',
-        Value : region.country_code,
-        ![@Common.FieldControl]:#ReadOnly
+        $Type                   : 'UI.DataField',
+        Value                   : region.country_code,
+        ![@Common.FieldControl] : #ReadOnly
       },
       {
-        $Type : 'UI.DataField',
-        Value : region.country.name,
-        ![@Common.FieldControl]:#ReadOnly
+        $Type                   : 'UI.DataField',
+        Value                   : region.country.name,
+        ![@Common.FieldControl] : #ReadOnly
       },
     ],
   },

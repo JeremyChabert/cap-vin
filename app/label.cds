@@ -8,13 +8,19 @@ annotate service.Vin with @(
   name        @title : '{i18n>name}';
   type        @title : '{i18n>type}';
   volume      @title : '{i18n>volume}';
-  degre       @title : '{i18n>degre}';
+  degre       @(
+    title : '{i18n>degre}',
+    UI.HiddenFilter
+  );
   color       @title : '{i18n>categorie}';
   annee       @title : '{i18n>millesime}';
   prix        @title : '{i18n>prix}';
   aoc         @title : '{i18n>aoc}';
   igp         @title : '{i18n>igp}';
-  garde       @title : '{i18n>garde}';
+  garde       @(
+    title : '{i18n>garde}',
+    UI.HiddenFilter
+  );
   criticality @title : '{i18n>criticality}';
   status      @(
     title  : '{i18n>retentionstatus}',
@@ -75,14 +81,14 @@ annotate service.Region with @(
   title       : '{i18n>region}',
   description : '{i18n>region}',
 ) {
-  subregion   @(
+  subregion    @(
     title  : '{i18n>subregion}',
     Common : {
       Text            : region,
       TextArrangement : #TextLast,
     }
   );
-  region      @title : '{i18n>region}';
+  region       @title : '{i18n>region}';
   country_code @(
     title  : '{i18n>country_name}',
     Common : {
