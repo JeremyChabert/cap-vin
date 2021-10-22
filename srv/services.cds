@@ -291,4 +291,44 @@ service API {
       }
     );
   };
+
+ define view CellarAnalytics as
+    select from Cave {
+      key ID,
+          vin.name,
+          vin.devise,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.color.name  as color     : String,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.type        as categorie : String,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.annee       as millesime,
+          @Analytics           : {
+            Measure : true
+          }
+          @Aggregation.default : #SUM
+          vin.prix,
+          @Analytics           : {
+            Measure : true
+          }
+          @Aggregation.default : #SUM
+          1           as counter   : Integer,
+          @Analytics           : {
+            Dimension : true
+          }
+          vin.status.name as status    : String,
+    }
+    order by
+      millesime,
+      color;
+
 }
