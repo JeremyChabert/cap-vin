@@ -78,50 +78,122 @@ module.exports = (srv) => {
     const { ID: vin_ID } = req.params[0];
     const { quantity } = req.data;
     const wine = await SELECT.one.from(Vin).columns(['ID', 'name']).where({ ID: vin_ID });
-    await INSERT({ quantity, vin_ID: vin_ID }).into(Cave);
+    const exists = await SELECT.one.from(Cave).columns(['ID', 'quantity']).where({ vin_ID });
+    let status;
+    if (exists) {
+      await UPDATE(Cave, exists).with(`quantity = '${exists.quantity + quantity}'`);
+      status = 200;
+    } else {
+      await INSERT({ quantity, vin_ID }).into(Cave);
+      status = 201;
+    }
     req.notify({
-      code: '201',
-      message: `${quantity} bottles of ${wine.name} added to your wine cellar`,
-      status: 201,
+      code: status.toString(),
+      message: `${quantity} bottle(s) of ${wine.name} added to your wine cellar`,
+      status,
     });
   });
-    //
+  //
   //
   srv.on('addQty', async (req) => {
     winston.debug(['ON', 'addQty']);
+    const ID = req.params[0];
+    const { quantity } = req.data;
+    const exists = await SELECT.one
+      .from(Cave, (a) => {
+        a.ID,
+          a.quantity,
+          a.vin((b) => {
+            b.name;
+          });
+      })
+      .where({ ID });
+    await UPDATE(Cave, exists.ID).with(`quantity = '${exists.quantity + quantity}'`);
     req.notify({
-      code: '201',
-      message: `Not implemented`,
-      status: 201,
+      code: '200',
+      message: `${quantity} bottle(s) of ${exists.vin.name} added`,
+      status: 200,
     });
   });
-    //
+  //
   //
   srv.on('withdrawQty', async (req) => {
-    winston.debug(['ON', 'withdrawQty']);
-    req.notify({
-      code: '201',
-      message: `Not implemented`,
-      status: 201,
-    });
+    const ID = req.params[0];
+    const { quantity } = req.data;
+    const exists = await SELECT.one
+      .from(Cave, (a) => {
+        a.ID,
+          a.quantity,
+          a.vin((b) => {
+            b.name;
+          });
+      })
+      .where({ ID });
+    if (exists.quantity - quantity < 0) {
+      req.error({
+        code: '417',
+        message: `You cannot withdraw more wine that you possess`,
+        status: 417,
+      });
+    } else if (exists.quantity - quantity === 0) {
+      await DELETE(Cave, exists.ID);
+      req.warn({
+        code: '202',
+        message: `Following wine : ${exists.vin.name} will be removed from wine cellar`,
+        status: 202,
+      });
+    } else {
+      await UPDATE(Cave, exists.ID).with(`quantity = '${exists.quantity - quantity}'`);
+      req.notify({
+        code: '200',
+        message: `${quantity} bottle(s) of ${exists.vin.name} withdrawn`,
+        status: 200,
+      });
+    }
   });
-    //
+  //
   //
   srv.on('addRating', async (req) => {
     winston.debug(['ON', 'addRating']);
+    const ID = req.params[0];
+    const { rating } = req.data;
+    const exists = await SELECT.one
+      .from(Cave, (a) => {
+        a.ID;
+      })
+      .where({ ID });
+    await UPDATE(Cave, exists.ID).with(`rating = ${rating}`);
+    let message;
+    if (rating <= 1) {
+      message = 'Where you drunk when buying it ?';
+    } else if (rating <= 3) {
+      message = 'You may consider buying it again for a sangria';
+    } else if (rating <= 4) {
+      message = 'Good experience, worth buying it again';
+    } else {
+      message = 'Exceptionnal. Need more !!!';
+    }
     req.notify({
-      code: '201',
-      message: `Not implemented`,
-      status: 201,
+      code: '200',
+      message: `Your rating of ${rating} is saved. ${message}`,
+      status: 200,
     });
   });
-    //
+  //
   //
   srv.on('addComment', async (req) => {
     winston.debug(['ON', 'addComment']);
+    const ID = req.params[0];
+    const { comment } = req.data;
+    const exists = await SELECT.one
+      .from(Cave, (a) => {
+        a.ID;
+      })
+      .where({ ID });
+    await UPDATE(Cave, exists.ID).with(`comment  = '${comment}'`);
     req.notify({
       code: '201',
-      message: `Not implemented`,
+      message: `Your comment is saved`,
       status: 201,
     });
   });

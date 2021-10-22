@@ -14,7 +14,7 @@ service API {
   entity Cave       as projection on cave.Cave actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
-    action addRating(Rating :     Decimal(2, 1)    @(assert.range : [
+    action addRating(rating :     Decimal(2, 1)    @(assert.range : [
       0.0,
       5.0
     ])                                             @Common.Label : '{i18n>rating}');
