@@ -644,6 +644,12 @@ annotate service.Cave with @(UI : {
       },
     ],
   },
+  SelectionFields     : [
+    vin.name,
+    vin.annee,
+    vin.type,
+    rating
+  ],
   LineItem            : [
     {
       $Type : 'UI.DataField',

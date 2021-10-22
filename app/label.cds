@@ -102,9 +102,9 @@ annotate service.Cave with @(
   title       : '{i18n>wineCellar}',
   description : '{i18n>wineCellar}',
 ) {
-  ID @UI.Hidden @UI.HiddenFilter;
-  quantity    @(
-    title  : '{i18n>quantity}',
-  );
-  rating       @title : '{i18n>rating}';
+  ID       @UI.Hidden  @UI.HiddenFilter;
+  quantity @(title : '{i18n>quantity}', );
+  rating   @title : '{i18n>rating}';
+  comment  @title : '{i18n>comment}';
+  vin_ID   @UI.Hidden  @UI.HiddenFilter;
 };
