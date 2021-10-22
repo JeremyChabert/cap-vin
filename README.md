@@ -29,8 +29,8 @@ cds # test it
 
 Tiles :
 
-- My cave (under further improvements)
-  - See list of wines in cave
+- My wine cellar (under further improvements)
+  - See list of wines in wine cellar
 - List of grape varieties
   - Create/Read/Update/Delete grape varieties
   - Add superficies data over the year
@@ -40,7 +40,7 @@ Tiles :
 
 - List of wines
   - Create/Read/Update/Delete wines
-  - Add wines to the cave
+  - Add wines to the wine cellar
   - Add grape varieties on the wine
 
 ![image](https://user-images.githubusercontent.com/47522598/138415006-ac69fd32-9879-49db-928a-47620aa17851.png)

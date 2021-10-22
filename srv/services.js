@@ -77,6 +77,12 @@ module.exports = (srv) => {
     winston.debug(['ON', 'addToMyCave']);
     const { ID: vin_ID } = req.params[0];
     const { quantity } = req.data;
+    const wine = await SELECT.one.from(Vin).columns(['ID', 'name']).where({ ID: vin_ID });
     await INSERT({ quantity, vin_ID: vin_ID }).into(Cave);
+    req.notify({
+      code: '201',
+      message: `${quantity} bottles of ${wine.name} added to your wine cellar`,
+      status: 201,
+    });
   });
 };
