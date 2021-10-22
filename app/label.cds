@@ -97,3 +97,14 @@ annotate service.Region with @(
     }
   );
 };
+
+annotate service.Cave with @(
+  title       : '{i18n>wineCellar}',
+  description : '{i18n>wineCellar}',
+) {
+  ID @UI.Hidden @UI.HiddenFilter;
+  quantity    @(
+    title  : '{i18n>quantity}',
+  );
+  rating       @title : '{i18n>rating}';
+};

@@ -598,15 +598,25 @@ annotate service.Superficie with @UI : {
 };
 
 annotate service.Cave with @(UI : {
-  LineItem          : [
-    {
-      $Type : 'UI.DataField',
-      Value : ID,
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : quantity,
-    },
+  PresentationVariant : {
+    $Type           : 'UI.PresentationVariantType',
+    SelectionFields : [
+      vin.name,
+      vin.annee,
+      vin.type
+    ],
+    SortOrder       : [
+      {
+        $Type    : 'Common.SortOrderType',
+        Property : vin.name,
+      },
+      {
+        $Type    : 'Common.SortOrderType',
+        Property : vin.annee,
+      },
+    ],
+  },
+  LineItem            : [
     {
       $Type : 'UI.DataField',
       Value : vin.name,
@@ -620,28 +630,39 @@ annotate service.Cave with @(UI : {
       Value : vin.color_code,
     },
     {
+      $Type : 'UI.DataField',
+      Value : quantity,
+    },
+    {
       $Type                     : 'UI.DataField',
       Value                     : vin.status.name,
       Criticality               : vin.status.criticality,
       CriticalityRepresentation : #OnlyIcon,
     },
-
-
+    {
+      $Type  : 'UI.DataFieldForAnnotation',
+      Target : '@UI.DataPoint#rating'
+    },
   ],
-  HeaderInfo        : {
+  DataPoint #rating   : {
+    Value         : rating,
+    Visualization : #Rating,
+    TargetValue   : 5
+  },
+  HeaderInfo          : {
     $Type          : 'UI.HeaderInfoType',
     TypeName       : '{i18n>vin}',
     TypeNamePlural : '{i18n>vins}',
   },
-  Identification    : [{
+  Identification      : [{
     $Type : 'UI.DataField',
     Value : ID,
   }, ],
-  QuickCreateFacets : [{
+  QuickCreateFacets   : [{
     $Type  : 'UI.ReferenceFacet',
     Target : '@UI.FieldGroup',
   }, ],
-  Facets            : [{
+  Facets              : [{
     $Type  : 'UI.ReferenceFacet',
     Target : '@UI.FieldGroup',
     Label  : '',
@@ -649,7 +670,7 @@ annotate service.Cave with @(UI : {
   },
 
   ],
-  FieldGroup        : {
+  FieldGroup          : {
     $Type : 'UI.FieldGroupType',
     Data  : [{
       $Type : 'UI.DataField',

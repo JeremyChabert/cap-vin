@@ -127,10 +127,15 @@ entity RetentionStatus : CodeList {
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
 
-entity Cave : cuid {
+entity Cave               @(assert.unique : {Cave : [vin]}) : cuid {
   vin      : Association to one Vin;
-  @Measures : {Unit : '{i18n>bottles}'}
+  @Measures :                             {Unit : '{i18n>bottles}'}
   quantity : Integer;
+  rating   : Decimal(2, 1)@assert.range : [
+    0.0,
+    5.0
+  ];
+  comment : String;
 };
 
 entity Region {
