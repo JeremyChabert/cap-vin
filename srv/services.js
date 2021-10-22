@@ -85,4 +85,44 @@ module.exports = (srv) => {
       status: 201,
     });
   });
+    //
+  //
+  srv.on('addQty', async (req) => {
+    winston.debug(['ON', 'addQty']);
+    req.notify({
+      code: '201',
+      message: `Not implemented`,
+      status: 201,
+    });
+  });
+    //
+  //
+  srv.on('withdrawQty', async (req) => {
+    winston.debug(['ON', 'withdrawQty']);
+    req.notify({
+      code: '201',
+      message: `Not implemented`,
+      status: 201,
+    });
+  });
+    //
+  //
+  srv.on('addRating', async (req) => {
+    winston.debug(['ON', 'addRating']);
+    req.notify({
+      code: '201',
+      message: `Not implemented`,
+      status: 201,
+    });
+  });
+    //
+  //
+  srv.on('addComment', async (req) => {
+    winston.debug(['ON', 'addComment']);
+    req.notify({
+      code: '201',
+      message: `Not implemented`,
+      status: 201,
+    });
+  });
 };

@@ -598,6 +598,34 @@ annotate service.Superficie with @UI : {
 };
 
 annotate service.Cave with @(UI : {
+  Identification      : [
+    {
+      $Type : 'UI.DataField',
+      Value : vin.name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.annee
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.color.name
+    },
+    {
+      $Type              : 'UI.DataFieldForAction',
+      Label              : '{i18n>addComment}',
+      Action             : 'API.addComment',
+      InvocationGrouping : #Isolated,
+      ![@UI.Importance]  : #High
+    },
+    {
+      $Type              : 'UI.DataFieldForAction',
+      Label              : '{i18n>addRating}',
+      Action             : 'API.addRating',
+      InvocationGrouping : #Isolated,
+      ![@UI.Importance]  : #High
+    }
+  ],
   PresentationVariant : {
     $Type           : 'UI.PresentationVariantType',
     SelectionFields : [
@@ -643,6 +671,26 @@ annotate service.Cave with @(UI : {
       $Type  : 'UI.DataFieldForAnnotation',
       Target : '@UI.DataPoint#rating'
     },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'API.addQty',
+      Label  : '{i18n>addQty}'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'API.withdrawQty',
+      Label  : '{i18n>withdrawQty}'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'API.addComment',
+      Label  : '{i18n>addComment}'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'API.addRating',
+      Label  : '{i18n>addRating}'
+    },
   ],
   DataPoint #rating   : {
     Value         : rating,
@@ -654,10 +702,6 @@ annotate service.Cave with @(UI : {
     TypeName       : '{i18n>vin}',
     TypeNamePlural : '{i18n>vins}',
   },
-  Identification      : [{
-    $Type : 'UI.DataField',
-    Value : ID,
-  }, ],
   QuickCreateFacets   : [{
     $Type  : 'UI.ReferenceFacet',
     Target : '@UI.FieldGroup',
