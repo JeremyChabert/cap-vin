@@ -10,7 +10,17 @@ service API {
 
   @odata.draft.enabled
   entity Cepage     as projection on cave.Cepage;
-  entity Cave       as projection on cave.Cave;
+
+  entity Cave       as projection on cave.Cave actions {
+    action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
+    action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
+    action addRating(rating :     Decimal(2, 1)    @(assert.range : [
+      0.0,
+      5.0
+    ])                                             @Common.Label : '{i18n>rating}');
+    action addComment(comment :   String not null  @Common.Label : '{i18n>comment}');
+  };
+
   entity Region     as projection on cave.Region;
 
   entity Assemblage as projection on cave.Assemblage {
@@ -291,4 +301,44 @@ service API {
       }
     );
   };
+
+  define view CellarAnalytics as
+    select from Cave {
+      key ID,
+          vin.name,
+          vin.devise,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.color.name  as color     : String,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.type        as categorie : String,
+          @Analytics           : {
+            Dimension : true
+          }
+          @Aggregation.default : #COUNT_DISTINCT
+          vin.annee       as millesime,
+          @Analytics           : {
+            Measure : true
+          }
+          @Aggregation.default : #SUM
+          vin.prix,
+          @Analytics           : {
+            Measure : true
+          }
+          @Aggregation.default : #SUM
+          1               as counter   : Integer,
+          @Analytics           : {
+            Dimension : true
+          }
+          vin.status.name as status    : String,
+    }
+    order by
+      millesime,
+      color;
+
 }
