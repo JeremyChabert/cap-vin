@@ -146,6 +146,32 @@
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerCriticality",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerCriticality"
         }
+      },
+      "card06": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsbar",
+        "chartSettings": {
+          "showDataLabel":true
+        },
+        "settings": {
+          "title": "{{donutStatusWineChart}}",
+          "entitySet": "CellarAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerNameQuantity"
+        }
+      },
+      "card07": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsbar",
+        "chartSettings": {
+          "showDataLabel":true
+        },
+        "settings": {
+          "title": "{{donutStatusWineChart}}",
+          "entitySet": "CellarAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYearColor"
+        }
       }
     }
   }
