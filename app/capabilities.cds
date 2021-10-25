@@ -1,4 +1,4 @@
-using retailer as service from  '../srv/retailer';
+using retailer as service from '../srv/retailer';
 
 annotate service.Cepage with @Capabilities : {NavigationRestrictions : {
   $Type                : 'Capabilities.NavigationRestrictionsType',
@@ -33,4 +33,49 @@ annotate service.Vin with @Capabilities : {NavigationRestrictions : {
     NavigationProperty : to_cepages,
   }, ],
 
-}, };
+}, }
+actions {
+  postGoods               @(
+    Core.OperationAvailable             : in.postGoodsEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+  withdrawFromSale        @(
+    Core.OperationAvailable             : in.withdrawFromSaleEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+  order                   @(
+    Core.OperationAvailable             : in.orderEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+};
+
+
+using customer as customer from '../srv/customer';
+
+annotate customer.Cave with actions {
+  addQty      @(Common.SideEffects.TargetProperties : ['in/quantity', ], );
+  withdrawQty @(Common.SideEffects.TargetProperties : ['in/quantity', ], );
+  addRating   @(Common.SideEffects.TargetProperties : ['in/rating', ], );
+  addComment  @(Common.SideEffects.TargetProperties : ['in/comment', ], );
+}

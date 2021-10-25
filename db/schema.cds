@@ -73,12 +73,11 @@ entity Vin : Boisson {
     ] default 1;
   to_cepages                                           : Composition of many Assemblage
                                                            on to_cepages.vin = $self;
-  to_caracteristiques                                  : Composition of many {
-                                                           name  : String;
-                                                           value : String;
-                                                         };
+  inStockQty                                           : Integer default 0;
+  orderQty                                             : Integer default 0;
   @Core.Computed
   status                                               : Association to RetentionStatus;
+  availability                                         : Association to AvailabilityStatus;
 };
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
@@ -127,7 +126,20 @@ entity RetentionStatus : CodeList {
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
 
-entity Cave               @(assert.unique : {Cave : [vin,createdBy]}) : cuid, managed {
+@cds.autoexpose  @readonly : true
+entity AvailabilityStatus : CodeList {
+  key code        : String(1) enum {
+        InStock       = 'A';
+        SoldOut       = 'B';
+        ToBeDelivered = 'C';
+      } default 'A';
+      criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
+};
+
+entity Cave               @(assert.unique : {Cave : [
+  vin,
+  createdBy
+]}) : cuid, managed {
   vin      : Association to one Vin;
   @Measures :                             {Unit : '{i18n>bottles}'}
   quantity : Integer;
@@ -145,6 +157,6 @@ entity Region {
 };
 
 type TechnicalBooleanFlag : Boolean @(
-    UI.Hidden,
-    Core.Computed
+  UI.Hidden,
+  Core.Computed
 );

@@ -29,8 +29,17 @@ annotate cave.Superficie with {
   superficie  @mandatory;
 };
 
-
 // Input Cave
 annotate cave.Cave with {
   ID    @Core.Computed;
+};
+
+// Input RetentionStatus
+annotate cave.AvailabilityStatus with {
+  criticality       @UI.Hidden;
+};
+
+// Input RetentionStatus
+annotate cave.RetentionStatus with {
+  criticality       @UI.Hidden;
 };

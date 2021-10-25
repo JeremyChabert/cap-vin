@@ -5,24 +5,24 @@ annotate schema.Vin with @(
   description : '{i18n>vin}',
 
 ) {
-  name        @title : '{i18n>name}';
-  type        @title : '{i18n>type}';
-  volume      @title : '{i18n>volume}';
-  degre       @(
+  name         @title : '{i18n>name}';
+  type         @title : '{i18n>type}';
+  volume       @title : '{i18n>volume}';
+  degre        @(
     title : '{i18n>degre}',
     UI.HiddenFilter
   );
-  color       @title : '{i18n>categorie}';
-  annee       @title : '{i18n>millesime}';
-  prix        @title : '{i18n>prix}';
-  aoc         @title : '{i18n>aoc}';
-  igp         @title : '{i18n>igp}';
-  garde       @(
+  color        @title : '{i18n>categorie}';
+  annee        @title : '{i18n>millesime}';
+  prix         @title : '{i18n>prix}';
+  aoc          @title : '{i18n>aoc}';
+  igp          @title : '{i18n>igp}';
+  garde        @(
     title : '{i18n>garde}',
     UI.HiddenFilter
   );
-  criticality @title : '{i18n>criticality}';
-  status      @(
+  criticality  @title : '{i18n>criticality}';
+  status       @(
     title  : '{i18n>retentionstatus}',
     Common : {
       Text            : status.name,
@@ -30,13 +30,22 @@ annotate schema.Vin with @(
 
     }
   );
-  region      @(
+  region       @(
     title  : '{i18n>region}',
     Common : {
       Text            : region.region,
       TextArrangement : #TextLast,
     }
   );
+  availability @(
+    title  : '{i18n>availability}',
+    Common : {
+      Text            : availability.name,
+      TextArrangement : #TextOnly,
+    }
+  );
+  inStockQty   @title : '{i18n>inStockQty}';
+  orderQty     @title : '{i18n>orderQty}'
 };
 
 annotate schema.RetentionStatus with @(
