@@ -708,24 +708,18 @@ annotate service.Cave with @(UI : {
     TypeName       : '{i18n>vin}',
     TypeNamePlural : '{i18n>vins}',
   },
-  QuickCreateFacets   : [{
-    $Type  : 'UI.ReferenceFacet',
-    Target : '@UI.FieldGroup',
-  }, ],
-  Facets              : [{
-    $Type  : 'UI.ReferenceFacet',
-    Target : '@UI.FieldGroup',
-    Label  : '',
-    ID     : '',
-  },
-
+  Facets              : [
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : 'vin/@UI.FieldGroup#Details',
+      Label  : '{i18n>details}',
+      ID     : '',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : 'vin/@UI.FieldGroup#Geography',
+      Label  : '{i18n>geography}',
+      ID     : '',
+    }
   ],
-  FieldGroup          : {
-    $Type : 'UI.FieldGroupType',
-    Data  : [{
-      $Type : 'UI.DataField',
-      Value : vin.name,
-    }, ],
-
-  },
 });

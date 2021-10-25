@@ -11,6 +11,7 @@ service API {
   @odata.draft.enabled
   entity Cepage     as projection on cave.Cepage;
 
+  @cds.persistence.exists
   entity Cave       as projection on cave.Cave actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
@@ -302,9 +303,53 @@ service API {
     );
   };
 
+  @Aggregation : {ApplySupported : {
+    $Type                  : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions   : true,
+    GroupableProperties    : [
+      name,
+      millesime,
+      categorie,
+      color,
+      status
+    ],
+    AggregatableProperties : [
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : name,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : millesime,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : categorie,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : color,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : status,
+      }
+    ],
+  }, }
   define view CellarAnalytics as
     select from Cave {
       key ID,
+          @Analytics           : {
+            Dimension : true
+          }
+          rating,
+          @Analytics           : {
+            Measure : true
+          }
+          quantity,
+          @Analytics           : {
+            Dimension : true
+          }
           vin.name,
           vin.devise,
           @Analytics           : {

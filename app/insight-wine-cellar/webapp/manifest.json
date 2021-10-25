@@ -94,32 +94,19 @@
     "cards": {
       "card01": {
         "model": "mainService",
-        "template": "sap.ovp.cards.v4.list",
-        "settings": {
-          "title": "{{myWineList}}",
-          "sortBy": "color",
-          "sortOrder": "descending",
-          "listFlavor": "bar",
-          "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
-          "category": "test",
-          "entitySet": "CellarAnalytics"
-        }
-      },
-      "card02": {
-        "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartsdonut",
         "chartSettings": {
           "showDataLabel":true
         },
         "settings": {
-          "title": "{{donutListVins}}",
+          "title": "{{donutQtyColorWineCellar}}",
           "entitySet": "CellarAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerColor",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerColor"
         }
       },
-      "card04": {
+      "card02": {
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
@@ -127,13 +114,13 @@
           "showDataLabel":true
         },
         "settings": {
-          "title": "{{stackedColumnChart}}",
+          "title": "{{stackedColumnWinePerType}}",
           "entitySet": "CellarAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYear",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerYear"
         }
       },
-      "card05": {
+      "card03": {
         "model": "mainService",
         "template": "sap.ovp.cards.v4.charts.analytical",
         "chartType": "cardchartscolumnstacked",
@@ -141,10 +128,36 @@
           "showDataLabel":true
         },
         "settings": {
-          "title": "{{donutStatusWineChart}}",
+          "title": "{{donutQtyWinePerAgingStatus}}",
           "entitySet": "CellarAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerCriticality",
           "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#VinPerCriticality"
+        }
+      },
+      "card04": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsbar",
+        "chartSettings": {
+          "showDataLabel":true
+        },
+        "settings": {
+          "title": "{{barChartQtyWinesPerNameAndColor}}",
+          "entitySet": "CellarAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerNameQuantity"
+        }
+      },
+      "card05": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsbar",
+        "chartSettings": {
+          "showDataLabel":true
+        },
+        "settings": {
+          "title": "{{barChartWinesColorPerVintage}}",
+          "entitySet": "CellarAnalytics",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYearColor"
         }
       }
     }

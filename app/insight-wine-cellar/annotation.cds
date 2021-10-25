@@ -63,10 +63,85 @@ annotate service.CellarAnalytics with @UI : {
       Dimension : 'color',
       Role      : #Category
     }],
-    Measures            : ['counter'],
+    Measures            : ['quantity'],
     MeasureAttributes   : [{
       $Type   : 'UI.ChartMeasureAttributeType',
-      Measure : 'counter',
+      Measure : 'quantity',
+      Role    : #Axis1
+    }]
+  },
+  Chart #VinPerRatings                   : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Donut,
+    Title               : '{i18n>donutChartColorVin}',
+    Dimensions          : ['color'],
+    DimensionAttributes : [{
+      $Type     : 'UI.ChartDimensionAttributeType',
+      Dimension : 'rating',
+      Role      : #Category
+    }],
+    Measures            : ['quantity'],
+    MeasureAttributes   : [{
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : 'quantity',
+      Role    : #Axis1
+    }]
+  },
+  Chart #VinPerNameQuantity              : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Bar, 
+    Title               : '{i18n>donutChartColorVin}',
+    Dimensions          : [
+      'name',
+      'color'
+    ],
+    DimensionAttributes : [
+      {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'name',
+        Role      : #Category
+      },
+            {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'color',
+        Role      : #Category2
+      },
+    ],
+    Measures            : [
+      'quantity',
+    ],
+    MeasureAttributes   : [
+      {
+        $Type   : 'UI.ChartMeasureAttributeType',
+        Measure : 'quantity',
+        Role    : #Axis1
+      },
+    ]
+  },
+  Chart #VinPerYearColor                 : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Bar,
+    Title               : '{i18n>donutChartColorVin}',
+    Dimensions          : [
+      'color',
+      'millesime'
+    ],
+    DimensionAttributes : [
+      {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'millesime',
+        Role      : #Category
+      },
+      {
+        $Type     : 'UI.ChartDimensionAttributeType',
+        Dimension : 'color',
+        Role      : #Category2
+      }
+    ],
+    Measures            : ['quantity'],
+    MeasureAttributes   : [{
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : 'quantity',
       Role    : #Axis1
     }]
   },
@@ -75,26 +150,26 @@ annotate service.CellarAnalytics with @UI : {
     ChartType           : #ColumnStacked,
     Title               : '{i18n>stackedColumnChartTypeYear}',
     Dimensions          : [
-      color,
-      millesime
+      categorie,
+      color
     ],
     DimensionAttributes : [
       {
         $Type     : 'UI.ChartDimensionAttributeType',
-        Dimension : color,
+        Dimension : categorie,
         Role      : #Series
 
       },
       {
         $Type     : 'UI.ChartDimensionAttributeType',
-        Dimension : millesime,
+        Dimension : color,
         Role      : #Category
       }
     ],
-    Measures            : [counter],
+    Measures            : [quantity],
     MeasureAttributes   : [{
       $Type   : 'UI.ChartMeasureAttributeType',
-      Measure : counter,
+      Measure : quantity,
       Role    : #Axis1
     }]
   },
@@ -108,10 +183,10 @@ annotate service.CellarAnalytics with @UI : {
       Dimension : status,
       Role      : #Category
     }],
-    Measures            : [counter],
+    Measures            : [quantity],
     MeasureAttributes   : [{
       $Type   : 'UI.ChartMeasureAttributeType',
-      Measure : counter,
+      Measure : quantity,
       Role    : #Axis1
     }]
   },
