@@ -393,11 +393,6 @@ annotate service.Vin with @(UI : {
       ![@UI.Importance] : #High
     },
     {
-      $Type  : 'UI.DataFieldForAction',
-      Action : 'customer.addToMyCave',
-      Label  : '{i18n>addToMyCave}'
-    },
-    {
       Value : modifiedAt,
       ![@UI.Hidden]
     },
@@ -588,13 +583,6 @@ annotate service.Vin with @(UI.Identification : [
     $Type : 'UI.DataField',
     Value : name
   },
-  {
-    $Type              : 'UI.DataFieldForAction',
-    Label              : '{i18n>addToMyCave}',
-    Action             : 'customer.addToMyCave',
-    InvocationGrouping : #Isolated,
-    ![@UI.Importance]  : #High
-  }
 ]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
@@ -887,7 +875,7 @@ annotate service.Superficie with @UI : {
   ],
 };
 
-annotate service.Cave with @(UI : {
+annotate customer.Cave with @(UI : {
   Identification      : [
     {
       $Type : 'UI.DataField',
@@ -904,14 +892,14 @@ annotate service.Cave with @(UI : {
     {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addComment}',
-      Action             : 'API.addComment',
+      Action             : 'customer.addComment',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     },
     {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addRating}',
-      Action             : 'API.addRating',
+      Action             : 'customer.addRating',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     }
@@ -969,22 +957,22 @@ annotate service.Cave with @(UI : {
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addQty',
+      Action : 'customer.addQty',
       Label  : '{i18n>addQty}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.withdrawQty',
+      Action : 'customer.withdrawQty',
       Label  : '{i18n>withdrawQty}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addComment',
+      Action : 'customer.addComment',
       Label  : '{i18n>addComment}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addRating',
+      Action : 'customer.addRating',
       Label  : '{i18n>addRating}'
     },
   ],
