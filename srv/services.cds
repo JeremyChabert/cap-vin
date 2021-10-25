@@ -1,28 +1,26 @@
 using {my.cave as cave} from '../db/schema';
 
-service API @(requires : 'authenticated-user') {
+service retailer @(
+  path     : '/retailer',
+  requires : 'authenticated-user'
+) {
+
   @odata.draft.enabled
-  entity Vin                                              
-  as projection on cave.Vin actions {
-    action addToMyCave@(requires:'customer')(quantity : Integer not null @Common.Label : '{i18n>quantity}');
-  };
+  entity Vin @(restrict : [
+    {
+      grant : 'READ',
+      to    : 'authenticated-user'
+    },
+    {
+      grant : '*',
+      to    : 'admin'
+    }
+  ])                as projection on cave.Vin;
 
   entity Superficie as projection on cave.Superficie;
 
   @odata.draft.enabled
   entity Cepage     as projection on cave.Cepage;
-
-  entity Cave @(restrict : [{grant:'*',to:'customer',  where : 'createdBy = $user' },
-  ])                                       
-  as projection on cave.Cave  actions {
-    action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
-    action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
-    action addRating(rating :     Decimal(2, 1)    @(assert.range : [
-      0.0,
-      5.0
-    ])                                             @Common.Label : '{i18n>rating}');
-    action addComment(comment :   String not null  @Common.Label : '{i18n>comment}');
-  };
 
   entity Region     as projection on cave.Region;
 
@@ -147,7 +145,6 @@ service API @(requires : 'authenticated-user') {
       annee;
 
   annotate Vin with @(Common : {SemanticKey : [ID]});
-  annotate Cave with @(Common : {SemanticKey : [ID]});
 
   annotate Vin with {
     name     @Common           : {
@@ -305,6 +302,37 @@ service API @(requires : 'authenticated-user') {
     );
   };
 
+};
+
+service customer @(
+  path     : '/customer',
+  requires : 'authenticated-user'
+) {
+
+  @readonly
+  entity Vin    as projection on cave.Vin actions {
+    action addToMyCave @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
+  };
+
+  @readonly
+  entity Region as projection on cave.Region;
+
+  entity Cave                                      @(restrict : [{
+    grant : '*',
+    to    : 'customer',
+    where : 'createdBy = $user'
+  }, ])         as projection on cave.Cave actions {
+    action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
+    action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
+    action addRating(rating :     Decimal(2, 1)    @(assert.range : [
+      0.0,
+      5.0
+    ])                                             @Common.Label : '{i18n>rating}');
+    action addComment(comment :   String not null  @Common.Label : '{i18n>comment}');
+  };
+
+  annotate Cave with @(Common : {SemanticKey : [ID]});
+
   @Aggregation : {ApplySupported : {
     $Type                  : 'Aggregation.ApplySupportedType',
     PropertyRestrictions   : true,
@@ -338,8 +366,11 @@ service API @(requires : 'authenticated-user') {
       }
     ],
   }, }
-
-  define view CellarAnalytics @(restrict : [{grant:'READ',to:'customer',  where : 'createdBy = $user' }]) as
+  define view CellarAnalytics @(restrict : [{
+    grant : 'READ',
+    to    : 'customer',
+    where : 'createdBy = $user'
+  }]) as
     select from Cave {
       key ID,
           @Analytics           : {
@@ -389,5 +420,4 @@ service API @(requires : 'authenticated-user') {
     order by
       millesime,
       color;
-
 }
