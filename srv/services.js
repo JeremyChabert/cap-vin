@@ -77,14 +77,16 @@ module.exports = (srv) => {
     winston.debug(['ON', 'addToMyCave']);
     const { ID: vin_ID } = req.params[0];
     const { quantity } = req.data;
+    const createdBy = req.user.id;
     const wine = await SELECT.one.from(Vin).columns(['ID', 'name']).where({ ID: vin_ID });
-    const exists = await SELECT.one.from(Cave).columns(['ID', 'quantity']).where({ vin_ID });
+    const exists = await SELECT.one.from(Cave).columns(['ID', 'quantity']).where({ vin_ID, createdBy });
     let status;
+    const modifiedBy = req.user.id;
     if (exists) {
       await UPDATE(Cave, exists).with(`quantity = '${exists.quantity + quantity}'`);
       status = 200;
     } else {
-      await INSERT({ quantity, vin_ID }).into(Cave);
+      await INSERT({ quantity, vin_ID, createdBy, modifiedBy }).into(Cave);
       status = 201;
     }
     req.notify({

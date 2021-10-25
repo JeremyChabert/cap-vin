@@ -1,9 +1,10 @@
 using {my.cave as cave} from '../db/schema';
 
-service API {
+service API @(requires : 'authenticated-user') {
   @odata.draft.enabled
-  entity Vin        as projection on cave.Vin actions {
-    action addToMyCave(quantity : Integer not null @Common.Label : '{i18n>quantity}');
+  entity Vin                                              
+  as projection on cave.Vin actions {
+    action addToMyCave@(requires:'customer')(quantity : Integer not null @Common.Label : '{i18n>quantity}');
   };
 
   entity Superficie as projection on cave.Superficie;
@@ -11,8 +12,9 @@ service API {
   @odata.draft.enabled
   entity Cepage     as projection on cave.Cepage;
 
-  @cds.persistence.exists
-  entity Cave       as projection on cave.Cave actions {
+  entity Cave @(restrict : [{grant:'*',to:'customer',  where : 'createdBy = $user' },
+  ])                                       
+  as projection on cave.Cave  actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
     action addRating(rating :     Decimal(2, 1)    @(assert.range : [
@@ -336,7 +338,8 @@ service API {
       }
     ],
   }, }
-  define view CellarAnalytics as
+
+  define view CellarAnalytics @(restrict : [{grant:'READ',to:'customer',  where : 'createdBy = $user' }]) as
     select from Cave {
       key ID,
           @Analytics           : {
@@ -381,6 +384,7 @@ service API {
             Dimension : true
           }
           vin.status.name as status    : String,
+          createdBy
     }
     order by
       millesime,

@@ -8,6 +8,7 @@
   "dependencies": {
     "@sap/cds": "^5",
     "express": "^4",
+    "passport": "^0.5.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -59,6 +60,29 @@
       "db": {
         "kind": "sqlite",
         "model": "*"
+      },
+      "auth": {
+        "kind": "basic-auth",
+        "users": {
+          "vigneronne": {
+            "password": "vigneronne",
+            "roles": [
+              "admin"
+            ]
+          },
+          "customer": {
+            "password": "customer",
+            "roles": [
+              "customer"
+            ]
+          },
+          "customer1": {
+            "password": "customer1",
+            "roles": [
+              "customer"
+            ]
+          }
+        }
       }
     }
   },
