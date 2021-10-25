@@ -33,4 +33,40 @@ annotate service.Vin with @Capabilities : {NavigationRestrictions : {
     NavigationProperty : to_cepages,
   }, ],
 
-}, };
+}, }
+actions {
+  postGoods               @(
+    Core.OperationAvailable             : in.postGoodsEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+  withdrawFromSale        @(
+    Core.OperationAvailable             : in.withdrawFromSaleEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+  order                   @(
+    Core.OperationAvailable             : in.orderEnabled,
+    Common.SideEffects.TargetProperties : [
+      'in/availability_code',
+      'in/postGoodsEnabled',
+      'in/withdrawFromSaleEnabled',
+      'in/orderEnabled',
+      'in/inStockQty',
+      'in/orderQty'
+    ],
+  );
+};
+

@@ -6,7 +6,7 @@ service retailer @(
 ) {
 
   @odata.draft.enabled
-  entity Vin @(restrict : [
+  entity Vin                           @(restrict : [
     {
       grant : 'READ',
       to    : 'authenticated-user'
@@ -15,7 +15,17 @@ service retailer @(
       grant : '*',
       to    : 'admin'
     }
-  ])                as projection on cave.Vin;
+  ])                as projection on cave.Vin actions {
+    action postGoods(quantity :  Integer @title : '{i18n>quantity}');
+    action order(quantity :    Integer @title : '{i18n>quantity}');
+    action withdrawFromSale();
+  };
+
+  extend projection Vin with {
+    virtual null as postGoodsEnabled  : Boolean @Core.Computed @UI.Hidden,
+    virtual null as orderEnabled    : Boolean @Core.Computed @UI.Hidden,
+    virtual null as withdrawFromSaleEnabled : Boolean @Core.Computed @UI.Hidden
+  }
 
   entity Superficie as projection on cave.Superficie;
 
@@ -144,8 +154,12 @@ service retailer @(
     order by
       annee;
 
-  annotate Vin with @(Common : {SemanticKey : [name,annee,color_code]});
+  annotate Vin with @(Common : {SemanticKey : [
+    name,
+    annee,
+    color_code
+  ]});
 
   annotate Cepage with @(Common : {SemanticKey : [name], }, );
-  
+
 };

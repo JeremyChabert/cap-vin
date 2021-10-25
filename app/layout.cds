@@ -21,9 +21,11 @@ annotate retailer.Vin with @(UI : {
         aoc,
         degre,
         volume,
-        garde,
+        // garde,
         status.criticality,
         type,
+        inStockQty,
+        orderQty
       ],
       SelectionFields : [
         name,
@@ -90,17 +92,26 @@ annotate retailer.Vin with @(UI : {
       Value : region.country.name,
       Label : '{i18n>country_name}'
     },
-    {Value : igp},
-    {Value : aoc},
-    {Value : prix},
-    {Value : degre},
-    {Value : volume},
     {
-      $Type             : 'UI.DataField',
-      Criticality       : status.criticality,
-      Label             : '{i18n>retentionstatus}',
-      Value             : status.name,
-      ![@UI.Importance] : #High
+      Value : inStockQty,
+      Label : '{i18n>inStockQty}'
+    },
+    {
+      Value : orderQty,
+      Label : '{i18n>orderQty}'
+    },
+    // {Value : igp},
+    // {Value : aoc},
+    {Value : prix},
+    // {Value : degre},
+    // {Value : volume},
+    {
+      $Type                     : 'UI.DataField',
+      Criticality               : availability.criticality,
+      CriticalityRepresentation : #WithoutIcon,
+      Label                     : '{i18n>availability}',
+      Value                     : availability.name,
+      ![@UI.Importance]         : #High
     },
     {
       Value : modifiedAt,
@@ -123,6 +134,14 @@ annotate retailer.Vin with @(UI : {
       ![@UI.Hidden]
     },
     {
+      Value : availability.criticality,
+      ![@UI.Hidden]
+    },
+    {
+      Value : availability_code,
+      ![@UI.Hidden]
+    },
+    {
       Value : status.criticality,
       ![@UI.Hidden]
     },
@@ -133,7 +152,35 @@ annotate retailer.Vin with @(UI : {
     {
       Value : color_code,
       ![@UI.Hidden]
-    }
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'retailer.postGoods',
+      Label  : '{i18n>postGoods}'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'retailer.withdrawFromSale',
+      Label  : '{i18n>withdrawFromSale}'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'retailer.order',
+      Label  : '{i18n>placeOrder}'
+    },
+    {
+      Value : orderEnabled,
+      ![@UI.Hidden]
+    },
+    {
+      Value : postGoodsEnabled,
+      ![@UI.Hidden]
+    },
+    {
+      Value : withdrawFromSaleEnabled,
+      ![@UI.Hidden]
+    },
+
   ],
   SelectionFields                       : [
     name,
@@ -288,12 +335,10 @@ annotate retailer.Vin with @(UI : {
   ],
 });
 
-annotate retailer.Vin with @(UI.Identification : [
-  {
-    $Type : 'UI.DataField',
-    Value : name
-  },
-]) {
+annotate retailer.Vin with @(UI.Identification : [{
+  $Type : 'UI.DataField',
+  Value : name
+}, ]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
   devise @UI.Hidden;

@@ -56,7 +56,7 @@ module.exports = (srv) => {
   //
   srv.on('READ', 'Vin', async (req, next) => {
     winston.debug(['ON', 'READ', 'Vin']);
-    await updateStatus();
+    // await updateStatus();
     return next();
   });
   //
@@ -71,5 +71,78 @@ module.exports = (srv) => {
   srv.after('READ', 'VinAnalytics', (lines) => {
     winston.debug(['AFTER', 'READ', 'VinAnalytics', JSON.stringify(lines)]);
   });
- 
+  //
+  //
+  srv.on('postGoods', async (req) => {
+    winston.debug(['ON', 'postGoods']);
+    const { ID } = req.params[0];
+    const { quantity } = req.data;
+    const wine = await SELECT.one
+      .from(Vin, (a) => {
+        a.ID, a.inStockQty, a.orderQty;
+      })
+      .where({ ID });
+    if (quantity > wine.orderQty) {
+      req.error({
+        code: '417',
+        message: `You cannot check more than ordered. Actual ordered ${wine.orderQty}, requested ${quantity}`,
+        status: 417,
+      });
+    } else {
+      await UPDATE(Vin, ID).with(
+        `inStockQty  = ${wine.inStockQty + quantity}, orderQty = ${wine.orderQty - quantity}, availability_code = 'A'`
+      );
+      req.notify({
+        code: '200',
+        message: `${quantity} checked in`,
+        status: 200,
+      });
+    }
+  });
+  //
+  //
+  srv.on('withdrawFromSale', async (req) => {
+    winston.debug(['ON', 'withdrawFromSale']);
+    const { ID } = req.params[0];
+    const wine = await SELECT.one
+      .from(Vin, (a) => {
+        a.name,
+          a.annee,
+          a.color((b) => {
+            b.name;
+          });
+      })
+      .where({ ID });
+    await UPDATE(Vin, ID).with(`inStockQty = 0,availability_code = 'B'`);
+    req.notify({
+      code: '202',
+      message: `[${wine.name},${wine.annee},${wine.color.name} checked out`,
+      status: 202,
+    });
+  });
+  //
+  //
+  srv.on('order', async (req) => {
+    winston.debug(['ON', 'order']);
+    const { ID } = req.params[0];
+    const { quantity } = req.data;
+    const wine = await SELECT.one
+      .from(Vin, (a) => {
+        a.ID, a.orderQty;
+      })
+      .where({ ID });
+    await UPDATE(Vin, ID).with(`orderQty  = ${wine.orderQty + quantity},availability_code = 'C'`);
+    req.notify({
+      code: '200',
+      message: `Order for ${quantity} placed`,
+      status: 200,
+    });
+  });
+  //
+  //
+  srv.after('each', 'Vin', (vin) => {
+    if (vin.orderQty > 0) vin.postGoodsEnabled = true;
+    if (vin.inStockQty === 0) vin.orderEnabled = true;
+    if (vin.inStockQty > 0) vin.withdrawFromSaleEnabled = true;
+  });
 };
