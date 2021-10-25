@@ -1,4 +1,4 @@
-using retailer as service from  '../srv/retailer';
+using retailer as service from '../srv/retailer';
 
 annotate service.Cepage with @Capabilities : {NavigationRestrictions : {
   $Type                : 'Capabilities.NavigationRestrictionsType',
@@ -70,3 +70,12 @@ actions {
   );
 };
 
+
+using customer as customer from '../srv/customer';
+
+annotate customer.Cave with actions {
+  addQty      @(Common.SideEffects.TargetProperties : ['in/quantity', ], );
+  withdrawQty @(Common.SideEffects.TargetProperties : ['in/quantity', ], );
+  addRating   @(Common.SideEffects.TargetProperties : ['in/rating', ], );
+  addComment  @(Common.SideEffects.TargetProperties : ['in/comment', ], );
+}
