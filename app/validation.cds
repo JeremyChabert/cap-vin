@@ -1,4 +1,5 @@
-using API as service from '../srv/services';
+using retailer as service from  '../srv/services';
+using customer as customer from  '../srv/services';
 
 // Input validation
 annotate service.Vin with {
@@ -29,7 +30,8 @@ annotate service.Superficie with {
   superficie  @mandatory;
 };
 
+
 // Input Cave
-annotate service.Cave with {
+annotate customer.Cave with {
   ID    @Core.Computed;
 };

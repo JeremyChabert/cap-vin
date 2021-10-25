@@ -1,4 +1,4 @@
-using API as service from '../srv/services';
+using {my.cave as service} from '../db/schema';
 
 annotate service.Vin with @(
   title       : '{i18n>vin}',

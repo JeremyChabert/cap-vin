@@ -2,5 +2,5 @@ using from './label';
 using from './layout';
 using from './validation';
 using from './capabilities';
-using from './ovp-cepage/annotation';
-using from './insight-wine-cellar/annotation';
+using from './retailer-apps/ovp-cepage/annotation';
+using from './customer-apps/insight-wine-cellar/annotation';
