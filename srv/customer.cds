@@ -6,24 +6,30 @@ service customer @(
 ) {
 
   @readonly
-  entity Vin    as projection on cave.Vin actions {
-    action addToMyCave @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
-  };
+  entity Vin        as
+    select from cave.Vin {
+      *
+    }
+    where
+      availability.code != 'B'
+    actions {
+      action addToMyCave @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
+    };
 
   @readonly
-  entity Region as projection on cave.Region;
+  entity Region     as projection on cave.Region;
 
   @readonly
   entity Assemblage as projection on cave.Assemblage;
 
   @readonly
-  entity Cepage as projection on cave.Cepage;
+  entity Cepage     as projection on cave.Cepage;
 
   entity Cave                                      @(restrict : [{
     grant : '*',
     to    : 'customer',
     where : 'createdBy = $user'
-  }, ])         as projection on cave.Cave actions {
+  }, ])             as projection on cave.Cave actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
     action addRating(rating :     Decimal(2, 1)    @(assert.range : [
