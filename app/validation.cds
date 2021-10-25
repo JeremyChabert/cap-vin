@@ -1,5 +1,5 @@
-using retailer as service from  '../srv/services';
-using customer as customer from  '../srv/services';
+using retailer as service from  '../srv/retailer';
+using customer as customer from  '../srv/customer';
 
 // Input validation
 annotate service.Vin with {

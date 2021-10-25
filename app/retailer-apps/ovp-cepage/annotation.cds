@@ -1,4 +1,4 @@
-using retailer as service from '../../../srv/services';
+using retailer as service from '../../../srv/retailer';
 
 annotate service.VinPerCepage with @UI : {
   LineItem         : [

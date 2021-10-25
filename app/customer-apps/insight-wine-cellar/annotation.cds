@@ -1,4 +1,4 @@
-using customer as service from '../../../srv/services';
+using customer as service from '../../../srv/customer';
 
 annotate service.CellarAnalytics with @UI : {
   LineItem                               : [
