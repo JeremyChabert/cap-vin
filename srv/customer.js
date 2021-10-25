@@ -71,11 +71,13 @@ module.exports = (srv) => {
   srv.after('READ', 'VinAnalytics', (lines) => {
     winston.debug(['AFTER', 'READ', 'VinAnalytics', JSON.stringify(lines)]);
   });
-  //
+  // 
+  // 
+   //
   //
   srv.on('addToMyCave', async (req) => {
     winston.debug(['ON', 'addToMyCave']);
-    const { ID: vin_ID } = req.params[0];
+    const vin_ID = req.params[0];
     const { quantity } = req.data;
     const createdBy = req.user.id;
     const wine = await SELECT.one.from(Vin).columns(['ID', 'name']).where({ ID: vin_ID });

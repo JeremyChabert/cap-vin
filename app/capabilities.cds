@@ -1,4 +1,4 @@
-using API as service from '../srv/services';
+using retailer as service from  '../srv/retailer';
 
 annotate service.Cepage with @Capabilities : {NavigationRestrictions : {
   $Type                : 'Capabilities.NavigationRestrictionsType',
@@ -34,9 +34,3 @@ annotate service.Vin with @Capabilities : {NavigationRestrictions : {
   }, ],
 
 }, };
-
-annotate service.Cave with @Capabilities : {
-  Insertable : true,
-  Updatable  : true,
-  Deletable  : true,
-};

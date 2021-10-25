@@ -1,8 +1,8 @@
-using API as service from '../srv/services';
+using {my.cave as cave } from  '../db/schema';
 
 // Input validation
-annotate service.Vin with {
-  ID    @Core.Computed;
+annotate cave.Vin with {
+  ID    @Core.Computed @UI.Hidden;
   name  @mandatory;
   type  @mandatory;
   annee @mandatory;
@@ -10,26 +10,27 @@ annotate service.Vin with {
 };
 
 // Input Assemblage
-annotate service.Assemblage with {
-  ID          @Core.Computed;
+annotate cave.Assemblage with {
+  ID          @Core.Computed @UI.Hidden;
   cepage_name @mandatory;
 };
 
 // Input Cepage
-annotate service.Cepage with {
+annotate cave.Cepage with {
   name @mandatory;
 };
 
 // Input Superficie
-annotate service.Superficie with {
-  ID          @Core.Computed;
+annotate cave.Superficie with {
+  ID          @Core.Computed @UI.Hidden;
   to_cepage   @UI.Hidden;
   cepage_name @readonly  @UI.Hidden;
   annee       @mandatory;
   superficie  @mandatory;
 };
 
+
 // Input Cave
-annotate service.Cave with {
+annotate cave.Cave with {
   ID    @Core.Computed;
 };

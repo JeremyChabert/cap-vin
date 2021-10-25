@@ -1,6 +1,6 @@
-using API as service from '../srv/services';
+using {my.cave as schema} from './schema';
 
-annotate service.Vin with @(
+annotate schema.Vin with @(
   title       : '{i18n>vin}',
   description : '{i18n>vin}',
 
@@ -39,7 +39,7 @@ annotate service.Vin with @(
   );
 };
 
-annotate service.RetentionStatus with @(
+annotate schema.RetentionStatus with @(
   title       : '{i18n>retentionstatus}',
   description : '{i18n>retentionstatus}',
 
@@ -48,7 +48,7 @@ annotate service.RetentionStatus with @(
   code @UI.Hidden;
 };
 
-annotate service.Assemblage with @(
+annotate schema.Assemblage with @(
   title       : '{i18n>assemblage}',
   description : '{i18n>assemblage}',
 ) {
@@ -57,7 +57,7 @@ annotate service.Assemblage with @(
   pourcent    @title : '{i18n>teneur}';
 };
 
-annotate service.Cepage with @(
+annotate schema.Cepage with @(
   title       : '{i18n>cepage}',
   description : '{i18n>cepage}',
 
@@ -68,7 +68,7 @@ annotate service.Cepage with @(
   color          @title : '{i18n>color}';
 };
 
-annotate service.Superficie with @(
+annotate schema.Superficie with @(
   title       : '{i18n>superficies}',
   description : '{i18n>superficies}',
 ) {
@@ -77,7 +77,7 @@ annotate service.Superficie with @(
 };
 
 
-annotate service.Region with @(
+annotate schema.Region with @(
   title       : '{i18n>region}',
   description : '{i18n>region}',
 ) {
@@ -98,7 +98,7 @@ annotate service.Region with @(
   );
 };
 
-annotate service.Cave with @(
+annotate schema.Cave with @(
   title       : '{i18n>wineCellar}',
   description : '{i18n>wineCellar}',
 ) {

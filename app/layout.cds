@@ -1,10 +1,10 @@
-using API as service from '../srv/services';
-
+using retailer as retailer from '../srv/retailer';
+using customer as customer from '../srv/customer';
 /*-------------------
 * Vin
 *-------------------*/
 
-annotate service.Vin with @(UI : {
+annotate retailer.Vin with @(UI : {
   SelectionPresentationVariant #SPVPath : {
     $Type               : 'UI.SelectionPresentationVariantType',
     SelectionVariant    : {
@@ -101,11 +101,6 @@ annotate service.Vin with @(UI : {
       Label             : '{i18n>retentionstatus}',
       Value             : status.name,
       ![@UI.Importance] : #High
-    },
-    {
-      $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addToMyCave',
-      Label  : '{i18n>addToMyCave}'
     },
     {
       Value : modifiedAt,
@@ -293,18 +288,11 @@ annotate service.Vin with @(UI : {
   ],
 });
 
-annotate service.Vin with @(UI.Identification : [
+annotate retailer.Vin with @(UI.Identification : [
   {
     $Type : 'UI.DataField',
     Value : name
   },
-  {
-    $Type              : 'UI.DataFieldForAction',
-    Label              : '{i18n>addToMyCave}',
-    Action             : 'API.addToMyCave',
-    InvocationGrouping : #Isolated,
-    ![@UI.Importance]  : #High
-  }
 ]) {
   ID     @UI.Hidden  @UI.HiddenFilter;
   unit   @UI.Hidden;
@@ -312,23 +300,23 @@ annotate service.Vin with @(UI.Identification : [
   prix   @UI.HiddenFilter;
 };
 
-annotate service.Vin with @(
+annotate retailer.Vin with @(
   UI.TextArrangement : #TextOnly,
   cds.odata.valuelist
 );
 
-annotate service.VinColor with {
+annotate retailer.VinColor with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
 }
 
-annotate service.RetentionStatus with {
+annotate retailer.RetentionStatus with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
 }
 /*-------------------
 * Assemblage
 *-------------------*/
 
-annotate service.Assemblage with @UI : {
+annotate retailer.Assemblage with @UI : {
   PresentationVariant #Cepages : {
     ID              : 'idCepagesPresVar',
     $Type           : 'UI.PresentationVariantType',
@@ -450,7 +438,7 @@ annotate service.Assemblage with @UI : {
 * Cepage
 *-------------------*/
 
-annotate service.Cepage with @UI : {
+annotate retailer.Cepage with @UI : {
   SelectionVariant #Noir  : {
     $Type         : 'UI.SelectionVariantType',
     SelectOptions : [{
@@ -541,7 +529,7 @@ annotate service.Cepage with @UI : {
 * Superficie
 *-------------------*/
 
-annotate service.Superficie with @UI : {
+annotate retailer.Superficie with @UI : {
   HeaderInfo                          : {
     TypeName       : '{i18n>superficie}',
     TypeNamePlural : '{i18n>superficies}',
@@ -597,7 +585,7 @@ annotate service.Superficie with @UI : {
   ],
 };
 
-annotate service.Cave with @(UI : {
+annotate customer.Cave with @(UI : {
   Identification      : [
     {
       $Type : 'UI.DataField',
@@ -614,14 +602,14 @@ annotate service.Cave with @(UI : {
     {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addComment}',
-      Action             : 'API.addComment',
+      Action             : 'customer.addComment',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     },
     {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addRating}',
-      Action             : 'API.addRating',
+      Action             : 'customer.addRating',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     }
@@ -679,22 +667,22 @@ annotate service.Cave with @(UI : {
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addQty',
+      Action : 'customer.addQty',
       Label  : '{i18n>addQty}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.withdrawQty',
+      Action : 'customer.withdrawQty',
       Label  : '{i18n>withdrawQty}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addComment',
+      Action : 'customer.addComment',
       Label  : '{i18n>addComment}'
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'API.addRating',
+      Action : 'customer.addRating',
       Label  : '{i18n>addRating}'
     },
   ],
@@ -720,6 +708,419 @@ annotate service.Cave with @(UI : {
       Target : 'vin/@UI.FieldGroup#Geography',
       Label  : '{i18n>geography}',
       ID     : '',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>assemblage}',
+      Target : 'vin/to_cepages/@UI.PresentationVariant#Vins'
+    }
+  ],
+});
+
+annotate customer.Assemblage with @UI : {
+  PresentationVariant #Cepages : {
+    ID              : 'idCepagesPresVar',
+    $Type           : 'UI.PresentationVariantType',
+    Visualizations  : ['@UI.LineItem#Cepages'],
+    SelectionFields : [
+      vin.annee,
+      vin.name
+    ]
+  },
+  PresentationVariant #Vins    : {
+    ID              : 'idVinsPresVar',
+    $Type           : 'UI.PresentationVariantType',
+    Visualizations  : ['@UI.LineItem#Vins'],
+    SelectionFields : [cepage_name],
+    SortOrder       : [{
+      $Type    : 'Common.SortOrderType',
+      Property : cepage_name,
+    }, ],
+
+  },
+  LineItem #Cepages            : [
+    {
+      Value                   : vin.name,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.annee,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.type,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.igp,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.aoc,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.prix,
+      ![@UI.Hidden],
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.degre,
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      Value                   : vin.volume,
+      ![@UI.Hidden],
+      ![@Common.FieldControl] : #ReadOnly,
+    }
+  ],
+  LineItem #Vins               : [
+    {
+      $Type : 'UI.DataField',
+      Value : cepage_name,
+      Label : '{i18n>cepage}',
+    },
+    {
+      $Type                   : 'UI.DataField',
+      Value                   : cepage.description,
+      Label                   : '{i18n>cepage_description}',
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      $Type                   : 'UI.DataField',
+      Value                   : cepage.color,
+      Label                   : '{i18n>color}',
+      ![@Common.FieldControl] : #ReadOnly,
+    },
+    {
+      $Type                   : 'UI.DataField',
+      Value                   : pourcent,
+      Label                   : '{i18n>teneur}',
+      ![@Common.FieldControl] : #Optional,
+    },
+    {
+      $Type                   : 'UI.DataField',
+      Value                   : vin_ID,
+      Label                   : '{i18n>vin_ID}',
+      ![@Common.FieldControl] : #ReadOnly,
+      ![@UI.Hidden],
+    },
+    {
+      $Type                   : 'UI.DataField',
+      Value                   : ID,
+      Label                   : '{i18n>ID}',
+      ![@Common.FieldControl] : #ReadOnly,
+      ![@UI.Hidden],
+    }
+  ],
+  FieldGroup #Description      : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : cepage_name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : cepage.description
+    }
+  ]},
+  Facets                       : [{
+    $Type  : 'UI.CollectionFacet',
+    ID     : 'AssemblageDetails',
+    Label  : '{i18n>details}',
+    Facets : [{
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>label}',
+      Target : '@UI.FieldGroup#Description'
+    }]
+  }],
+};
+
+
+annotate customer.Vin with @(UI : {
+  SelectionPresentationVariant #SPVPath : {
+    $Type               : 'UI.SelectionPresentationVariantType',
+    SelectionVariant    : {
+      $Type : 'UI.SelectionVariantType',
+      ID    : 'SV',
+    },
+    PresentationVariant : {
+      $Type           : 'UI.PresentationVariantType',
+      RequestAtLeast  : [
+        name,
+        annee,
+        color.name,
+        igp,
+        aoc,
+        degre,
+        volume,
+        garde,
+        status.criticality,
+        type,
+      ],
+      SelectionFields : [
+        name,
+        annee,
+        color_code,
+        type
+      ],
+      Visualizations  : ['@UI.LineItem', ],
+      SortOrder       : [
+        {
+          $Type    : 'Common.SortOrderType',
+          Property : name,
+        },
+        {
+          $Type    : 'Common.SortOrderType',
+          Property : annee,
+        },
+      ],
+    },
+  },
+  HeaderInfo                            : {
+    Title          : {
+      $Type : 'UI.DataField',
+      Value : name,
+    },
+    TypeName       : '{i18n>vin}',
+    TypeNamePlural : '{i18n>vins}',
+    Description    : {Value : annee},
+    ImageUrl       : 'sap-icon://lab',
+  },
+  FilterFacets                          : [{
+    Label  : '{i18n>label}',
+    $Type  : 'UI.ReferenceFacet',
+    Target : '@UI.FieldGroup#Labels',
+  }, ],
+  LineItem                              : [
+    {
+      Value             : name,
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true,
+    },
+    {
+      Value             : annee,
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true
+    },
+    {Value : type},
+    {
+      Value             : color.name,
+      Label             : '{i18n>color}',
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true
+    },
+    {
+      Value : region_subregion,
+      Label : '{i18n>subregion}',
+      ![@UI.Hidden]
+    },
+    {
+      Value : region.region,
+      Label : '{i18n>region}'
+    },
+    {
+      Value : region.country.name,
+      Label : '{i18n>country_name}'
+    },
+    {Value : igp},
+    {Value : aoc},
+    {Value : prix},
+    {Value : degre},
+    {Value : volume},
+    {
+      $Type             : 'UI.DataField',
+      Criticality       : status.criticality,
+      Label             : '{i18n>retentionstatus}',
+      Value             : status.name,
+      ![@UI.Importance] : #High
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'customer.addToMyCave',
+      Label  : '{i18n>addToMyCave}'
+    },
+    {
+      Value : modifiedAt,
+      ![@UI.Hidden]
+    },
+    {
+      Value : createdAt,
+      ![@UI.Hidden]
+    },
+    {
+      Value : modifiedBy,
+      ![@UI.Hidden]
+    },
+    {
+      Value : createdBy,
+      ![@UI.Hidden]
+    },
+    {
+      Value : status_code,
+      ![@UI.Hidden]
+    },
+    {
+      Value : status.criticality,
+      ![@UI.Hidden]
+    },
+    {
+      Value : garde,
+      ![@UI.Hidden]
+    },
+    {
+      Value : color_code,
+      ![@UI.Hidden]
+    }
+  ],
+  SelectionFields                       : [
+    name,
+    annee,
+    color_code,
+    igp,
+    aoc,
+  ],
+  HeaderFacets                          : [
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Details',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Geography',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Conservation',
+    },
+  ],
+  FieldGroup #Description               : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : annee
+    }
+  ]},
+  FieldGroup #Details                   : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : type
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : color_code
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : degre
+    }
+  ]},
+  FieldGroup #Conservation              : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : garde
+    },
+    {
+      $Type             : 'UI.DataField',
+      Criticality       : status.criticality,
+      Value             : status.name,
+      ![@UI.Importance] : #High
+    }
+  ]},
+  FieldGroup #Labels                    : {Data : [
+
+    {
+      $Type : 'UI.DataField',
+      Value : igp
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : aoc
+    }
+  ]},
+  FieldGroup #Price                     : {Data : [
+
+    {
+      $Type : 'UI.DataField',
+      Value : prix
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : volume
+    }
+  ]},
+  FieldGroup #DateData                  : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : createdBy
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : modifiedBy
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : createdAt
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : modifiedAt
+    }
+  ]},
+
+  FieldGroup #Geography                 : {
+    $Type : 'UI.FieldGroupType',
+    Data  : [
+      {
+        $Type : 'UI.DataField',
+        Value : region_subregion,
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : region.region,
+      },
+      {
+        $Type                   : 'UI.DataField',
+        Value                   : region.country_code,
+        ![@Common.FieldControl] : #ReadOnly
+      },
+      {
+        $Type                   : 'UI.DataField',
+        Value                   : region.country.name,
+        ![@Common.FieldControl] : #ReadOnly
+      },
+    ],
+  },
+  Facets                                : [
+    {
+      $Type  : 'UI.CollectionFacet',
+      ID     : 'VinDetails',
+      Label  : '{i18n>details}',
+      Facets : [
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>label}',
+          Target : '@UI.FieldGroup#Labels'
+        },
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>prix}',
+          Target : '@UI.FieldGroup#Price'
+        },
+        {
+          $Type  : 'UI.ReferenceFacet',
+          Label  : '{i18n>temporalData}',
+          Target : '@UI.FieldGroup#DateData'
+        }
+      ],
+
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>assemblage}',
+      Target : 'to_cepages/@UI.PresentationVariant#Vins'
     }
   ],
 });

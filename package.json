@@ -21,8 +21,8 @@
   },
   "scripts": {
     "start": "cds run",
-    "watch-list-vins": "cds watch --open list-vins/webapp/index.html#fe-lrop-v4",
-    "watch-list-cepages": "cds watch --open list-cepages/webapp/index.html#fe-lrop-v4"
+    "watch-customer": "cds watch --open customer-apps/launchpad.html",
+    "watch-retailer": "cds watch --open retailer-apps/launchpad.html"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -85,7 +85,7 @@
         }
       }
     }
-  },
+  }, 
   "sapux": [
     "app/list-vins",
     "app/list-vins",
