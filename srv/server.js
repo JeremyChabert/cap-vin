@@ -1,6 +1,5 @@
 const cds = require('@sap/cds');
 const cors = require('cors');
-const config = require('./config/config');
 const { auth, requiresAuth } = require('express-openid-connect');
 const express = require('express');
 module.exports = cds.server;
