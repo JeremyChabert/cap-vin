@@ -13,7 +13,7 @@ service customer @(
     where
       availability.code != 'B'
     actions {
-      action addToMyCave @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
+      action addToMyCellar @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
     };
 
   @readonly

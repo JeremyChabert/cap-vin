@@ -981,8 +981,8 @@ annotate customer.Vin with @(UI : {
     },
     {
       $Type  : 'UI.DataFieldForAction',
-      Action : 'customer.addToMyCave',
-      Label  : '{i18n>addToMyCave}'
+      Action : 'customer.addToMyCellar',
+      Label  : '{i18n>addToMyCellar}'
     },
     {
       Value : modifiedAt,

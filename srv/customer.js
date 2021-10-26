@@ -75,12 +75,12 @@ module.exports = (srv) => {
   //
   //
   //
-  srv.on('addToMyCave', async (req) => {
-    winston.debug(['ON', 'addToMyCave']);
+  srv.on('addToMyCellar', async (req) => {
+    winston.debug(['ON', 'addToMyCellar']);
     const vin_ID = req.params[0];
     const { quantity } = req.data;
     const createdBy = req.user.id;
-    const wine = await SELECT.one.from(Vin).columns(['ID', 'name','inStockQty']).where({ ID: vin_ID });
+    const wine = await SELECT.one.from(Vin).columns(['ID', 'name', 'inStockQty']).where({ ID: vin_ID });
     const exists = await SELECT.one.from(Cave).columns(['ID', 'quantity']).where({ vin_ID, createdBy });
     let status;
     const modifiedBy = req.user.id;
@@ -121,34 +121,16 @@ module.exports = (srv) => {
         a.ID,
           a.quantity,
           a.vin((b) => {
-            b.ID, b.name, b.inStockQty;
+            b.ID, b.name;
           });
       })
       .where({ ID });
-    const wine = await SELECT.one
-      .from(Vin, (a) => {
-        a.ID, a.inStockQty, a.orderQty;
-      })
-      .where({ ID: exists.vin.ID });
-    if (quantity > wine.inStockQty) {
-      req.error({
-        code: '417',
-        message: `Retailer does not possess the quantity requested. Actual: ${quantity}, Max available: ${wine.inStockQty}`,
-        status: 417,
-      });
-    } else {
-      await UPDATE(Cave, exists.ID).with(`quantity = '${exists.quantity + quantity}'`);
-      await UPDATE(Vin, exists.vin.ID).with(
-        `inStockQty  = ${wine.inStockQty - quantity}, availability_code = ${
-          wine.inStockQty - quantity === 0 ? 'B' : 'C'
-        }`
-      );
-      req.notify({
-        code: '200',
-        message: `${quantity} bottle(s) of ${exists.vin.name} added`,
-        status: 200,
-      });
-    }
+    await UPDATE(Cave, exists.ID).with(`quantity = '${exists.quantity + quantity}'`);
+    req.notify({
+      code: '200',
+      message: `${quantity} bottle(s) of ${exists.vin.name} added`,
+      status: 200,
+    });
   });
   //
   //
