@@ -7,11 +7,13 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^5",
+    "express": "^4.17.1",
+    "express-openid-connect": "^2.5.1",
+    "jsonwebtoken": "^8.5.1",
     "axios": "^0.24.0",
     "chartjs": "^0.3.24",
     "chartjs-chart-matrix": "^1.1.0",
     "cors": "^2.8.5",
-    "express": "^4",
     "passport": "^0.5.0",
     "winston": "^3.3.3",
     "hdb": "^0.18.3"
@@ -67,30 +69,7 @@
         "kind": "hana"
       },
       "auth": {
-        "kind": "dummy-auth",
-        "users": {
-          "vigneronne": {
-            "password": "vigneronne",
-            "roles": [
-              "admin"
-            ]
-          },
-          "customer": {
-            "password": "customer",
-            "roles": [
-              "customer"
-            ]
-          },
-          "customer1": {
-            "password": "customer1",
-            "roles": [
-              "customer"
-            ]
-          }
-        }
-      },
-      "messaging": {
-        "kind": "file-based-messaging"
+        "impl": "srv/config/auth.js"
       }
     },
     "hana": {
