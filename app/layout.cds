@@ -180,7 +180,6 @@ annotate retailer.Vin with @(UI : {
       Value : withdrawFromSaleEnabled,
       ![@UI.Hidden]
     },
-
   ],
   SelectionFields                       : [
     name,
@@ -339,10 +338,9 @@ annotate retailer.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
   Value : name
 }, ]) {
-  ID     @UI.Hidden  @UI.HiddenFilter;
+  ID     @UI.Hidden;
   unit   @UI.Hidden;
   devise @UI.Hidden;
-  prix   @UI.HiddenFilter;
 };
 
 annotate retailer.Vin with @(
@@ -730,6 +728,31 @@ annotate customer.Cave with @(UI : {
       Action : 'customer.addRating',
       Label  : '{i18n>addRating}'
     },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.availability_code,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.inStockQty,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.orderQty,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.unit,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin_ID,
+      ![@UI.Hidden]
+    },
   ],
   DataPoint #rating   : {
     Value         : rating,
@@ -1015,7 +1038,37 @@ annotate customer.Vin with @(UI : {
     {
       Value : color_code,
       ![@UI.Hidden]
-    }
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : availability_code,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : availability.name,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : inStockQty,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : orderQty,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : unit,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : devise_code,
+      ![@UI.Hidden]
+    },
   ],
   SelectionFields                       : [
     name,

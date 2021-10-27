@@ -8,6 +8,10 @@ annotate schema.Vin with @(
   name         @title : '{i18n>name}';
   type         @title : '{i18n>type}';
   volume       @title : '{i18n>volume}';
+  unit         @(
+    title : '{i18n>volumeUnit}',
+    UI.HiddenFilter
+  );
   degre        @(
     title : '{i18n>degre}',
     UI.HiddenFilter
@@ -111,9 +115,9 @@ annotate schema.Cave with @(
   title       : '{i18n>wineCellar}',
   description : '{i18n>wineCellar}',
 ) {
-  ID       @UI.Hidden  @UI.HiddenFilter;
+  ID       @UI.Hidden;
   quantity @(title : '{i18n>quantity}', );
   rating   @title : '{i18n>rating}';
   comment  @title : '{i18n>comment}';
-  vin_ID   @UI.Hidden  @UI.HiddenFilter;
+  vin_ID   @UI.Hidden;
 };
