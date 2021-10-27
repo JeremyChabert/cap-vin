@@ -109,4 +109,4 @@ annotate customer.Vin with @(Capabilities : {FilterRestrictions : {
     'devise_code',
     'availability_code'
   ]
-}})
+}});
