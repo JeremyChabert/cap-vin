@@ -59,7 +59,7 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  reference                                            : String;
+  reference                                            : String @assert.format : '[0-9]{4}-.{3}-.*';
   color                                                : Association to VinColor;
   @Measures :       {ISOCurrency : devise_code, }
   prix                                                 : Decimal(6, 2);

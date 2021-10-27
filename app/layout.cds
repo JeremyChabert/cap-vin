@@ -212,10 +212,6 @@ annotate retailer.Vin with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : name
-    },    
-    {
-      $Type : 'UI.DataField',
-      Value : reference
     },
     {
       $Type : 'UI.DataField',
@@ -223,6 +219,10 @@ annotate retailer.Vin with @(UI : {
     }
   ]},
   FieldGroup #Details                   : {Data : [
+    {
+      $Type : 'UI.DataField',
+      Value : reference
+    },
     {
       $Type : 'UI.DataField',
       Value : type
