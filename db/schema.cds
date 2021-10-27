@@ -200,20 +200,15 @@ type TechnicalBooleanFlag : Boolean @(
 //
 //
 entity LogOfDemand : cuid {
-  @Analytics           :                {Dimension : true, }
   createdAt : DateTime @cds.on.insert : $now;
-  @Aggregation.default :                #SUM
-  @Analytics           :                {Measure : true}
   quantity  : Integer;
-  @Analytics           :                {Dimension : true}
   vin       : Association to one Vin;
-  @Analytics           :                {Dimension : true}
   status    : Association to DemandStatus;
-  year : String(4);
-  month: String(2);
-}
-
-@cds.autoexpose  @readonly : true
+  year      : String(4);
+  month     : String(2);
+};
+// 
+// 
 entity DemandStatus : CodeList {
   key code        : String(1) enum {
         Completed = 'C';
@@ -222,16 +217,12 @@ entity DemandStatus : CodeList {
       };
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
-
 //
 //
 entity LogOfEvent : cuid {
-  @Analytics           :                {Dimension : true}
   createdAt : DateTime @cds.on.insert : $now;
-  @Aggregation.default :                #SUM
-  @Analytics           :                {Dimension : true}
   name      : String;
-}
+};
 
 //
 //
