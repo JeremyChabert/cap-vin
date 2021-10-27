@@ -14,7 +14,12 @@ service customer @(
       availability.code != 'B'
     actions {
       action addToMyCellar @(requires : 'customer')(quantity : Integer not null  @Common.Label : '{i18n>quantity}');
+
     };
+
+  event productSoldOut {
+    reference : UUID;
+  }
 
   @readonly
   entity Region     as projection on cave.Region;
@@ -27,9 +32,8 @@ service customer @(
 
   entity Cave                                      @(restrict : [{
     grant : '*',
-    to    : 'customer',
-    where : 'createdBy = $user'
-  }, ])             as projection on cave.Cave actions {
+    to    : 'customer'
+  }, ])             as projection on cave.Cave where createdBy = $user actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
     action addRating(rating :     Decimal(2, 1)    @(assert.range : [

@@ -1,7 +1,7 @@
 const winston = require('./config/winston');
 
 module.exports = (srv) => {
-  const { Vin, Assemblage, Cepage, VinAnalytics, Cave } = cds.entities('my.cave');
+  const { Vin, Cave, LogOfDemand } = cds.entities('my.cave');
 
   const updateStatus = async () => {
     const vins = await SELECT.from(Vin).columns(['ID', 'status_code', 'annee', 'garde']);
@@ -85,6 +85,7 @@ module.exports = (srv) => {
     let status;
     const modifiedBy = req.user.id;
     if (quantity > wine.inStockQty) {
+      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: false, quantity });
       req.error({
         code: '417',
         message: `Retailer does not possess the quantity requested. Actual: ${quantity}, Max available: ${wine.inStockQty}`,
@@ -103,12 +104,28 @@ module.exports = (srv) => {
           wine.inStockQty - quantity === 0 ? 'B' : 'C'
         }'`
       );
+      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: true, quantity });
+      if (wine.inStockQty - quantity === 0) {
+        const event = {
+          reference: vin_ID,
+        };
+        srv.emit('productSoldOut', event);
+      }
       req.notify({
         code: status.toString(),
         message: `${quantity} bottle(s) of ${wine.name} added to your wine cellar`,
         status,
       });
     }
+  });
+  //
+  //
+  srv.on('retailer.productAvailable', (req) => {
+    req.notify({
+      code: 200,
+      message: `Message received`,
+      status: 200,
+    });
   });
   //
   //
@@ -214,4 +231,7 @@ module.exports = (srv) => {
       status: 201,
     });
   });
+  //
+  //
+
 };

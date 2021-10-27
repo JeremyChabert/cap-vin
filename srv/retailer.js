@@ -79,7 +79,14 @@ module.exports = (srv) => {
     const { quantity } = req.data;
     const wine = await SELECT.one
       .from(Vin, (a) => {
-        a.ID, a.inStockQty, a.orderQty;
+        a.ID,
+          a.name,
+          a.annee,
+          a.inStockQty,
+          a.orderQty,
+          a.color((b) => {
+            b.name;
+          });
       })
       .where({ ID });
     if (quantity > wine.orderQty) {
@@ -98,6 +105,13 @@ module.exports = (srv) => {
         status: 200,
       });
     }
+
+    srv.emit('productAvailable', {
+      name: wine.name,
+      vintage: wine.annee,
+      color: wine.color.name,
+      quantity,
+    });
   });
   //
   //
@@ -128,7 +142,13 @@ module.exports = (srv) => {
     const { quantity } = req.data;
     const wine = await SELECT.one
       .from(Vin, (a) => {
-        a.ID, a.orderQty;
+        a.ID,
+          a.name,
+          a.annee,
+          a.orderQty,
+          a.color((b) => {
+            b.name;
+          });
       })
       .where({ ID });
     await UPDATE(Vin, ID).with(`orderQty  = ${wine.orderQty + quantity},availability_code = 'C'`);
@@ -136,6 +156,13 @@ module.exports = (srv) => {
       code: '200',
       message: `Order for ${quantity} placed`,
       status: 200,
+    });
+
+    srv.emit('productOrdered', {
+      name: wine.name,
+      vintage: wine.annee,
+      color: wine.color.name,
+      quantity,
     });
   });
   //
@@ -145,4 +172,11 @@ module.exports = (srv) => {
     if (vin.inStockQty === 0) vin.orderEnabled = true;
     if (vin.inStockQty > 0) vin.withdrawFromSaleEnabled = true;
   });
+  //
+  //
+  srv.on('productSoldOut', (msg) => {
+    winston.info(['ON',msg.event, msg.data]);
+  });
+  //
+  //
 };

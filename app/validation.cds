@@ -1,8 +1,8 @@
-using {my.cave as cave } from  '../db/schema';
+using {my.cave as cave} from '../db/schema';
 
 // Input validation
 annotate cave.Vin with {
-  ID    @Core.Computed @UI.Hidden;
+  ID    @Core.Computed  @UI.Hidden;
   name  @mandatory;
   type  @mandatory;
   annee @mandatory;
@@ -11,7 +11,7 @@ annotate cave.Vin with {
 
 // Input Assemblage
 annotate cave.Assemblage with {
-  ID          @Core.Computed @UI.Hidden;
+  ID          @Core.Computed  @UI.Hidden;
   cepage_name @mandatory;
 };
 
@@ -22,7 +22,7 @@ annotate cave.Cepage with {
 
 // Input Superficie
 annotate cave.Superficie with {
-  ID          @Core.Computed @UI.Hidden;
+  ID          @Core.Computed  @UI.Hidden;
   to_cepage   @UI.Hidden;
   cepage_name @readonly  @UI.Hidden;
   annee       @mandatory;
@@ -31,15 +31,19 @@ annotate cave.Superficie with {
 
 // Input Cave
 annotate cave.Cave with {
-  ID    @Core.Computed;
+  ID         @Core.Computed;
+  modifiedAt @UI.Hidden;
+  modifiedBy @UI.Hidden;
+  createdAt  @UI.Hidden;
+  createdBy  @UI.Hidden;
 };
 
 // Input RetentionStatus
 annotate cave.AvailabilityStatus with {
-  criticality       @UI.Hidden;
+  criticality @UI.Hidden;
 };
 
 // Input RetentionStatus
 annotate cave.RetentionStatus with {
-  criticality       @UI.Hidden;
+  criticality @UI.Hidden;
 };
