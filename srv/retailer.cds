@@ -21,6 +21,20 @@ service retailer @(
     action withdrawFromSale();
   };
 
+  event productAvailable {
+    name     : String;
+    vintage  : String(4);
+    color    : String;
+    quantity : Integer;
+  }
+
+  event productOrdered {
+    name     : String;
+    vintage  : String(4);
+    color    : String;
+    quantity : Integer;
+  }
+
   extend projection Vin with {
     virtual null as postGoodsEnabled        : Boolean @Core.Computed  @UI.Hidden,
     virtual null as orderEnabled            : Boolean @Core.Computed  @UI.Hidden,

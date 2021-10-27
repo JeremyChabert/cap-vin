@@ -105,12 +105,27 @@ module.exports = (srv) => {
         }'`
       );
       await INSERT.into(LogOfDemand).entries({ vin_ID, completed: true, quantity });
+      if (wine.inStockQty - quantity === 0) {
+        const event = {
+          reference: vin_ID,
+        };
+        srv.emit('productSoldOut', event);
+      }
       req.notify({
         code: status.toString(),
         message: `${quantity} bottle(s) of ${wine.name} added to your wine cellar`,
         status,
       });
     }
+  });
+  //
+  //
+  srv.on('retailer.productAvailable', (req) => {
+    req.notify({
+      code: 200,
+      message: `Message received`,
+      status: 200,
+    });
   });
   //
   //
@@ -216,4 +231,7 @@ module.exports = (srv) => {
       status: 201,
     });
   });
+  //
+  //
+
 };

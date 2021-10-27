@@ -83,6 +83,9 @@
             ]
           }
         }
+      },
+      "messaging": {
+        "kind": "file-based-messaging"
       }
     }
   }, 
