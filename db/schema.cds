@@ -161,6 +161,7 @@ entity Cave                   @(assert.unique : {Cave : [
                    on to_positions.cave = $self;
 };
 
+@cds.autoexpose  @readonly  @cds.odata.valuelist
 entity Region {
   key subregion : String(25);
       region    : String(30);
@@ -178,7 +179,7 @@ type TechnicalBooleanFlag : Boolean @(
   PropertyRestrictions   : true,
   GroupableProperties    : [
     vin.name,
-    completed,
+    status_code,
     quantity
   ],
   AggregatableProperties : [
@@ -188,7 +189,7 @@ type TechnicalBooleanFlag : Boolean @(
     },
     {
       $Type    : 'Aggregation.AggregatablePropertyType',
-      Property : completed,
+      Property : status_code,
     },
     {
       $Type    : 'Aggregation.AggregatablePropertyType',
@@ -199,17 +200,38 @@ type TechnicalBooleanFlag : Boolean @(
 //
 //
 entity LogOfDemand : cuid {
-  @Analytics           :                 {Dimension : true}
-  createdAt : Timestamp @cds.on.insert : $now;
-  @Aggregation.default :                 #SUM
-  @Analytics           :                 {Measure : true}
+  @Analytics           :                {Dimension : true, }
+  createdAt : DateTime @cds.on.insert : $now;
+  @Aggregation.default :                #SUM
+  @Analytics           :                {Measure : true}
   quantity  : Integer;
-  @Analytics           :                 {Dimension : true}
+  @Analytics           :                {Dimension : true}
   vin       : Association to one Vin;
-  @Analytics           :                 {Measure : true}
-  @Aggregation.default :                 #SUM
-  completed : Boolean   @Core.Computed;
+  @Analytics           :                {Dimension : true}
+  status    : Association to DemandStatus;
+  year : String(4);
+  month: String(2);
+}
+
+@cds.autoexpose  @readonly : true
+entity DemandStatus : CodeList {
+  key code        : String(1) enum {
+        Completed = 'C';
+        Delayed   = 'D';
+        Failed    = 'F';
+      };
+      criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
+
+//
+//
+entity LogOfEvent : cuid {
+  @Analytics           :                {Dimension : true}
+  createdAt : DateTime @cds.on.insert : $now;
+  @Aggregation.default :                #SUM
+  @Analytics           :                {Dimension : true}
+  name      : String;
+}
 
 //
 //
