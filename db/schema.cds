@@ -160,3 +160,40 @@ type TechnicalBooleanFlag : Boolean @(
   UI.Hidden,
   Core.Computed
 );
+
+
+@Aggregation : {ApplySupported : {
+  $Type                  : 'Aggregation.ApplySupportedType',
+  PropertyRestrictions   : true,
+  GroupableProperties    : [
+    vin.name,
+    completed,
+    quantity
+  ],
+  AggregatableProperties : [
+    {
+      $Type    : 'Aggregation.AggregatablePropertyType',
+      Property : vin.name,
+    },
+    {
+      $Type    : 'Aggregation.AggregatablePropertyType',
+      Property : completed,
+    },
+    {
+      $Type    : 'Aggregation.AggregatablePropertyType',
+      Property : quantity,
+    },
+  ],
+}, }
+entity LogOfDemand : cuid {
+  @Analytics           :                 {Dimension : true}
+  createdAt : Timestamp @cds.on.insert : $now;
+  @Aggregation.default :                 #SUM
+  @Analytics           :                 {Measure : true}
+  quantity  : Integer;
+  @Analytics           :                 {Dimension : true}
+  vin       : Association to one Vin;
+  @Analytics           :                 {Measure : true}
+  @Aggregation.default :                 #SUM
+  completed : Boolean   @Core.Computed;
+}

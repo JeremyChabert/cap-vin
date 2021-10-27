@@ -6,7 +6,7 @@ service retailer @(
 ) {
 
   @odata.draft.enabled
-  entity Vin                           @(restrict : [
+  entity Vin                            @(restrict : [
     {
       grant : 'READ',
       to    : 'authenticated-user'
@@ -15,26 +15,26 @@ service retailer @(
       grant : '*',
       to    : 'admin'
     }
-  ])                as projection on cave.Vin actions {
-    action postGoods(quantity :  Integer @title : '{i18n>quantity}');
-    action order(quantity :    Integer @title : '{i18n>quantity}');
+  ])                 as projection on cave.Vin actions {
+    action postGoods(quantity : Integer @title : '{i18n>quantity}');
+    action order(quantity :     Integer @title : '{i18n>quantity}');
     action withdrawFromSale();
   };
 
   extend projection Vin with {
-    virtual null as postGoodsEnabled  : Boolean @Core.Computed @UI.Hidden,
-    virtual null as orderEnabled    : Boolean @Core.Computed @UI.Hidden,
-    virtual null as withdrawFromSaleEnabled : Boolean @Core.Computed @UI.Hidden
+    virtual null as postGoodsEnabled        : Boolean @Core.Computed  @UI.Hidden,
+    virtual null as orderEnabled            : Boolean @Core.Computed  @UI.Hidden,
+    virtual null as withdrawFromSaleEnabled : Boolean @Core.Computed  @UI.Hidden
   }
 
-  entity Superficie as projection on cave.Superficie;
+  entity Superficie  as projection on cave.Superficie;
 
   @odata.draft.enabled
-  entity Cepage     as projection on cave.Cepage;
+  entity Cepage      as projection on cave.Cepage;
 
-  entity Region     as projection on cave.Region;
+  entity Region      as projection on cave.Region;
 
-  entity Assemblage as projection on cave.Assemblage {
+  entity Assemblage  as projection on cave.Assemblage {
     * , vin : redirected to Vin, cepage : redirected to Cepage
   };
 
@@ -42,13 +42,13 @@ service retailer @(
     cds.redirection.target : false,
     odata.draft.enabled    : null,
     readonly
-  )                 as projection on cave.ColorCepage;
+  )                  as projection on cave.ColorCepage;
 
   entity TypeBoisson @(
     cds.redirection.target : false,
     odata.draft.enabled    : null,
     readonly
-  )                 as projection on cave.TypeBoisson;
+  )                  as projection on cave.TypeBoisson;
 
   @readonly
   define view VinPerCepage as
@@ -162,4 +162,9 @@ service retailer @(
 
   annotate Cepage with @(Common : {SemanticKey : [name], }, );
 
+  entity LogOfDemand as projection on cave.LogOfDemand {
+    * , 
+     @Aggregation.default : #SUM
+     1 as counter : Integer
+  }
 };
