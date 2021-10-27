@@ -83,7 +83,7 @@ module.exports = (srv) => {
     let status;
     const modifiedBy = req.user.id;
     if (quantity > wine.inStockQty) {
-      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: false, quantity });
+      srv.emit('registerDemand',{ vin_ID, status_code: 'F', quantity })
       req.error({
         code: '417',
         message: `Retailer does not possess the quantity requested. Actual: ${quantity}, Max available: ${wine.inStockQty}`,
@@ -102,7 +102,7 @@ module.exports = (srv) => {
           wine.inStockQty - quantity === 0 ? 'B' : 'C'
         }'`
       );
-      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: true, quantity });
+      srv.emit('registerDemand',{ vin_ID, status_code: 'C', quantity })
       if (wine.inStockQty - quantity === 0) {
         const event = {
           reference: vin_ID,

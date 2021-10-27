@@ -24,9 +24,19 @@ service customer @(
 
     };
 
+  //
+  //
   event productSoldOut {
     reference : UUID;
-  }
+  };
+
+  //
+  //
+  event registerDemand {
+    vin_ID   : UUID;
+    quantity : Integer;
+    status_code   : String;
+  };
 
   @readonly
   entity Region     as projection on cave.Region;
