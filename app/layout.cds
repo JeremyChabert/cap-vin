@@ -14,6 +14,7 @@ annotate retailer.Vin with @(UI : {
     PresentationVariant : {
       $Type           : 'UI.PresentationVariantType',
       RequestAtLeast  : [
+        reference,
         name,
         annee,
         color.name,
@@ -62,6 +63,11 @@ annotate retailer.Vin with @(UI : {
     Target : '@UI.FieldGroup#Labels',
   }, ],
   LineItem                              : [
+    {
+      Value             : reference,
+      ![@UI.Importance] : #High,
+      ![@UI.Emphasized] : true,
+    },
     {
       Value             : name,
       ![@UI.Importance] : #High,
@@ -206,6 +212,10 @@ annotate retailer.Vin with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : name
+    },    
+    {
+      $Type : 'UI.DataField',
+      Value : reference
     },
     {
       $Type : 'UI.DataField',
@@ -336,7 +346,7 @@ annotate retailer.Vin with @(UI : {
 
 annotate retailer.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
-  Value : name
+  Value : reference
 }, ]) {
   ID     @UI.Hidden;
   unit   @UI.Hidden;
@@ -1067,6 +1077,11 @@ annotate customer.Vin with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : devise_code,
+      ![@UI.Hidden]
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : reference,
       ![@UI.Hidden]
     },
   ],

@@ -100,7 +100,7 @@ service retailer @(
   }, }
   define view VinAnalytics as
     select from Vin {
-      key ID,
+      key reference,
           name,
           devise,
           @Analytics           : {
@@ -177,8 +177,8 @@ service retailer @(
   annotate Cepage with @(Common : {SemanticKey : [name], }, );
 
   entity LogOfDemand as projection on cave.LogOfDemand {
-    * , 
-     @Aggregation.default : #SUM
-     1 as counter : Integer
+    * ,
+    @Aggregation.default : #SUM
+    1 as counter : Integer
   }
 };

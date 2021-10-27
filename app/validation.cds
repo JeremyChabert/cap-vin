@@ -2,11 +2,12 @@ using {my.cave as cave} from '../db/schema';
 
 // Input validation
 annotate cave.Vin with {
-  ID    @Core.Computed  @UI.Hidden;
-  name  @mandatory;
-  type  @mandatory;
-  annee @mandatory;
-  color @mandatory;
+  ID        @Core.Computed  @UI.Hidden;
+  reference @mandatory;
+  name      @mandatory;
+  type      @mandatory;
+  annee     @mandatory;
+  color     @mandatory;
 };
 
 // Input Assemblage

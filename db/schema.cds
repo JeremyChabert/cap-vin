@@ -59,6 +59,7 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
+  reference                                            : String;
   color                                                : Association to VinColor;
   @Measures :       {ISOCurrency : devise_code, }
   prix                                                 : Decimal(6, 2);

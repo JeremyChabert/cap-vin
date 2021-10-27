@@ -39,6 +39,7 @@ annotate service.Vin with @Capabilities : {
     Filterable              : true,
     NonFilterableProperties : [
       'ID',
+      'reference',
       'unit',
       'volume',
       'orderEnabled',
@@ -107,6 +108,7 @@ annotate customer.Vin with @(Capabilities : {FilterRestrictions : {
     'orderQty',
     'inStockQty',
     'devise_code',
-    'availability_code'
+    'availability_code',
+    'reference'
   ]
 }});

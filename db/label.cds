@@ -5,6 +5,7 @@ annotate schema.Vin with @(
   description : '{i18n>vin}',
 
 ) {
+  reference    @title : '{i18n>reference}';
   name         @title : '{i18n>name}';
   type         @title : '{i18n>type}';
   volume       @title : '{i18n>volume}';
