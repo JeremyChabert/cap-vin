@@ -95,7 +95,7 @@
           "options": {
             "settings": {
               "entitySet": "Vin",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#SPVPath",
               "initialLoad": true,
               "navigation": {
