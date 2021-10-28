@@ -32,8 +32,9 @@ service customer @(
 
   entity Cave                                      @(restrict : [{
     grant : '*',
-    to    : 'customer'
-  }, ])             as projection on cave.Cave where createdBy = $user actions {
+    to    : 'customer',
+    where : 'createdBy = $user'
+  }, ])             as projection on cave.Cave actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
     action addRating(rating :     Decimal(2, 1)    @(assert.range : [
