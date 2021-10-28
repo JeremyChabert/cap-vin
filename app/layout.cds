@@ -639,7 +639,7 @@ annotate retailer.Superficie with @UI : {
 };
 
 annotate customer.Cave with @(UI : {
-  Identification      : [
+  Identification       : [
     {
       $Type : 'UI.DataField',
       Value : vin.name
@@ -651,6 +651,17 @@ annotate customer.Cave with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : vin.color.name
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.type
+    },
+    {
+      $Type              : 'UI.DataFieldForAction',
+      Label              : '{i18n>addQty}',
+      Action             : 'customer.addQty',
+      Determining : true,
+      ![@UI.Importance]  : #High
     },
     {
       $Type              : 'UI.DataFieldForAction',
@@ -667,12 +678,11 @@ annotate customer.Cave with @(UI : {
       ![@UI.Importance]  : #High
     }
   ],
-  PresentationVariant : {
+  PresentationVariant  : {
     $Type           : 'UI.PresentationVariantType',
     SelectionFields : [
       vin.name,
       vin.annee,
-      vin.type
     ],
     SortOrder       : [
       {
@@ -685,13 +695,12 @@ annotate customer.Cave with @(UI : {
       },
     ],
   },
-  SelectionFields     : [
+  SelectionFields      : [
     vin.name,
     vin.annee,
-    vin.type,
-    rating
+    rating,
   ],
-  LineItem            : [
+  LineItem             : [
     {
       $Type : 'UI.DataField',
       Value : vin.name,
@@ -703,6 +712,10 @@ annotate customer.Cave with @(UI : {
     {
       $Type : 'UI.DataField',
       Value : vin.color_code,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : vin.type,
     },
     {
       $Type : 'UI.DataField',
@@ -764,17 +777,66 @@ annotate customer.Cave with @(UI : {
       ![@UI.Hidden]
     },
   ],
-  DataPoint #rating   : {
+  DataPoint #rating    : {
     Value         : rating,
     Visualization : #Rating,
     TargetValue   : 5
   },
-  HeaderInfo          : {
+  HeaderInfo           : {
     $Type          : 'UI.HeaderInfoType',
+    Title          : {
+      $Type : 'UI.DataField',
+      Value : vin.name,
+    },
+    ImageUrl       : 'sap-icon://blur',
     TypeName       : '{i18n>vin}',
     TypeNamePlural : '{i18n>vins}',
   },
-  Facets              : [
+  HeaderFacets         : [
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Details',
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Target : '@UI.FieldGroup#Quantity',
+    },
+  ],
+  FieldGroup #Details  : {
+    $Type : 'UI.FieldGroupType',
+    Data  : [
+      {
+        $Type : 'UI.DataField',
+        Value : vin.name,
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : vin.annee,
+      },
+      {
+        $Type : 'UI.DataField',
+        Value : vin.color.name,
+        Label : '{i18n>color}'
+      },
+    ],
+  },
+  FieldGroup #Quantity : {
+    $Type : 'UI.FieldGroupType',
+    Data  : [
+      {
+        $Type : 'UI.DataField',
+        Value : quantity,
+      },
+      {
+        $Type                     : 'UI.DataField',
+        Criticality               : vin.status.criticality,
+        Value                     : vin.status.name,
+        CriticalityRepresentation : #WithoutIcon,
+      },
+
+    ],
+  },
+  Facets               : [
     {
       $Type  : 'UI.ReferenceFacet',
       Target : 'vin/@UI.FieldGroup#Details',
