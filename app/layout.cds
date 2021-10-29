@@ -855,6 +855,11 @@ annotate customer.Cave with @(UI : {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>assemblage}',
       Target : 'vin/to_cepages/@UI.PresentationVariant#Vins'
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>location}',
+      Target : 'to_positions/@UI.LineItem#Storage'
     }
   ],
 });
@@ -1301,3 +1306,14 @@ annotate customer.Vin with @(UI : {
     }
   ],
 });
+
+annotate customer.Position with @UI : {LineItem #Storage : [
+  {
+    $Type : 'UI.DataField',
+    Value : positionY,
+  },
+  {
+    $Type : 'UI.DataField',
+    Value : positionX,
+  },
+], };
