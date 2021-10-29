@@ -26,7 +26,8 @@
   "scripts": {
     "start": "cds run",
     "watch-customer": "cds watch --open customer-apps/launchpad.html",
-    "watch-retailer": "cds watch --open retailer-apps/launchpad.html"
+    "watch-retailer": "cds watch --open retailer-apps/launchpad.html",
+    "deploy:sql":"cds deploy -2 sqlite:cave.db"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -63,7 +64,10 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "model": "*"
+        "model": "*",
+        "credentials": {
+          "database": "cave.db"
+        }
       },
       "auth": {
         "kind": "dummy-auth",
