@@ -2,6 +2,7 @@ const cds = require('@sap/cds');
 const cors = require('cors');
 const { auth, requiresAuth } = require('express-openid-connect');
 const express = require('express');
+const config = require('./config/config');
 module.exports = cds.server;
 
 async function getPlotChart(req, res, next) {
@@ -32,7 +33,7 @@ const settings = {
     response_type: "code",
     scope: "openid",
     audience: "https://my-wine-app-api.com",
-  },
+  }
 };
 
 cds.on('bootstrap', (app) => {
@@ -46,6 +47,8 @@ cds.on('bootstrap', (app) => {
   app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
   });
+
+  app.get('/getPlotChart', requiresAuth(), getPlotChart);
 
   app.use('/', requiresAuth());  //protect app from root fo
 });
