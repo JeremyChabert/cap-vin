@@ -59,26 +59,26 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  reference                                            : String @assert.format : '[0-9]{4}-.{3}-.*';
-  color                                                : Association to VinColor;
-  @Measures :       {ISOCurrency : devise_code, }
-  prix                                                 : Decimal(6, 2);
-  devise                                               : Currency;
-  igp                                                  : Boolean default false;
-  aoc                                                  : Boolean default false;
-  region                                               : Association to Region;
-  @Measures :       {Unit : '{i18n>anneeGarde}'} garde : Integer
-    @assert.range : [
+  reference    : String @assert.format : '[0-9]{4}-.{3}-.*';
+  color        : Association to VinColor;
+  @Measures :                            {ISOCurrency : devise_code, }
+  prix         : Decimal(6, 2);
+  devise       : Currency;
+  igp          : Boolean default false;
+  aoc          : Boolean default false;
+  region       : Association to Region;
+  @Measures :                            {Unit : '{i18n>anneeGarde}'} garde : Integer
+                        @assert.range  : [
       1,
       20
     ] default 1;
-  to_cepages                                           : Composition of many Assemblage
-                                                           on to_cepages.vin = $self;
-  inStockQty                                           : Integer default 0;
-  orderQty                                             : Integer default 0;
+  to_cepages   : Composition of many Assemblage
+                   on to_cepages.vin = $self;
+  inStockQty   : Integer default 0;
+  orderQty     : Integer default 0;
   @Core.Computed
-  status                                               : Association to RetentionStatus;
-  availability                                         : Association to AvailabilityStatus;
+  status       : Association to RetentionStatus;
+  availability : Association to AvailabilityStatus;
 };
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
@@ -139,18 +139,20 @@ entity AvailabilityStatus : CodeList {
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
 
-entity Cave               @(assert.unique : {Cave : [
+entity Cave                   @(assert.unique : {Cave : [
   vin,
   createdBy
 ]}) : cuid, managed {
-  vin      : Association to one Vin;
-  @Measures :                             {Unit : '{i18n>bottles}'}
-  quantity : Integer;
-  rating   : Decimal(2, 1)@assert.range : [
+  vin          : Association to one Vin;
+  @Measures :                                 {Unit : '{i18n>bottles}'}
+  quantity     : Integer;
+  rating       : Decimal(2, 1)@assert.range : [
     0.0,
     5.0
   ];
-  comment  : String;
+  comment      : String;
+  to_positions : Association to many Position
+                   on to_positions.cave = $self;
 };
 
 entity Region {
@@ -188,6 +190,8 @@ type TechnicalBooleanFlag : Boolean @(
     },
   ],
 }, }
+//
+//
 entity LogOfDemand : cuid {
   @Analytics           :                 {Dimension : true}
   createdAt : Timestamp @cds.on.insert : $now;
@@ -199,4 +203,13 @@ entity LogOfDemand : cuid {
   @Analytics           :                 {Measure : true}
   @Aggregation.default :                 #SUM
   completed : Boolean   @Core.Computed;
-}
+};
+
+//
+//
+@cds.autoexpose
+entity Position : cuid, managed {
+  positionX    : Integer;
+  positionY : Integer;
+  cave   : Association to Cave;
+};

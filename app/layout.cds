@@ -652,11 +652,11 @@ annotate customer.Cave with @(UI : {
       Value : vin.type
     },
     {
-      $Type              : 'UI.DataFieldForAction',
-      Label              : '{i18n>addQty}',
-      Action             : 'customer.addQty',
-      Determining : true,
-      ![@UI.Importance]  : #High
+      $Type             : 'UI.DataFieldForAction',
+      Label             : '{i18n>addQty}',
+      Action            : 'customer.addQty',
+      Determining       : true,
+      ![@UI.Importance] : #High
     },
     {
       $Type              : 'UI.DataFieldForAction',
@@ -669,6 +669,13 @@ annotate customer.Cave with @(UI : {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addRating}',
       Action             : 'customer.addRating',
+      InvocationGrouping : #Isolated,
+      ![@UI.Importance]  : #High
+    },
+    {
+      $Type              : 'UI.DataFieldForAction',
+      Label              : '{i18n>addToStorage}',
+      Action             : 'customer.addToStorage',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     }
@@ -848,6 +855,11 @@ annotate customer.Cave with @(UI : {
       $Type  : 'UI.ReferenceFacet',
       Label  : '{i18n>assemblage}',
       Target : 'vin/to_cepages/@UI.PresentationVariant#Vins'
+    },
+    {
+      $Type  : 'UI.ReferenceFacet',
+      Label  : '{i18n>location}',
+      Target : 'to_positions/@UI.LineItem#Storage'
     }
   ],
 });
@@ -1294,3 +1306,14 @@ annotate customer.Vin with @(UI : {
     }
   ],
 });
+
+annotate customer.Position with @UI : {LineItem #Storage : [
+  {
+    $Type : 'UI.DataField',
+    Value : positionY,
+  },
+  {
+    $Type : 'UI.DataField',
+    Value : positionX,
+  },
+], };

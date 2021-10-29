@@ -122,3 +122,12 @@ annotate schema.Cave with @(
   comment  @title : '{i18n>comment}';
   vin_ID   @UI.Hidden;
 };
+
+annotate schema.Position with @(
+  title       : '{i18n>location}',
+  description : '{i18n>location}'
+) {
+  ID        @UI.Hidden;
+  positionX @(title : '{i18n>positionX}');
+  positionY @(title : '{i18n>positionY}')
+}

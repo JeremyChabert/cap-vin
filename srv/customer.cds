@@ -30,11 +30,17 @@ service customer @(
   @readonly
   entity Cepage     as projection on cave.Cepage;
 
+  @readonly
+  entity Position   as projection on cave.Position;
+
   entity Cave                                      @(restrict : [{
     grant : '*',
     to    : 'customer',
     where : 'createdBy = $user'
-  }, ])             as projection on cave.Cave actions {
+  }, ])             as projection on cave.Cave {
+
+    * , to_positions : redirected to Position
+  } actions {
     action withdrawQty(quantity : Integer not null @Common.Label : '{i18n>quantity}');
     action addQty(quantity :      Integer not null @Common.Label : '{i18n>quantity}');
     action addRating(rating :     Decimal(2, 1)    @(assert.range : [
@@ -42,6 +48,7 @@ service customer @(
       5.0
     ])                                             @Common.Label : '{i18n>rating}');
     action addComment(comment :   String not null  @Common.Label : '{i18n>comment}');
+    action addToStorage(column :  Integer          @title        : '{i18n>column}', row : Integer @title : '{i18n>row}')
   };
 
   annotate Cave with @(Common : {SemanticKey : [ID]});
@@ -133,4 +140,34 @@ service customer @(
     order by
       millesime,
       color;
+
+  define view Storage @(restrict : [{
+    grant : '*',
+    to    : 'customer',
+    where : 'createdBy = $user'
+  }, ]) as
+    select from cave.Position {
+      @Analytics : {
+        Dimension : true, Measure : true
+      }
+      positionX,
+      @Analytics : {
+        Dimension : true, Measure : true
+      }
+      positionY,
+      @Analytics : {
+        Dimension : true
+      }
+      cave.vin.name as name,
+      @Analytics : {
+        Dimension : true
+      }
+      ID            as positionID,
+      @Analytics : {
+        Measure : true, Dimension : true
+      }
+      1             as counter : Integer,
+      createdBy
+    };
+
 }

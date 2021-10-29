@@ -1,7 +1,7 @@
 const winston = require('./config/winston');
 
 module.exports = (srv) => {
-  const { Vin, Cave, LogOfDemand } = cds.entities('my.cave');
+  const { Vin, Cave, LogOfDemand, Position } = cds.entities('my.cave');
 
   const updateStatus = async () => {
     const vins = await SELECT.from(Vin).columns(['ID', 'status_code', 'annee', 'garde']);
@@ -233,5 +233,38 @@ module.exports = (srv) => {
   });
   //
   //
-
+  srv.on('addToStorage', async (req) => {
+    winston.debug(['ON', 'addToStorage']);
+    const ID = req.params[0];
+    const { row: positionX, column: positionY } = req.data;
+    const createdBy = req.user.id;
+    const wine = await SELECT.one.from(Cave).where({ ID });
+    const existingPositionsForWine = await SELECT(Position).where({ cave_ID: ID });
+    const occupiedPosition = await SELECT.one.from(Position, (a) => {
+      a.cave((b) => {
+        b.vin((c) => {
+          c.name,
+            c.annee,
+            c.color((d) => {
+              d.name;
+            });
+        });
+      });
+    }).where({ createdBy, positionX, positionY });
+    if (existingPositionsForWine.length >= wine.quantity) {
+      req.error({
+        code: '417',
+        message: `You cannot store more wine that you possess`,
+        status: 417,
+      });
+    } else if (occupiedPosition) {
+      req.error({
+        code: '417',
+        message: `Position already occupied by ${occupiedPosition.cave.vin.name} - ${occupiedPosition.cave.vin.annee} - ${occupiedPosition.cave.vin.color.name}`,
+        status: 417,
+      });
+    } else {
+      await INSERT.into(Position).entries({ cave_ID: ID, positionX, positionY, createdBy });
+    }
+  });
 };

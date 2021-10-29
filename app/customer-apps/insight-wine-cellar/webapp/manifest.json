@@ -159,6 +159,19 @@
           "entitySet": "CellarAnalytics",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#VinPerYearColor"
         }
+      },
+      "card06": {
+        "model": "mainService",
+        "template": "sap.ovp.cards.v4.charts.analytical",
+        "chartType": "cardchartsscatter",
+        "chartSettings": {
+          "showDataLabel":true
+        },
+        "settings": {
+          "title": "{{positionScatterChart}}",
+          "entitySet": "Storage",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+        }
       }
     }
   }
