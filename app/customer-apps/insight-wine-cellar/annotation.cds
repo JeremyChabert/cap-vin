@@ -89,7 +89,7 @@ annotate service.CellarAnalytics with @UI : {
   },
   Chart #VinPerNameQuantity              : {
     $Type               : 'UI.ChartDefinitionType',
-    ChartType           : #Bar, 
+    ChartType           : #Bar,
     Title               : '{i18n>donutChartColorVin}',
     Dimensions          : [
       'name',
@@ -101,22 +101,18 @@ annotate service.CellarAnalytics with @UI : {
         Dimension : 'name',
         Role      : #Category
       },
-            {
+      {
         $Type     : 'UI.ChartDimensionAttributeType',
         Dimension : 'color',
         Role      : #Category2
       },
     ],
-    Measures            : [
-      'quantity',
-    ],
-    MeasureAttributes   : [
-      {
-        $Type   : 'UI.ChartMeasureAttributeType',
-        Measure : 'quantity',
-        Role    : #Axis1
-      },
-    ]
+    Measures            : ['quantity', ],
+    MeasureAttributes   : [{
+      $Type   : 'UI.ChartMeasureAttributeType',
+      Measure : 'quantity',
+      Role    : #Axis1
+    }, ]
   },
   Chart #VinPerYearColor                 : {
     $Type               : 'UI.ChartDefinitionType',
@@ -190,4 +186,70 @@ annotate service.CellarAnalytics with @UI : {
       Role    : #Axis1
     }]
   },
+};
+
+
+annotate customer.Storage with @UI : {
+  LineItem            : [
+    {
+      $Type : 'UI.DataField',
+      Value : name,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : positionX,
+    },
+    {
+      $Type : 'UI.DataField',
+      Value : positionY,
+    },
+  ],
+  Chart               : {
+    $Type               : 'UI.ChartDefinitionType',
+    ChartType           : #Scatter,
+    Dimensions          : [
+      positionID,
+    ],
+    DimensionAttributes : [{
+      $Type     : 'UI.ChartDimensionAttributeType',
+      Dimension : positionID,
+      Role      : #Series,
+    }],
+    Measures            : [
+      positionX,
+      positionY,
+      counter
+    ],
+    MeasureAttributes   : [
+      {
+        $Type   : 'UI.ChartMeasureAttributeType',
+        Role    : #Axis1,
+        Measure : positionX,
+      },
+      {
+        $Type   : 'UI.ChartMeasureAttributeType',
+        Role    : #Axis2,
+        Measure : positionY,
+      },
+
+    ],
+  },
+  PresentationVariant : {
+    $Type          : 'UI.PresentationVariantType',
+    SortOrder      : [
+      {
+        $Type    : 'Common.SortOrderType',
+        Property : positionX,
+      },
+      {
+        $Type    : 'Common.SortOrderType',
+        Property : positionY,
+      },
+    ],
+    Visualizations : ['@UI.Chart', ],
+
+  },
+  
+}{
+  positionID @Common.Text : name  @Common.TextArrangement : #TextOnly
 };
