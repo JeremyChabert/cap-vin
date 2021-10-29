@@ -1,7 +1,7 @@
 const winston = require('./config/winston');
 
 module.exports = (srv) => {
-  const { Vin, Cave, LogOfDemand } = cds.entities('my.cave');
+  const { Vin, Cave, LogOfDemand, Position } = cds.entities('my.cave');
 
   const updateStatus = async () => {
     const vins = await SELECT.from(Vin).columns(['ID', 'status_code', 'annee', 'garde']);
@@ -233,5 +233,11 @@ module.exports = (srv) => {
   });
   //
   //
-
+  srv.on('addToStorage', async (req) => {
+    winston.debug(['ON', 'addToStorage']);
+    const ID = req.params[0];
+    const { row, column } = req.data;
+    const createdBy = req.user.id;
+    await INSERT.into(Position).entries({ cave_ID: ID, positionX: row, positionY: column, createdBy });
+  });
 };

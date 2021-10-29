@@ -98,6 +98,7 @@ annotate customer.Cave with @(Capabilities : {FilterRestrictions : {
   withdrawQty               @(Common.SideEffects.TargetProperties : ['in/quantity', ], );
   addRating                 @(Common.SideEffects.TargetProperties : ['in/rating', ], );
   addComment                @(Common.SideEffects.TargetProperties : ['in/comment', ], );
+  addToStorage;
 };
 
 annotate customer.Vin with @(Capabilities : {FilterRestrictions : {

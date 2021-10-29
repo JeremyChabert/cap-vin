@@ -652,11 +652,11 @@ annotate customer.Cave with @(UI : {
       Value : vin.type
     },
     {
-      $Type              : 'UI.DataFieldForAction',
-      Label              : '{i18n>addQty}',
-      Action             : 'customer.addQty',
-      Determining : true,
-      ![@UI.Importance]  : #High
+      $Type             : 'UI.DataFieldForAction',
+      Label             : '{i18n>addQty}',
+      Action            : 'customer.addQty',
+      Determining       : true,
+      ![@UI.Importance] : #High
     },
     {
       $Type              : 'UI.DataFieldForAction',
@@ -669,6 +669,13 @@ annotate customer.Cave with @(UI : {
       $Type              : 'UI.DataFieldForAction',
       Label              : '{i18n>addRating}',
       Action             : 'customer.addRating',
+      InvocationGrouping : #Isolated,
+      ![@UI.Importance]  : #High
+    },
+    {
+      $Type              : 'UI.DataFieldForAction',
+      Label              : '{i18n>addToStorage}',
+      Action             : 'customer.addToStorage',
       InvocationGrouping : #Isolated,
       ![@UI.Importance]  : #High
     }
