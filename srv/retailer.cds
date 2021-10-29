@@ -8,13 +8,9 @@ service retailer @(
   @odata.draft.enabled
   entity Vin                            @(restrict : [
     {
-      grant : 'READ',
-      to    : 'authenticated-user'
-    },
-    {
       grant : '*',
       to    : 'admin'
-    }
+    },
   ])                 as projection on cave.Vin actions {
     action postGoods(quantity : Integer @title : '{i18n>quantity}');
     action order(quantity :     Integer @title : '{i18n>quantity}');
@@ -168,12 +164,7 @@ service retailer @(
     order by
       annee;
 
-  annotate Vin with @(Common : {SemanticKey : [
-    name,
-    annee,
-    color_code
-  ]});
-
+  annotate Vin with @(Common : {SemanticKey : [ID]});
   annotate Cepage with @(Common : {SemanticKey : [name], }, );
 
   entity LogOfDemand as projection on cave.LogOfDemand {

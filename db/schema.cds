@@ -111,11 +111,13 @@ entity Biere : Boisson {
   devise : Currency;
 };
 
+@cds.autoexpose @readonly
 define view ColorCepage as
   select from Cepage distinct {
     key color as ID : String
   };
 
+@cds.autoexpose @readonly
 define view TypeBoisson as
   select from Vin distinct {
     key type as ID : String

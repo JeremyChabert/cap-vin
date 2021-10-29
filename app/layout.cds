@@ -346,25 +346,20 @@ annotate retailer.Vin with @(UI : {
 
 annotate retailer.Vin with @(UI.Identification : [{
   $Type : 'UI.DataField',
-  Value : reference
+  Value : ID
 }, ]) {
   ID     @UI.Hidden;
   unit   @UI.Hidden;
   devise @UI.Hidden;
 };
 
-annotate retailer.Vin with @(
-  UI.TextArrangement : #TextOnly,
-  cds.odata.valuelist
-);
-
 annotate retailer.VinColor with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
-}
+};
 
 annotate retailer.RetentionStatus with {
   code @Common.Text : name  @Common.TextArrangement : #TextOnly
-}
+};
 /*-------------------
 * Assemblage
 *-------------------*/
