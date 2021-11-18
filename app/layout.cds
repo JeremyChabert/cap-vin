@@ -378,10 +378,10 @@ annotate retailer.Assemblage with @UI : {
     ID              : 'idVinsPresVar',
     $Type           : 'UI.PresentationVariantType',
     Visualizations  : ['@UI.LineItem#Vins'],
-    SelectionFields : [cepage_name],
+    SelectionFields : [cepage.name],
     SortOrder       : [{
       $Type    : 'Common.SortOrderType',
-      Property : cepage_name,
+      Property : cepage.name,
     }, ],
 
   },
@@ -424,7 +424,7 @@ annotate retailer.Assemblage with @UI : {
   LineItem #Vins               : [
     {
       $Type : 'UI.DataField',
-      Value : cepage_name,
+      Value : cepage.name,
       Label : '{i18n>cepage}',
     },
     {
@@ -463,7 +463,7 @@ annotate retailer.Assemblage with @UI : {
   FieldGroup #Description      : {Data : [
     {
       $Type : 'UI.DataField',
-      Value : cepage_name
+      Value : cepage.name
     },
     {
       $Type : 'UI.DataField',
@@ -755,17 +755,7 @@ annotate customer.Cave with @(UI : {
     },
     {
       $Type : 'UI.DataField',
-      Value : vin.availability_code,
-      ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
       Value : vin.inStockQty,
-      ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : vin.orderQty,
       ![@UI.Hidden]
     },
     {
@@ -878,10 +868,10 @@ annotate customer.Assemblage with @UI : {
     ID              : 'idVinsPresVar',
     $Type           : 'UI.PresentationVariantType',
     Visualizations  : ['@UI.LineItem#Vins'],
-    SelectionFields : [cepage_name],
+    SelectionFields : [cepage.name],
     SortOrder       : [{
       $Type    : 'Common.SortOrderType',
-      Property : cepage_name,
+      Property : cepage.name,
     }, ],
 
   },
@@ -924,7 +914,7 @@ annotate customer.Assemblage with @UI : {
   LineItem #Vins               : [
     {
       $Type : 'UI.DataField',
-      Value : cepage_name,
+      Value : cepage.name,
       Label : '{i18n>cepage}',
     },
     {
@@ -963,7 +953,7 @@ annotate customer.Assemblage with @UI : {
   FieldGroup #Description      : {Data : [
     {
       $Type : 'UI.DataField',
-      Value : cepage_name
+      Value : cepage.name
     },
     {
       $Type : 'UI.DataField',
@@ -1087,22 +1077,6 @@ annotate customer.Vin with @(UI : {
       Label  : '{i18n>addToMyCellar}'
     },
     {
-      Value : modifiedAt,
-      ![@UI.Hidden]
-    },
-    {
-      Value : createdAt,
-      ![@UI.Hidden]
-    },
-    {
-      Value : modifiedBy,
-      ![@UI.Hidden]
-    },
-    {
-      Value : createdBy,
-      ![@UI.Hidden]
-    },
-    {
       Value : status_code,
       ![@UI.Hidden]
     },
@@ -1120,22 +1094,7 @@ annotate customer.Vin with @(UI : {
     },
     {
       $Type : 'UI.DataField',
-      Value : availability_code,
-      ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : availability.name,
-      ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
       Value : inStockQty,
-      ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : orderQty,
       ![@UI.Hidden]
     },
     {
@@ -1147,12 +1106,7 @@ annotate customer.Vin with @(UI : {
       $Type : 'UI.DataField',
       Value : devise_code,
       ![@UI.Hidden]
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : reference,
-      ![@UI.Hidden]
-    },
+    }
   ],
   SelectionFields                       : [
     name,
@@ -1233,25 +1187,6 @@ annotate customer.Vin with @(UI : {
       Value : volume
     }
   ]},
-  FieldGroup #DateData                  : {Data : [
-    {
-      $Type : 'UI.DataField',
-      Value : createdBy
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : modifiedBy
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : createdAt
-    },
-    {
-      $Type : 'UI.DataField',
-      Value : modifiedAt
-    }
-  ]},
-
   FieldGroup #Geography                 : {
     $Type : 'UI.FieldGroupType',
     Data  : [
@@ -1290,11 +1225,6 @@ annotate customer.Vin with @(UI : {
           $Type  : 'UI.ReferenceFacet',
           Label  : '{i18n>prix}',
           Target : '@UI.FieldGroup#Price'
-        },
-        {
-          $Type  : 'UI.ReferenceFacet',
-          Label  : '{i18n>temporalData}',
-          Target : '@UI.FieldGroup#DateData'
         }
       ],
 
