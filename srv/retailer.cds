@@ -6,13 +6,17 @@ service retailer @(
 ) {
 
   @odata.draft.enabled
-  entity Vin                            @(restrict : [{
+  entity Vin                                                      @(restrict : [{
     grant : '*',
     to    : 'admin'
   }, ])              as projection on cave.Vin actions {
-    action postGoods(quantity : Integer @title : '{i18n>quantity}');
-    action order(quantity :     Integer @title : '{i18n>quantity}');
+    action postGoods(quantity :     Integer                       @title : '{i18n>quantity}');
+    action order(quantity :         Integer                       @title : '{i18n>quantity}');
     action withdrawFromSale();
+    action addGrapeVariety(cepage_ID : UUID ,pourcent : Integer @(assert.range : [
+      1,
+      100
+    ])) returns                     Assemblage
   };
 
   event productAvailable {
@@ -33,7 +37,7 @@ service retailer @(
     virtual null as postGoodsEnabled        : Boolean @Core.Computed  @UI.Hidden,
     virtual null as orderEnabled            : Boolean @Core.Computed  @UI.Hidden,
     virtual null as withdrawFromSaleEnabled : Boolean @Core.Computed  @UI.Hidden
-  }
+  };
 
   entity Superficie  as projection on cave.Superficie;
 
@@ -43,7 +47,8 @@ service retailer @(
   entity Region      as projection on cave.Region;
 
   entity Assemblage  as projection on cave.Assemblage {
-    * , vin : redirected to Vin, cepage : redirected to Cepage
+    * , vin : redirected to Vin, cepage : redirected to Cepage,
+
   };
 
   entity ColorCepage @(
@@ -162,9 +167,6 @@ service retailer @(
     }
     order by
       annee;
-
-  annotate Vin with @(Common : {SemanticKey : [ID]});
-  annotate Cepage with @(Common : {SemanticKey : [name], }, );
 
   entity LogOfDemand as projection on cave.LogOfDemand {
     * ,

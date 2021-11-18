@@ -101,9 +101,9 @@ annotate schema.Assemblage with {
     CollectionPath : 'Cepage',
     Parameters     : [
       {
-        $Type             : 'Common.ValueListParameterInOut',
-        LocalDataProperty : cepage_name,
-        ValueListProperty : 'name',
+        $Type             : 'Common.ValueListParameterOut',
+        LocalDataProperty : cepage_ID,
+        ValueListProperty : 'ID',
       },
       {
         $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -113,6 +113,7 @@ annotate schema.Assemblage with {
         $Type             : 'Common.ValueListParameterDisplayOnly',
         ValueListProperty : 'color',
       },
+
     ],
   }, }
 };

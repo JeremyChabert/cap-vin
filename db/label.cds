@@ -66,7 +66,21 @@ annotate schema.Assemblage with @(
   title       : '{i18n>assemblage}',
   description : '{i18n>assemblage}',
 ) {
-  name        @title : '{i18n>cepage}';
+  cepage_ID   @(
+    title  : '{i18n>cepage}',
+    Common : {
+      Text            : cepage.name,
+      TextArrangement : #TextOnly,
+    }
+  );
+  vin_ID      @(
+    title  : '{i18n>cepage}',
+    Common : {
+      Text            : vin.name,
+      TextArrangement : #TextOnly,
+    }
+  );
+  // name        @title : '{i18n>cepage}';
   description @title : '{i18n>cepage_description}';
   pourcent    @title : '{i18n>teneur}';
 };
@@ -76,6 +90,13 @@ annotate schema.Cepage with @(
   description : '{i18n>cepage}',
 
 ) {
+  ID             @(
+    title  : '{i18n>cepage}',
+    Common : {
+      Text            : name,
+      TextArrangement : #TextOnly,
+    }
+  );
   name           @title : '{i18n>cepage}';
   description    @title : '{i18n>cepage_description}';
   to_vins_vin_ID @title : '{i18n>vin}';

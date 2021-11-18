@@ -24,13 +24,8 @@ annotate service.Vin with @Capabilities : {
       $Type              : 'Capabilities.NavigationPropertyRestriction',
       InsertRestrictions : {
         $Type      : 'Capabilities.InsertRestrictionsType',
-        Insertable : true
+        Insertable : false
       },
-      UpdateRestrictions : {
-        $Type                  : 'Capabilities.UpdateRestrictionsType',
-        NonUpdatableProperties : ['to_cepages/cepage_name'],
-      },
-
       NavigationProperty : to_cepages,
     }, ],
 
@@ -106,10 +101,41 @@ annotate customer.Vin with @(Capabilities : {FilterRestrictions : {
   NonFilterableProperties : [
     'volume',
     'unit',
-    'orderQty',
     'inStockQty',
     'devise_code',
-    'availability_code',
-    'reference'
   ]
 }});
+
+annotate service.Vin actions {
+  addGrapeVariety @(
+    Core.OperationAvailable : in.IsActiveEntity,
+    Common.SideEffects      : {
+      $Type          : 'Common.SideEffectsType',
+      TargetEntities : ['in/to_cepages'],
+
+    }
+  )
+};
+
+annotate service.Vin actions {
+  addGrapeVariety(cepage_ID @(
+    title  : '{i18n>cepage}',
+    Common : {ValueListMapping : {
+      Label          : '{i18n>Cepage}',
+      CollectionPath : 'Cepage',
+      Parameters     : [
+        {
+          $Type             : 'Common.ValueListParameterInOut',
+          LocalDataProperty : cepage_ID,
+          ValueListProperty : 'ID'
+        },
+        {
+          $Type             : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty : 'color'
+        },
+      ],
+    }}
+  ),
+  pourcent                  @title : '{i18n>teneur}'
+  )
+};

@@ -175,8 +175,29 @@ module.exports = (srv) => {
   //
   //
   srv.on('productSoldOut', (msg) => {
-    winston.info(['ON',msg.event, msg.data]);
+    winston.info(['ON', msg.event, msg.data]);
   });
   //
   //
+  srv.on('addGrapeVariety', async (req) => {
+    winston.info(['ON', 'addGrapeVariety']);
+    const { ID: vin_ID } = req.params[0];
+    const { cepage_ID, pourcent } = req.data;
+    const cepage = await SELECT.one.from(Assemblage).where({ cepage_ID });
+    if (cepage) {
+      req.error({
+        code: '417',
+        message: `Grape variety is already listed in this wine`,
+        status: 417,
+      });
+    } else {
+      const entry = {
+        cepage_ID,
+        vin_ID,
+        pourcent,
+      };
+      const newEntry = await INSERT.into(Assemblage).entries(entry);
+      return newEntry;
+    }
+  });
 };
