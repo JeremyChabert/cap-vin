@@ -163,9 +163,6 @@ service retailer @(
     order by
       annee;
 
-  annotate Vin with @(Common : {SemanticKey : [ID]});
-  annotate Cepage with @(Common : {SemanticKey : [name], }, );
-
   entity LogOfDemand as projection on cave.LogOfDemand {
     * ,
     @Aggregation.default : #SUM

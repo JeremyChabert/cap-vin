@@ -58,8 +58,6 @@ service customer @(
     action addToStorage(column :  Integer          @title        : '{i18n>column}', row : Integer @title : '{i18n>row}')
   };
 
-  annotate Cave with @(Common : {SemanticKey : [ID]});
-
   @Aggregation : {ApplySupported : {
     $Type                  : 'Aggregation.ApplySupportedType',
     PropertyRestrictions   : true,
