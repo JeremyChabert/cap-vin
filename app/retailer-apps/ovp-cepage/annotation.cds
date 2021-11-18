@@ -14,7 +14,7 @@ annotate service.VinPerCepage with @UI : {
   DataPoint #Count : {
     $Type : 'UI.DataPointType',
     Title : 'Count',
-    Value : count
+    Value : cepage_count
   }
 };
 
