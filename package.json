@@ -13,7 +13,8 @@
     "cors": "^2.8.5",
     "express": "^4",
     "passport": "^0.5.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "hdb": "^0.18.3"
   },
   "devDependencies": {
     "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
@@ -27,7 +28,7 @@
     "start": "cds run",
     "watch-customer": "cds watch --open customer-apps/launchpad.html",
     "watch-retailer": "cds watch --open retailer-apps/launchpad.html",
-    "deploy:sql":"cds deploy -2 sqlite:cave.db"
+    "deploy:sql": "cds deploy -2 sqlite:cave.db"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -63,11 +64,7 @@
     },
     "requires": {
       "db": {
-        "kind": "sqlite",
-        "model": "*",
-        "credentials": {
-          "database": "cave.db"
-        }
+        "kind": "hana"
       },
       "auth": {
         "kind": "dummy-auth",
@@ -95,6 +92,9 @@
       "messaging": {
         "kind": "file-based-messaging"
       }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
     }
   },
   "sapux": [
