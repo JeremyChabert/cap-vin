@@ -1247,3 +1247,23 @@ annotate customer.Position with @UI : {LineItem #Storage : [
     Value : positionX,
   },
 ], };
+
+
+annotate customer.Cave with @(Common : {SemanticKey : [
+  vin.name,
+  vin.annee
+]});
+
+annotate retailer.Vin with @(Common : {SemanticKey : [
+  ID,
+  reference,
+]});
+
+annotate customer.Vin with @(Common : {SemanticKey : [
+  ID,
+  annee,
+  color_code,
+  name
+]});
+
+annotate retailer.Cepage with @(Common : {SemanticKey : [name], }, );
