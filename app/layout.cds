@@ -344,10 +344,22 @@ annotate retailer.Vin with @(UI : {
   ],
 });
 
-annotate retailer.Vin with @(UI.Identification : [{
-  $Type : 'UI.DataField',
-  Value : ID
-}, ]) {
+annotate retailer.Vin with @(UI.Identification : [
+  {
+    $Type : 'UI.DataField',
+    Value : ID
+  },
+  {
+
+    $Type              : 'UI.DataFieldForAction',
+    Action             : 'retailer.addGrapeVariety',
+    Inline             : false,
+    InvocationGrouping : #Isolated,
+    Determining        : false,
+    Label              : 'Add grape variety',
+
+  },
+]) {
   ID     @UI.Hidden;
   unit   @UI.Hidden;
   devise @UI.Hidden;
@@ -423,9 +435,10 @@ annotate retailer.Assemblage with @UI : {
   ],
   LineItem #Vins               : [
     {
-      $Type : 'UI.DataField',
-      Value : cepage.name,
-      Label : '{i18n>cepage}',
+      $Type                   : 'UI.DataField',
+      Value                   : cepage.name,
+      Label                   : '{i18n>cepage_name}',
+      ![@Common.FieldControl] : #ReadOnly,
     },
     {
       $Type                   : 'UI.DataField',
