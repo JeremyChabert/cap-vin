@@ -6,12 +6,10 @@ service retailer @(
 ) {
 
   @odata.draft.enabled
-  entity Vin                            @(restrict : [
-    {
-      grant : '*',
-      to    : 'admin'
-    },
-  ])                 as projection on cave.Vin actions {
+  entity Vin                            @(restrict : [{
+    grant : '*',
+    to    : 'admin'
+  }, ])              as projection on cave.Vin actions {
     action postGoods(quantity : Integer @title : '{i18n>quantity}');
     action order(quantity :     Integer @title : '{i18n>quantity}');
     action withdrawFromSale();
@@ -63,10 +61,10 @@ service retailer @(
   @readonly
   define view VinPerCepage as
     select from Assemblage {
-      key cepage.name as name  : String,
+      key cepage.name as name         : String,
       key count(
             vin.ID
-          )           as count : Integer,
+          )           as cepage_count : Integer,
 
     }
     group by
@@ -96,7 +94,8 @@ service retailer @(
   }, }
   define view VinAnalytics as
     select from Vin {
-      key reference,
+      key ID,
+          reference,
           name,
           devise,
           @Analytics           : {

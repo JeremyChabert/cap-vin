@@ -7,8 +7,15 @@ service customer @(
 
   @readonly
   entity Vin        as
-    select from cave.Vin {
-      *
+    select from cave.Vin
+    excluding {
+      orderQty,
+      reference,
+      availability,
+      createdBy,
+      createdAt,
+      modifiedAt,
+      modifiedBy
     }
     where
       availability.code != 'B'
