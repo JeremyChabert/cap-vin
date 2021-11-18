@@ -49,7 +49,7 @@ modules:
    type: nodejs
    path: app
    parameters:
-     disk-quota: 256M
+     disk-quota: 1024M
      memory: 256M
    requires:
      - name: cap-cave-uaa
