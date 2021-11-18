@@ -22,17 +22,17 @@ aspect Boisson : cuid, managed {
   } default 'cL';
 };
 
-entity Cepage {
-  key name           : String(30);
-      description    : String(400);
-      color          : String(10)@assert.range enum {
-        Noir;
-        Blanc;
-      };
-      to_vins        : Association to many Assemblage
-                         on to_vins.cepage = $self;
-      to_superficies : Composition of many Superficie
-                         on to_superficies.to_cepage = $self;
+entity Cepage                @(assert.unique : {Cepage : [name]}) : cuid {
+  name           : String(30) @assert.format : '[A-Z]';
+  description    : String(400);
+  color          : String(10)@assert.range enum {
+    Noir;
+    Blanc;
+  };
+  to_vins        : Association to many Assemblage
+                     on to_vins.cepage = $self;
+  to_superficies : Composition of many Superficie
+                     on to_superficies.to_cepage = $self;
 };
 
 entity Superficie       @(assert.unique : {Superficie : [
@@ -111,13 +111,13 @@ entity Biere : Boisson {
   devise : Currency;
 };
 
-@cds.autoexpose @readonly
+@cds.autoexpose  @readonly
 define view ColorCepage as
   select from Cepage distinct {
     key color as ID : String
   };
 
-@cds.autoexpose @readonly
+@cds.autoexpose  @readonly
 define view TypeBoisson as
   select from Vin distinct {
     key type as ID : String
@@ -209,7 +209,7 @@ entity LogOfDemand : cuid {
 //
 @cds.autoexpose
 entity Position : cuid, managed {
-  positionX    : Integer;
+  positionX : Integer;
   positionY : Integer;
-  cave   : Association to Cave;
+  cave      : Association to Cave;
 };
