@@ -16,7 +16,7 @@ module.exports = (srv) => {
     const { annee, garde } = item;
     const currentYear = new Date().getFullYear();
 
-    let status_code = '';
+    let status_code = 'E';
     if (annee && garde) {
       const ratio = (currentYear - annee) / garde;
       if (ratio < 0.5) {
@@ -25,8 +25,6 @@ module.exports = (srv) => {
         status_code = 'C';
       } else if (ratio >= 1) {
         status_code = 'D';
-      } else {
-        status_code = 'E';
       }
     }
     return status_code;
