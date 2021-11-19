@@ -169,13 +169,8 @@ module.exports = (srv) => {
   //
   srv.after('each', 'Vin', (vin) => {
     if (vin.orderQty > 0) vin.postGoodsEnabled = true;
-    if (vin.inStockQty === 0) vin.orderEnabled = true;
-    if (vin.inStockQty > 0) vin.withdrawFromSaleEnabled = true;
-  });
-  //
-  //
-  srv.on('productSoldOut', (msg) => {
-    winston.info(['ON', msg.event, msg.data]);
+    if (vin.inStockQty >= 0) vin.withdrawFromSaleEnabled = true;
+    if (vin.inStockQty < 1000) vin.orderEnabled = true;
   });
   //
   //
