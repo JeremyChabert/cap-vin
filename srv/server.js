@@ -13,6 +13,10 @@ async function getPlotChart(req, res, next) {
         b.ID,
           b.vin((c) => {
             c.name;
+            c.annee;
+            c.color((d)=>{
+              d.name
+            });
           });
       });
   });
