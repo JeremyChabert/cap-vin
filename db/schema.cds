@@ -23,7 +23,7 @@ aspect Boisson : cuid, managed {
 };
 
 entity Cepage                @(assert.unique : {Cepage : [name]}) : cuid {
-  name           : String(30) @assert.format : '[A-Z]';
+  name           : String(30)@assert.format : '[A-Z]';
   description    : String(400);
   color          : String(10)@assert.range enum {
     Noir;
@@ -59,7 +59,7 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  reference    : String @assert.format : '[0-9]{4}-.{3}-.*';
+  reference    : String(50) @assert.format : '[0-9]{4}-.{3}-.*';
   color        : Association to VinColor;
   @Measures :                            {ISOCurrency : devise_code, }
   prix         : Decimal(6, 2);
@@ -83,7 +83,7 @@ entity Vin : Boisson {
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
 entity VinColor : CodeList {
-  key code : String @assert.range enum {
+  key code : String(10) @assert.range enum {
         Rouge;
         ![Rosé];
         Vert;
@@ -125,7 +125,13 @@ define view TypeBoisson as
 
 @cds.autoexpose  @readonly : true
 entity RetentionStatus : CodeList {
-  key code        : String(1);
+  key code        : String(1) enum {
+        ToGrowOld     = 'A';
+        AtMaturity    = 'B';
+        AtThePeak     = 'C';
+        InDecline     = 'D';
+        NotApplicable = 'E';
+      } default 'E';
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
 
@@ -150,14 +156,14 @@ entity Cave                   @(assert.unique : {Cave : [
     0.0,
     5.0
   ];
-  comment      : String;
+  comment      : String(250);
   to_positions : Association to many Position
                    on to_positions.cave = $self;
 };
 
 entity Region {
-  key subregion : String;
-      region    : String;
+  key subregion : String(25);
+      region    : String(30);
       country   : Country;
 };
 
