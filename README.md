@@ -18,8 +18,9 @@ cds # test it
 > Complementary : Install [nvm](https://github.com/nvm-sh/nvm) to be able to switch Node version 
 
 ## Next Steps
-
-- Open a new terminal and run `cds watch` 
+- Open a new terminal and run `npm i` to install all required dependencies
+- Then run `npm run deploy:sql` to deploy model on local Sqlite database
+- Finally run `cds watch` 
 - (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
 - Start adding content, for example, a [db/schema.cds](db/schema.cds).
 
