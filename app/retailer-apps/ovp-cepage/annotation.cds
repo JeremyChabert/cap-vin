@@ -22,7 +22,7 @@ annotate service.VinAnalytics with @UI : {
   LineItem                               : [
     {
       $Type : 'UI.DataField',
-      Value : name
+      Value : reference
     },
 
     {

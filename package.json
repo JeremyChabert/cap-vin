@@ -64,7 +64,11 @@
     },
     "requires": {
       "db": {
-        "kind": "hana"
+        "kind": "sqlite",
+        "model": "*",
+        "credentials": {
+          "database": "cave.db"
+        }
       },
       "auth": {
         "kind": "dummy-auth",
