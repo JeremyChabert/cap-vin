@@ -178,11 +178,19 @@ module.exports = (srv) => {
     winston.info(['ON', 'addGrapeVariety']);
     const { ID: vin_ID } = req.params[0];
     const { cepage_ID, pourcent } = req.data;
-    const cepage = await SELECT.one.from(Assemblage).where({ cepage_ID });
+    const cepages = await SELECT.from(Assemblage).where({ vin_ID });
+    const cepage = cepages.find(({ cepage_ID: existingCepage_ID }) => existingCepage_ID === cepage_ID);
+    const cumul = cepages.reduce((acc, cur) => acc + cur.pourcent, 0);
     if (cepage) {
       req.error({
         code: '417',
         message: `Grape variety is already listed in this wine`,
+        status: 417,
+      });
+    } else if (cumul + pourcent > 100) {
+      req.error({
+        code: '417',
+        message: 'The composition of cepage is above 100%',
         status: 417,
       });
     } else {
