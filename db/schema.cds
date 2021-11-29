@@ -200,14 +200,18 @@ type TechnicalBooleanFlag : Boolean @(
 //
 //
 entity LogOfDemand : cuid {
-  createdAt : DateTime @cds.on.insert : $now;
-  quantity  : Integer;
-  vin       : Association to one Vin;
-  status    : Association to DemandStatus;
-  year      : String(4);
-  month     : String(2);
+  createdAt  : DateTime @cds.on.insert : $now;
+  quantity   : Integer;
+  vin        : Association to one Vin;
+  @Measures :                            {ISOCurrency : currency_code, }
+  price      : Decimal(6, 2);
+  @Measures :                            {ISOCurrency : currency_code, }
+  totalPrice : Decimal(6, 2);
+  currency   : Currency;
+  status     : Association to DemandStatus;
 };
-// 
+
+//
 // 
 entity DemandStatus : CodeList {
   key code        : String(1) enum {

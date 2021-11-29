@@ -175,10 +175,9 @@ service retailer @(
     $Type                  : 'Aggregation.ApplySupportedType',
     PropertyRestrictions   : true,
     GroupableProperties    : [
-      reference,
+      vin_ID,
       status,
-      year,
-      month
+      createdAt
     ],
     AggregatableProperties : [
       {
@@ -187,7 +186,7 @@ service retailer @(
       },
       {
         $Type    : 'Aggregation.AggregatablePropertyType',
-        Property : counter,
+        Property : totalPrice,
       },
     ],
   }, }
@@ -196,34 +195,28 @@ service retailer @(
       @Analytics           : {
         Dimension : true
       }
-      vin.reference      as reference,
-      vin.name    as name      : String,
+      vin.ID        as vin_ID,
+      @Analytics           : {
+        Dimension : true
+      }
+      vin.reference as reference,
+      vin.name      as name       : String,
       @Analytics           : {
         Measure : true
       }
       @Aggregation.default : #SUM
-      quantity    as quantity  : Integer,
-      @Analytics           : {
-        Dimension : true
-      }
-      status.name as status    : String,
-      @Analytics           : {
-        Dimension : true
-      }
-      year        as year      : String,
-      @Analytics           : {
-        Dimension : true
-      }
-      month       as month     : String,
-      @Analytics           : {
-        Dimension : true
-      }
-      createdAt   as createdAt : DateTime,
-      @Analytics           : {
-        Measure : true
-      }
+      quantity      as quantity   : Integer,      
+      currency.code as currency,
       @Aggregation.default : #SUM
-      1           as counter   : Integer
+      totalPrice    as totalPrice : Decimal(6, 2),
+      @Analytics           : {
+        Dimension : true
+      }
+      status.name   as status     : String,
+      @Analytics           : {
+        Dimension : true
+      }
+      createdAt     as createdAt  : DateTime,
     };
 
   @Aggregation : {ApplySupported : {
@@ -234,7 +227,7 @@ service retailer @(
       Property : counter,
     }, ],
   }, }
-  define view EventAnlytics as
+  define view EventAnalytics as
     select from cave.LogOfEvent {
       *,
       @Analytics           : {
