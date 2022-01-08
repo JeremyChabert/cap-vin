@@ -20,6 +20,9 @@ aspect Boisson : cuid, managed {
     L;
     cL;
   } default 'cL';
+  @Measures :                        {ISOCurrency : devise_code, }
+  prix   : Decimal(6, 2);
+  devise : Currency;
 };
 
 entity Cepage                @(assert.unique : {Cepage : [name]}) : cuid {
@@ -59,16 +62,13 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  reference    : String(50) @assert.format : '[0-9]{4}-.{3}-.*';
+  reference    : String(50)@assert.format : '[0-9]{4}-.{3}-.*';
   color        : Association to VinColor;
-  @Measures :                            {ISOCurrency : devise_code, }
-  prix         : Decimal(6, 2);
-  devise       : Currency;
   igp          : Boolean default false;
   aoc          : Boolean default false;
   region       : Association to Region;
-  @Measures :                            {Unit : '{i18n>anneeGarde}'} garde : Integer
-                        @assert.range  : [
+  @Measures :                               {Unit : '{i18n>anneeGarde}'} garde : Integer
+                           @assert.range  : [
       1,
       20
     ] default 1;
@@ -83,7 +83,7 @@ entity Vin : Boisson {
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
 entity VinColor : CodeList {
-  key code : String(10) @assert.range enum {
+  key code : String(10)@assert.range enum {
         Rouge;
         ![Rosé];
         Vert;
@@ -161,6 +161,7 @@ entity Cave                   @(assert.unique : {Cave : [
                    on to_positions.cave = $self;
 };
 
+@cds.autoexpose  @readonly  @cds.odata.valuelist
 entity Region {
   key subregion : String(25);
       region    : String(30);
@@ -178,7 +179,7 @@ type TechnicalBooleanFlag : Boolean @(
   PropertyRestrictions   : true,
   GroupableProperties    : [
     vin.name,
-    completed,
+    status_code,
     quantity
   ],
   AggregatableProperties : [
@@ -188,7 +189,7 @@ type TechnicalBooleanFlag : Boolean @(
     },
     {
       $Type    : 'Aggregation.AggregatablePropertyType',
-      Property : completed,
+      Property : status_code,
     },
     {
       $Type    : 'Aggregation.AggregatablePropertyType',
@@ -199,16 +200,33 @@ type TechnicalBooleanFlag : Boolean @(
 //
 //
 entity LogOfDemand : cuid {
-  @Analytics           :                 {Dimension : true}
-  createdAt : Timestamp @cds.on.insert : $now;
-  @Aggregation.default :                 #SUM
-  @Analytics           :                 {Measure : true}
-  quantity  : Integer;
-  @Analytics           :                 {Dimension : true}
-  vin       : Association to one Vin;
-  @Analytics           :                 {Measure : true}
-  @Aggregation.default :                 #SUM
-  completed : Boolean   @Core.Computed;
+  createdAt  : DateTime @cds.on.insert : $now;
+  quantity   : Integer;
+  vin        : Association to one Vin;
+  @Measures :                            {ISOCurrency : currency_code, }
+  price      : Decimal(6, 2);
+  @Measures :                            {ISOCurrency : currency_code, }
+  totalPrice : Decimal(6, 2);
+  currency   : Currency;
+  status     : Association to DemandStatus;
+};
+
+//
+//
+entity DemandStatus : CodeList {
+  key code        : String(1) enum {
+        Completed = 'C';
+        Delayed   = 'D';
+        Failed    = 'F';
+      };
+      criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
+};
+
+//
+//
+entity LogOfEvent : cuid {
+  createdAt : DateTime @cds.on.insert : $now;
+  name      : String;
 };
 
 //

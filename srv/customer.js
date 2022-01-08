@@ -78,17 +78,16 @@ module.exports = (srv) => {
     const vin_ID = req.params[0];
     const { quantity } = req.data;
     const createdBy = req.user.id;
-    const wine = await SELECT.one.from(Vin).columns(['ID', 'name', 'inStockQty']).where({ ID: vin_ID });
+    const wine = await SELECT.one
+      .from(Vin)
+      .columns(['ID', 'name', 'inStockQty', 'availability_code'])
+      .where({ ID: vin_ID });
     const exists = await SELECT.one.from(Cave).columns(['ID', 'quantity']).where({ vin_ID, createdBy });
     let status;
     const modifiedBy = req.user.id;
+    let demandOverOffer = false;
     if (quantity > wine.inStockQty) {
-      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: false, quantity });
-      req.error({
-        code: '417',
-        message: `Retailer does not possess the quantity requested. Actual: ${quantity}, Max available: ${wine.inStockQty}`,
-        status: 417,
-      });
+      demandOverOffer = true;
     } else {
       if (exists) {
         await UPDATE(Cave, exists).with(`quantity = '${exists.quantity + quantity}'`);
@@ -99,16 +98,25 @@ module.exports = (srv) => {
       }
       await UPDATE(Vin, vin_ID).with(
         `inStockQty  = ${wine.inStockQty - quantity}, availability_code = '${
-          wine.inStockQty - quantity === 0 ? 'B' : 'C'
+          wine.inStockQty - quantity === 0 ? 'B' : wine.availability_code //B:Sold Out | Old value
         }'`
       );
-      await INSERT.into(LogOfDemand).entries({ vin_ID, completed: true, quantity });
+
       if (wine.inStockQty - quantity === 0) {
         const event = {
           reference: vin_ID,
         };
         srv.emit('productSoldOut', event);
       }
+    }
+    srv.emit('registerDemand', { vin_ID, status_code: demandOverOffer ? 'F' : 'C', quantity });
+    if (demandOverOffer) {
+      req.error({
+        code: '417',
+        message: `Retailer does not possess the quantity requested. Actual: ${quantity}, Max available: ${wine.inStockQty}`,
+        status: 417,
+      });
+    } else {
       req.notify({
         code: status.toString(),
         message: `${quantity} bottle(s) of ${wine.name} added to your wine cellar`,

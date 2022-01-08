@@ -168,9 +168,73 @@ service retailer @(
     order by
       annee;
 
-  entity LogOfDemand as projection on cave.LogOfDemand {
-    * ,
-    @Aggregation.default : #SUM
-    1 as counter : Integer
-  }
+  annotate Vin with @(Common : {SemanticKey : [ID]});
+  annotate Cepage with @(Common : {SemanticKey : [name], }, );
+
+  @Aggregation : {ApplySupported : {
+    $Type                  : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions   : true,
+    GroupableProperties    : [
+      vin_ID,
+      status,
+      createdAt
+    ],
+    AggregatableProperties : [
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : quantity,
+      },
+      {
+        $Type    : 'Aggregation.AggregatablePropertyType',
+        Property : totalPrice,
+      },
+    ],
+  }, }
+  define view DemandAnalytics as
+    select from cave.LogOfDemand {
+      @Analytics           : {
+        Dimension : true
+      }
+      vin.ID        as vin_ID,
+      @Analytics           : {
+        Dimension : true
+      }
+      vin.reference as reference,
+      vin.name      as name       : String,
+      @Analytics           : {
+        Measure : true
+      }
+      @Aggregation.default : #SUM
+      quantity      as quantity   : Integer,      
+      currency.code as currency,
+      @Aggregation.default : #SUM
+      totalPrice    as totalPrice : Decimal(6, 2),
+      @Analytics           : {
+        Dimension : true
+      }
+      status.name   as status     : String,
+      @Analytics           : {
+        Dimension : true
+      }
+      createdAt     as createdAt  : DateTime,
+    };
+
+  @Aggregation : {ApplySupported : {
+    $Type                  : 'Aggregation.ApplySupportedType',
+    PropertyRestrictions   : true,
+    AggregatableProperties : [{
+      $Type    : 'Aggregation.AggregatablePropertyType',
+      Property : counter,
+    }, ],
+  }, }
+  define view EventAnalytics as
+    select from cave.LogOfEvent {
+      *,
+      @Analytics           : {
+        Measure : true
+      }
+      @Aggregation.default : #SUM
+      1 as counter : Integer
+    };
+
 };

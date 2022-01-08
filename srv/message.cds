@@ -1,5 +1,0 @@
-service message @(
-  path     : '/message',
-) {
-
-}

@@ -1,0 +1,5 @@
+service listener @(
+  path     : '/listener',
+) {
+
+}
