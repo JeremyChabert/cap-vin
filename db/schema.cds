@@ -20,6 +20,9 @@ aspect Boisson : cuid, managed {
     L;
     cL;
   } default 'cL';
+  @Measures :                        {ISOCurrency : devise_code, }
+  prix   : Decimal(6, 2);
+  devise : Currency;
 };
 
 entity Cepage                @(assert.unique : {Cepage : [name]}) : cuid {
@@ -59,16 +62,13 @@ entity Assemblage    @(assert.unique : {Assemblage : [
 };
 
 entity Vin : Boisson {
-  reference    : String(50) @assert.format : '[0-9]{4}-.{3}-.*';
+  reference    : String(50)@assert.format : '[0-9]{4}-.{3}-.*';
   color        : Association to VinColor;
-  @Measures :                            {ISOCurrency : devise_code, }
-  prix         : Decimal(6, 2);
-  devise       : Currency;
   igp          : Boolean default false;
   aoc          : Boolean default false;
   region       : Association to Region;
-  @Measures :                            {Unit : '{i18n>anneeGarde}'} garde : Integer
-                        @assert.range  : [
+  @Measures :                               {Unit : '{i18n>anneeGarde}'} garde : Integer
+                           @assert.range  : [
       1,
       20
     ] default 1;
@@ -83,7 +83,7 @@ entity Vin : Boisson {
 
 @cds.autoexpose  @readonly  @cds.odata.valuelist
 entity VinColor : CodeList {
-  key code : String(10) @assert.range enum {
+  key code : String(10)@assert.range enum {
         Rouge;
         ![Rosé];
         Vert;
@@ -212,7 +212,7 @@ entity LogOfDemand : cuid {
 };
 
 //
-// 
+//
 entity DemandStatus : CodeList {
   key code        : String(1) enum {
         Completed = 'C';
@@ -221,6 +221,7 @@ entity DemandStatus : CodeList {
       };
       criticality : Integer; //  1:red colour 2: yellow colour,  3: green colour, 0: unknown
 };
+
 //
 //
 entity LogOfEvent : cuid {
