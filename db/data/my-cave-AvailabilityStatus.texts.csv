@@ -1,0 +1,9 @@
+code;locale;name
+A;fr;En stock
+B;fr;En rupture
+C;fr;En cours d'approvisionnement
+D;fr;Retiré de la vente
+A;en;In stock
+B;en;Sold out
+C;en;To be delivered
+D;en;Withdraw from sale
