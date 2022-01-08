@@ -2,7 +2,7 @@ const cds = require('@sap/cds');
 const winston = require('./config/winston');
 
 module.exports = async (srv) => {
-  const { LogOfEvent, LogOfDemand } = cds.entities('my.cave');
+  const { LogOfEvent, LogOfDemand, Vin } = cds.entities('my.cave');
 
   const retailerService = await cds.connect.to('retailer');
   const customerService = await cds.connect.to('customer');
