@@ -16,7 +16,7 @@ module.exports = (srv) => {
     const { annee, garde } = item;
     const currentYear = new Date().getFullYear();
 
-    let status_code = '';
+    let status_code = 'E';
     if (annee && garde) {
       const ratio = (currentYear - annee) / garde;
       if (ratio < 0.5) {
@@ -25,8 +25,6 @@ module.exports = (srv) => {
         status_code = 'C';
       } else if (ratio >= 1) {
         status_code = 'D';
-      } else {
-        status_code = 'E';
       }
     }
     return status_code;
@@ -56,14 +54,14 @@ module.exports = (srv) => {
   //
   srv.on('READ', 'Vin', async (req, next) => {
     winston.debug(['ON', 'READ', 'Vin']);
-    // await updateStatus();
+    await updateStatus();
     return next();
   });
   //
   //
   srv.on('READ', 'VinAnalytics', async (req, next) => {
     winston.debug(['ON', 'READ', 'VinAnlytics']);
-    await updateStatus();
+    // await updateStatus();
     return next();
   });
   //
@@ -127,7 +125,7 @@ module.exports = (srv) => {
           });
       })
       .where({ ID });
-    await UPDATE(Vin, ID).with(`inStockQty = 0,availability_code = 'B'`);
+    await UPDATE(Vin, ID).with(`inStockQty = 0,availability_code = 'D'`);
     req.notify({
       code: '202',
       message: `[${wine.name},${wine.annee},${wine.color.name} checked out`,
@@ -145,13 +143,16 @@ module.exports = (srv) => {
         a.ID,
           a.name,
           a.annee,
+          a.inStockQty,
           a.orderQty,
           a.color((b) => {
             b.name;
           });
       })
       .where({ ID });
-    await UPDATE(Vin, ID).with(`orderQty  = ${wine.orderQty + quantity},availability_code = 'C'`);
+    await UPDATE(Vin, ID).with(
+      `orderQty  = ${wine.orderQty + quantity},availability_code = '${wine.inStockQty > 0 ? 'A' : 'C'}'`
+    );
     req.notify({
       code: '200',
       message: `Order for ${quantity} placed`,
@@ -170,7 +171,7 @@ module.exports = (srv) => {
   srv.after('each', 'Vin', (vin) => {
     if (vin.orderQty > 0) vin.postGoodsEnabled = true;
     if (vin.inStockQty >= 0) vin.withdrawFromSaleEnabled = true;
-    if (vin.inStockQty < 1000) vin.orderEnabled = true;
+    vin.orderEnabled = true;
   });
   //
   //
